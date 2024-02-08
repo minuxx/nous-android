@@ -1,7 +1,15 @@
 <resources>
-    <!-- Base application theme. -->
     <style name="Base.Theme.Nous" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/orange_500</item>
+        <item name="colorPrimaryVariant">@color/orange_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/deep_orange_200</item>
+        <item name="colorSecondaryVariant">@color/deep_orange_700</item>
+        <item name="colorOnSecondary">@color/orange_900</item>
+
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
+
+    <style name="Theme.Nous" parent="Base.Theme.Nous" />
 </resources>
