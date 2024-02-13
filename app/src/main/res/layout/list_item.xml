@@ -9,14 +9,12 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:layout_height="wrap_content">
 
     <ImageView
       android:id="@+id/thumbnail_iv"
       android:layout_width="100dp"
       android:layout_height="100dp"
-      android:background="@color/grey_50"
       android:importantForAccessibility="no"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +26,6 @@
       android:layout_marginStart="20dp"
       android:layout_marginBottom="8dp"
       android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
-      android:textColor="@color/grey_400"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toEndOf="@id/thumbnail_iv"
       tools:text="2023.11.16 15:32" />
