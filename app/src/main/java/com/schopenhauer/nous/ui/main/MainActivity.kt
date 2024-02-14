@@ -1,6 +1,7 @@
 package com.schopenhauer.nous.ui.main
 
 import android.view.LayoutInflater
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.viewpager2.widget.ViewPager2
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.ActivityMainBinding
@@ -15,6 +16,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 		{ layoutInflater ->
 			ActivityMainBinding.inflate(layoutInflater)
 		}
+
+	override fun onBeforeCreate() {
+		super.onBeforeCreate()
+		val splashScreen = installSplashScreen()
+	}
 
 	override fun initViews() {
 		initViewPager()
