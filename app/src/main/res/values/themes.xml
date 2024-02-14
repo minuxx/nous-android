@@ -50,5 +50,25 @@
         <item name="colorOnComplementary">@color/colorOnComplementary</item>
         <item name="colorComplementaryContainer">@color/colorComplementaryContainer</item>
         <item name="colorOnComplementaryContainer">@color/colorOnComplementaryContainer</item>
+
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.Nous.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.Nous.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.Nous.DisplaySmall</item>
+
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Nous.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Nous.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Nous.HeadlineSmall</item>
+
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Nous.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Nous.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Nous.TitleSmall</item>
+
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.Nous.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.Nous.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.Nous.BodySmall</item>
+
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Nous.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Nous.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Nous.LabelSmall</item>
     </style>
 </resources>
