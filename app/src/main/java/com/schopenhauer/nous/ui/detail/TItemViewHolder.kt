@@ -1,11 +1,8 @@
 package com.schopenhauer.nous.ui.detail
 
-import android.graphics.PorterDuff
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.ListItemBinding
 import com.schopenhauer.nous.databinding.ListItemPageBinding
 import com.schopenhauer.nous.domain.model.Item
