@@ -41,11 +41,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 	private fun initBottomNav() {
 		binding.bottomNav.setOnItemSelectedListener {
 			return@setOnItemSelectedListener when (it.itemId) {
-				R.id.item_list -> {
+				R.id.list -> {
 					binding.viewPager.currentItem = FRG_LIST_POSITION
 					true
 				}
-				R.id.item_detail -> {
+				R.id.detail -> {
 					binding.viewPager.currentItem = FRG_DETAIL_POSITION
 					true
 				}
