@@ -26,10 +26,6 @@ class ItemViewHolder(
       .diskCacheStrategy(DiskCacheStrategy.NONE)
       .centerCrop()
       .into(binding.thumbnailIv)
-
-    val colorResId = if (item.isBookmarked) R.color.colorComplementary else R.color.colorComplementary
-    val color = ContextCompat.getColor(binding.root.context, colorResId)
-    binding.bookmarkBtn.setColorFilter(color, PorterDuff.Mode.SRC_IN)
   }
 }
 
