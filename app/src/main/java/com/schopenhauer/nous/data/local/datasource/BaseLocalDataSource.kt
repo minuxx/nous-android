@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 open class BaseLocalDataSource {
 
-  suspend fun <T : Any> execute(call: () -> T): Result<T> = withContext(Dispatchers.IO) {
+  suspend fun <T : Any> execute(call: suspend () -> T) = withContext(Dispatchers.IO) {
     try {
       val result = call.invoke()
       Result.Success(result)
