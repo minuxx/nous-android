@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
 
@@ -56,25 +55,17 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
 
     // Okhttp
-    val okhttp3Version = "5.0.0-alpha.2"
-    implementation("com.squareup.okhttp3:okhttp:$okhttp3Version")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okhttp3Version")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
     // Retrofit
-    val retrofitVersion = "2.9.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-
-    // Room
-    val roomVersion = "2.6.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Dagger - Hilt
-    val hiltVersion = "2.48.1"
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-compiler:2.48.1")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
@@ -89,8 +80,4 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-}
-
-kapt {
-    correctErrorTypes = true
 }
