@@ -3,26 +3,38 @@
   <!-- Typography -->
   <style name="TextAppearance.Nous.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.DisplaySmall" parent="TextAppearance.Material3.DisplayMedium">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
     <item name="android:textStyle">bold</item>
   </style>
 
@@ -33,33 +45,49 @@
 
   <style name="TextAppearance.Nous.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
     <item name="fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
     <item name="fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.BodySmall" parent="TextAppearance.Material3.BodySmall">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
     <item name="fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
     <item name="fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
     <item name="fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:fontFamily">@font/noto_sans_kr_medium</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 </resources>
