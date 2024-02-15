@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentDetailBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
-import com.schopenhauer.nous.ui.list.TListFragment.Companion.ARG_ITEM_ID
+import com.schopenhauer.nous.ui.journals.JournalsFragment.Companion.JOURNAL_ID_ARGUMENT
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +37,7 @@ class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 	}
 
 	private fun readArguments() {
-		val itemId = arguments?.getLong(ARG_ITEM_ID)
+		val itemId = arguments?.getLong(JOURNAL_ID_ARGUMENT)
 		if (itemId == null) {
 			requireActivity().supportFragmentManager.popBackStack()
 			return
@@ -47,7 +47,7 @@ class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 
 	companion object {
 		fun newInstance(itemId: Long): TDetailFragment {
-			val args = Bundle().apply { putLong(ARG_ITEM_ID, itemId) }
+			val args = Bundle().apply { putLong(JOURNAL_ID_ARGUMENT, itemId) }
 
 			return TDetailFragment().apply {
 				arguments = args

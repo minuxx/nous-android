@@ -7,7 +7,7 @@ import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.ActivityMainBinding
 import com.schopenhauer.nous.ui.base.BaseActivity
 import com.schopenhauer.nous.ui.main.MainViewPagerAdapter.Companion.FRG_DETAIL_POSITION
-import com.schopenhauer.nous.ui.main.MainViewPagerAdapter.Companion.FRG_LIST_POSITION
+import com.schopenhauer.nous.ui.main.MainViewPagerAdapter.Companion.JOURNALS_FRAGMENT_POSITION
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +19,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 	override fun onBeforeCreate() {
 		super.onBeforeCreate()
-		val splashScreen = installSplashScreen()
+		installSplashScreen()
 	}
 
 	override fun initViews() {
@@ -47,8 +47,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 	private fun initBottomNav() {
 		binding.bottomNav.setOnItemSelectedListener {
 			return@setOnItemSelectedListener when (it.itemId) {
-				R.id.list -> {
-					binding.viewPager.currentItem = FRG_LIST_POSITION
+				R.id.journals -> {
+					binding.viewPager.currentItem = JOURNALS_FRAGMENT_POSITION
 					true
 				}
 				R.id.detail -> {

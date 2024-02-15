@@ -1,9 +1,7 @@
 package com.schopenhauer.nous.domain.model
 
-data class Task(
+data class Journal (
 	val id: Int,
-	val journalId: Int,
-	val content: String,
 	val dateTime: String,
-	val tag: String,
+	val mainTag: String,
 )

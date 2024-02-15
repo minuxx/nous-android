@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tasks")
 data class TaskEntity (
 	@PrimaryKey(autoGenerate = true) val id: Int,
+	val journalId: Int,
 	val content: String,
 	val tag: String,
 	val onCreateAt: String,
