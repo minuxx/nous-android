@@ -42,7 +42,6 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 		super.onViewCreated(view, savedInstanceState)
 
     collectStateFlow(viewModel.uiState.map { it.journals }.distinctUntilChanged()) {
-			Log.d(TAG, "$it")
       journalAdapter.submitList(it)
     }
 	}
