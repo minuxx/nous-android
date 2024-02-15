@@ -80,8 +80,4 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
-
-    <style name="Widget.Nous.JournalItem" parent="">
-
-    </style>
 </resources>
