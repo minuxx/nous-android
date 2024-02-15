@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">누스</string>
 
-    <string name="list">리스트</string>
+    <string name="journals">업무 일지</string>
     <string name="detail">상세</string>
     <string name="bookmark">북마크</string>
+    <string name="notification">알림</string>
+
+    <string name="content_description_notification">알림</string>
 </resources>
