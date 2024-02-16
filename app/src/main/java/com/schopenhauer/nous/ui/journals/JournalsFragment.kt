@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.databinding.FragmentJournalsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +37,17 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 			itemAnimator = null
 			setHasFixedSize(true)
 		}
+
+		binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+				if (dy < 0 || dy > 0 && binding.writeJournalFab.isShown) binding.writeJournalFab.hide()
+			}
+
+			override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+				if (newState == RecyclerView.SCROLL_STATE_IDLE) binding.writeJournalFab.show()
+				super.onScrollStateChanged(recyclerView, newState)
+			}
+		})
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
