@@ -48,11 +48,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 		binding.bottomNav.setOnItemSelectedListener {
 			return@setOnItemSelectedListener when (it.itemId) {
 				R.id.journals -> {
-					binding.viewPager.currentItem = JOURNALS_FRAGMENT_POSITION
+					binding.viewPager.setCurrentItem(JOURNALS_FRAGMENT_POSITION, false)
 					true
 				}
 				R.id.detail -> {
-					binding.viewPager.currentItem = FRG_DETAIL_POSITION
+					binding.viewPager.setCurrentItem(FRG_DETAIL_POSITION, false)
 					true
 				}
 				else -> false
