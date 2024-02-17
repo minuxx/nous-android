@@ -1,9 +1,11 @@
-package com.schopenhauer.nous.ui.write_journal
+package com.schopenhauer.nous.ui.journal.write
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -13,8 +15,16 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 			FragmentWriteJournalBinding.inflate(layoutInflater, container, isAttach)
 		}
 
-	override fun initViews() {
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		(requireActivity() as MainActivity).showBottomNavigationView()
+	}
 
+	override fun initViews() {}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		(requireActivity() as MainActivity).hideBottomNavigationView()
 	}
 
 	companion object {

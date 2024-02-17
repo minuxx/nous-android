@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journals
+package com.schopenhauer.nous.ui.journal.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
