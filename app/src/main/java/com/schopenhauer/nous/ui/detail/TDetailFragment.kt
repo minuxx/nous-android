@@ -15,7 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 	private val viewModel: TDetailViewModel by viewModels()
-
 	override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding =
 		{ inflater, container, isAttach ->
 			DataBindingUtil.inflate<FragmentDetailBinding?>(
@@ -33,7 +32,7 @@ class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		readArguments()
+//		readArguments()
 	}
 
 	private fun readArguments() {
@@ -46,6 +45,7 @@ class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 	}
 
 	companion object {
+		const val TAG = "DetailFragment"
 		fun newInstance(itemId: Long): TDetailFragment {
 			val args = Bundle().apply { putLong(JOURNAL_ID_ARGUMENT, itemId) }
 
@@ -53,7 +53,5 @@ class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 				arguments = args
 			}
 		}
-
-		const val TAG = "DetailFragment"
 	}
 }

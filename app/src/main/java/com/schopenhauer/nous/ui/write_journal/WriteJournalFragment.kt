@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.writejournal
+package com.schopenhauer.nous.ui.write_journal
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,5 +15,9 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 
 	override fun initViews() {
 
+	}
+
+	companion object {
+		const val TAG = "WriteJournalFragment"
 	}
 }

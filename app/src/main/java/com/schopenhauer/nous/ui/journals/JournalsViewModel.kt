@@ -1,5 +1,6 @@
 package com.schopenhauer.nous.ui.journals
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Journal
@@ -24,6 +25,7 @@ class JournalsViewModel @Inject constructor(
   }
 
 	private fun getJournals() = viewModelScope.launch {
+		Log.d(TAG, "it is called")
 		when(val res = getJournalsUseCase()) {
 			is Result.Success -> _uiState.update { it.copy(journals = res.data ?: emptyList()) }
 			is Result.Error -> {}

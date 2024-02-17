@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +31,10 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
   }
 
 	private fun initRecyclerView() {
-		journalAdapter = JournalAdapter { viewModel.toggleBookmark(it) }
+		journalAdapter = JournalAdapter {
+			viewModel.toggleBookmark(it)
+			Toast.makeText(requireActivity(), "눌림", Toast.LENGTH_SHORT).show()
+		}
 
 		binding.recyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
@@ -52,16 +57,19 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		Log.d(TAG, "onViewCreated")
 
     collectStateFlow(viewModel.uiState.map { it.journals }.distinctUntilChanged()) {
-			Log.d(TAG, "$it")
       journalAdapter.submitList(it)
+			(view.parent as? ViewGroup)?.doOnPreDraw {
+				startPostponedEnterTransition()
+			}
     }
 	}
 
 	companion object {
+		const val TAG = "JournalsFragment"
 		fun newInstance(): JournalsFragment = JournalsFragment()
-		private const val TAG = "JournalsFragment"
 		const val JOURNAL_ID_ARGUMENT = "journal-id"
 	}
 }

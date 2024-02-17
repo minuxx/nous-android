@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nav_graph"
+  app:startDestination="@id/main">
+
+  <fragment
+    android:id="@+id/main"
+    android:name="com.schopenhauer.nous.ui.main.MainFragment"
+    android:label="main"
+    tools:layout="@layout/fragment_main" />
+
+  <fragment
+    android:id="@+id/journals"
+    android:name="com.schopenhauer.nous.ui.journals.JournalsFragment"
+    android:label="journals"
+    tools:layout="@layout/fragment_journals" />
+
+  <fragment
+    android:id="@+id/detail"
+    android:name="com.schopenhauer.nous.ui.detail.TDetailFragment"
+    android:label="detail"
+    tools:layout="@layout/fragment_detail" />
+</navigation>
