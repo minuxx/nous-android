@@ -17,14 +17,14 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		(requireActivity() as MainActivity).showBottomNavigationView()
+		(requireActivity() as MainActivity).hideBottomNavigationView()
 	}
 
 	override fun initViews() {}
 
 	override fun onDestroy() {
 		super.onDestroy()
-		(requireActivity() as MainActivity).hideBottomNavigationView()
+		(requireActivity() as MainActivity).showBottomNavigationView()
 	}
 
 	companion object {

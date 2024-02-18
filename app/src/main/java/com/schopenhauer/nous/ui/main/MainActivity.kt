@@ -1,6 +1,8 @@
 package com.schopenhauer.nous.ui.main
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -17,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 	private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 	private lateinit var navController: NavController
+	private var doubleBackToExitPressedOnce = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		installSplashScreen()
@@ -39,6 +42,17 @@ class MainActivity : AppCompatActivity() {
 
 	fun showBottomNavigationView() {
 		binding.bottomNav.visibility = View.VISIBLE
+	}
+
+	@Deprecated("Deprecated in Java")
+	override fun onBackPressed() {
+		if (doubleBackToExitPressedOnce) {
+			super.onBackPressed()
+			return
+		}
+
+		doubleBackToExitPressedOnce = true
+		Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
 	}
 
 	companion object {
