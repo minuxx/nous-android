@@ -15,36 +15,40 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
-  abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
-  private var _binding: VB? = null
-  val binding get() = _binding!!
+	abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
+	private var _binding: VB? = null
+	val binding get() = _binding!!
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    _binding = bindingInflater.invoke(inflater, container, false)
-    initViews()
-    return binding.root
-  }
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View? {
+		_binding = bindingInflater.invoke(inflater, container, false)
+		initViews()
+		return binding.root
+	}
 
-  abstract fun initViews()
+	abstract fun initViews()
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
+	override fun onDestroyView() {
+		super.onDestroyView()
+		_binding = null
+	}
 
-  fun showToastMessage(message: String) {
-    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
-  }
+	fun showToastMessage(message: String) {
+		Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+	}
 
-  fun <T> Fragment.collectStateFlow(flow: Flow<T>, collector: FlowCollector<T>) {
-    viewLifecycleOwner.lifecycleScope.launch {
-      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        flow.collect(collector)
-      }
-    }
-  }
+	fun <T> Fragment.collectStateFlow(flow: Flow<T>, collector: FlowCollector<T>) {
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				flow.collect(collector)
+			}
+		}
+	}
+
+	companion object {
+		private const val TAG = "BaseFragment"
+	}
 }
