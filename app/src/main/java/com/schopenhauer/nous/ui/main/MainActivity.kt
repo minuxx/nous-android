@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 	private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 	private lateinit var navController: NavController
 	private var doubleBackToExitPressedOnce = false
-	private var isNotDefaultNavHost = false
+	var isNotDefaultNavHost = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		installSplashScreen()
@@ -39,12 +39,10 @@ class MainActivity : AppCompatActivity() {
 
 	fun hideBottomNavigationView() {
 		binding.bottomNav.visibility = View.GONE
-		isNotDefaultNavHost = true
 	}
 
 	fun showBottomNavigationView() {
 		binding.bottomNav.visibility = View.VISIBLE
-		isNotDefaultNavHost = false
 	}
 
 	@Deprecated("Deprecated in Java")

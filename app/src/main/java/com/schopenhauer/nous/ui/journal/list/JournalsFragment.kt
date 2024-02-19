@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -28,6 +29,7 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 	override fun initViews() {
 		initRecyclerView()
 		binding.writeJournalFab.setOnClickListener {
+			(activity as MainActivity).isNotDefaultNavHost = true
 			findNavController().navigate(R.id.action_journals_to_write_journal)
 		}
 	}
