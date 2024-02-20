@@ -41,6 +41,7 @@
   <style name="TextAppearance.Nous.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
     <item name="fontFamily">@font/noto_sans_kr_regular</item>
     <item name="android:textStyle">bold</item>
+    <item name="android:includeFontPadding">false</item>
   </style>
 
   <style name="TextAppearance.Nous.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
