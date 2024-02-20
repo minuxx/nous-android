@@ -35,6 +35,15 @@ class MainActivity : AppCompatActivity() {
 		navController.navigatorProvider += navigator
 		navController.setGraph(R.navigation.nav_graph)
 		binding.bottomNav.setupWithNavController(navController)
+
+		savedInstanceState?.let {
+			isNotDefaultNavHost = it.getBoolean(DEFAULT_NAV_HOST_FLAG)
+		}
+	}
+
+	override fun onSaveInstanceState(outState: Bundle) {
+		super.onSaveInstanceState(outState)
+		outState.putBoolean(DEFAULT_NAV_HOST_FLAG, isNotDefaultNavHost)
 	}
 
 	fun hideBottomNavigationView() {
@@ -58,5 +67,6 @@ class MainActivity : AppCompatActivity() {
 
 	companion object {
 		private const val TAG = "MainActivity"
+		private const val DEFAULT_NAV_HOST_FLAG = "default-nav-host"
 	}
 }
