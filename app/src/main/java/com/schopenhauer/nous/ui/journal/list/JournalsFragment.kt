@@ -63,4 +63,8 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 		{ layoutInflater, container, isAttach ->
 			FragmentJournalsBinding.inflate(layoutInflater, container, isAttach)
 		}
+
+	companion object {
+		const val TAG = "JournalsFragment"
+	}
 }
