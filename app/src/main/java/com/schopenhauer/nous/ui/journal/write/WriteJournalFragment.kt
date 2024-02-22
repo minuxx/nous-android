@@ -79,7 +79,7 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	}
 
 	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter {  }
+		taskAdapter = TaskAdapter { taskId -> viewModel.eraseTask(taskId) }
 
 		binding.taskRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())

@@ -29,7 +29,7 @@ class TaskAdapter(
 	) : RecyclerView.ViewHolder(binding.root) {
 
 		init {
-			binding.root.setOnClickListener { onItemClicked(bindingAdapterPosition) }
+			binding.eraseIb.setOnClickListener { onItemClicked(bindingAdapterPosition) }
 		}
 
 		fun bind(task: Task) {
