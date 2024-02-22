@@ -20,8 +20,23 @@ class WriteJournalViewModel @Inject constructor(
 		_uiState.update { it.copy(date = date) }
 	}
 
+	fun writeTask(content: String) {
+		_uiState.update {
+			it.copy(
+				tasks = _uiState.value.tasks + Task(
+					id = _uiState.value.tasks.size + 1,
+					content = content
+				)
+			)
+		}
+	}
+
 	data class UiState(
 		val date: String = millisToDate(),
 		val tasks: List<Task> = listOf()
 	)
+
+	companion object {
+		const val TAG = "WriteJournalViewModel"
+	}
 }

@@ -22,24 +22,24 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 	private lateinit var journalAdapter: JournalAdapter
 
 	override fun initViews() {
-		initRecyclerView()
+		initJournalRecyclerView()
 		binding.writeJournalFab.setOnClickListener {
 			(activity as MainActivity).isNotDefaultNavHost = true
 			findNavController().navigate(R.id.action_journals_to_write_journal)
 		}
 	}
 
-	private fun initRecyclerView() {
+	private fun initJournalRecyclerView() {
 		journalAdapter = JournalAdapter { viewModel.toggleBookmark(it) }
 
-		binding.recyclerView.apply {
+		binding.journalRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
 			adapter = journalAdapter
 			itemAnimator = null
 			setHasFixedSize(true)
 		}
 
-		binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+		binding.journalRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 				if (dy < 0 || dy > 0 && binding.writeJournalFab.isShown) binding.writeJournalFab.hide()
 			}

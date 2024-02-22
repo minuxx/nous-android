@@ -13,4 +13,5 @@
 
     <string name="content_description_notification">알림</string>
     <string name="content_description_journals_fab">업무 일지 작성 버튼</string>
+    <string name="content_description_delete_task">업무 삭제</string>
 </resources>

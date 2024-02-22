@@ -28,21 +28,22 @@
         app:buttonGravity="center_vertical"
         app:menu="@menu/top_app_bar_write_journal"
         app:navigationIcon="@drawable/ic_angle_left"
-        app:titleTextAppearance="@style/TextAppearance.Nous.TitleMedium"
-        app:title="@string/write_journal" />
+        app:title="@string/write_journal"
+        app:titleTextAppearance="@style/TextAppearance.Nous.TitleMedium" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      app:layout_constraintBottom_toBottomOf="parent"
+      android:fillViewport="true"
+      app:layout_constraintBottom_toTopOf="@+id/task_input_container"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
 
       <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingVertical="16dp">
 
@@ -62,27 +63,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
-            android:inputType="none"
             android:focusable="false"
+            android:inputType="none"
             android:paddingVertical="1dp"
             android:text="@{vm.uiState.date}"
             android:textAppearance="@style/TextAppearance.Nous.TitleLarge"
-            android:textCursorDrawable="@drawable/cursor"
             tools:text="2024/2/21" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/task_recycler_view"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:clipToPadding="false"
           android:overScrollMode="never"
           android:paddingVertical="8dp"
-          tools:listitem="@layout/list_item_task"/>
+          tools:listitem="@layout/list_item_task" />
       </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/task_input_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -97,7 +97,6 @@
         android:id="@+id/task_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         app:boxBackgroundColor="@color/md_theme_surface"
         app:boxCornerRadiusBottomEnd="@dimen/round_extra_large"
         app:boxCornerRadiusBottomStart="@dimen/round_extra_large"
@@ -108,9 +107,12 @@
         app:endIconScaleType="center"
         app:endIconTint="@color/md_theme_onPrimaryContainer"
         app:errorEnabled="false"
-        app:hintEnabled="false">
+        app:hintEnabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/task_input_et"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:cursorVisible="false"
@@ -118,6 +120,6 @@
           android:textAppearance="@style/TextAppearance.Nous.BodyLarge"
           android:textCursorDrawable="@drawable/cursor" />
       </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
