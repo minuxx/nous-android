@@ -5,7 +5,9 @@
 
   <data>
 
-
+    <variable
+      name="vm"
+      type="com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,8 +59,11 @@
             android:id="@+id/date_input_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="none"
             android:paddingVertical="-4dp"
+            android:text="@{vm.uiState.date}"
             android:textAppearance="@style/TextAppearance.Nous.BodyLarge"
             android:textCursorDrawable="@drawable/cursor"
             tools:text="2024/2/21" />
