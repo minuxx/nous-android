@@ -16,6 +16,8 @@
         style="?attr/collapsingToolbarLayoutMediumStyle"
         android:layout_width="match_parent"
         android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+        app:expandedTitleTextAppearance="@style/TextAppearance.Nous.TitleLarge"
+        app:collapsedTitleTextAppearance="@style/TextAppearance.Nous.TitleMedium"
         app:contentScrim="@color/md_theme_surface"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:titleCollapseMode="scale">
@@ -24,8 +26,8 @@
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
           android:elevation="0dp"
-          app:menu="@menu/journals_top_app_bar"
-          app:title="@string/journals" />
+          app:menu="@menu/top_app_bar_journals"
+          app:title="@string/journals"/>
       </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -35,8 +37,8 @@
       android:layout_height="match_parent"
       android:clipToPadding="false"
       android:overScrollMode="never"
-      android:paddingVertical="8dp"
       android:paddingHorizontal="16dp"
+      android:paddingVertical="8dp"
       app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -46,6 +48,6 @@
       android:layout_gravity="bottom|end"
       android:layout_margin="16dp"
       android:contentDescription="@string/content_description_journals_fab"
-      app:srcCompat="@drawable/ic_pencil"/>
+      app:srcCompat="@drawable/ic_pencil" />
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

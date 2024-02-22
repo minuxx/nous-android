@@ -18,11 +18,6 @@ import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
-	override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentJournalsBinding =
-		{ layoutInflater, container, isAttach ->
-			FragmentJournalsBinding.inflate(layoutInflater, container, isAttach)
-		}
-
 	private val viewModel: JournalsViewModel by viewModels()
 	private lateinit var journalAdapter: JournalAdapter
 
@@ -62,5 +57,14 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 		collectStateFlow(viewModel.uiState.map { it.journals }.distinctUntilChanged()) {
 			journalAdapter.submitList(it)
 		}
+	}
+
+	override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentJournalsBinding =
+		{ layoutInflater, container, isAttach ->
+			FragmentJournalsBinding.inflate(layoutInflater, container, isAttach)
+		}
+
+	companion object {
+		const val TAG = "JournalsFragment"
 	}
 }

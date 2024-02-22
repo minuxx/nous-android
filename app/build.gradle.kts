@@ -53,7 +53,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     // Design
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0-alpha03")
 
     // Okhttp
     val okhttp3Version = "5.0.0-alpha.2"

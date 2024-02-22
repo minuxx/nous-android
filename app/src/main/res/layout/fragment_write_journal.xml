@@ -5,7 +5,9 @@
 
   <data>
 
-
+    <variable
+      name="vm"
+      type="com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,8 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:buttonGravity="center_vertical"
-        app:menu="@menu/write_journal_top_app_bar"
+        app:menu="@menu/top_app_bar_write_journal"
         app:navigationIcon="@drawable/ic_angle_left"
+        app:titleTextAppearance="@style/TextAppearance.Nous.TitleMedium"
         app:title="@string/write_journal" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -57,9 +60,12 @@
             android:id="@+id/date_input_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
-            android:paddingVertical="-4dp"
-            android:textAppearance="@style/TextAppearance.Nous.BodyLarge"
+            android:cursorVisible="false"
+            android:inputType="none"
+            android:focusable="false"
+            android:paddingVertical="1dp"
+            android:text="@{vm.uiState.date}"
+            android:textAppearance="@style/TextAppearance.Nous.TitleLarge"
             android:textCursorDrawable="@drawable/cursor"
             tools:text="2024/2/21" />
         </com.google.android.material.textfield.TextInputLayout>
