@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
@@ -52,6 +53,13 @@ class MainActivity : AppCompatActivity() {
 
 	fun showBottomNavigationView() {
 		binding.bottomNav.visibility = View.VISIBLE
+	}
+
+	fun hideSoftKeyboard() {
+		val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+		this.currentFocus?.let {
+			imm.hideSoftInputFromWindow(it.windowToken, 0)
+		}
 	}
 
 	@Deprecated("Deprecated in Java")

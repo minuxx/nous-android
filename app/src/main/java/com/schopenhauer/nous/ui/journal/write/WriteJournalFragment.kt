@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -26,9 +27,9 @@ import java.util.Calendar
 @AndroidEntryPoint
 class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	private val viewModel: WriteJournalViewModel by viewModels()
-	private var onBackPressedCallback: OnBackPressedCallback? = null
 	private var datePicker: MaterialDatePicker<Long>? = null
 	private lateinit var taskAdapter: TaskAdapter
+	private var onBackPressedCallback: OnBackPressedCallback? = null
 
 	override fun onAttach(context: Context) {
 		super.onAttach(context)
@@ -50,11 +51,13 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 		}
 
 		binding.dateInputLayout.setEndIconOnClickListener {
+			(activity as MainActivity).hideSoftKeyboard()
 			datePicker?.show(childFragmentManager, TAG)
 		}
 
 		binding.taskInputLayout.setEndIconOnClickListener {
 			viewModel.writeTask(binding.taskInputEt.text.toString())
+			binding.taskInputEt.text = null
 		}
 	}
 
@@ -87,6 +90,12 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 			itemAnimator = null
 			setHasFixedSize(false)
 			isNestedScrollingEnabled = false
+			addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+				if (bottom != oldBottom) {
+					binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+					if (taskAdapter.itemCount != 0) binding.taskInputEt.requestFocus()
+				}
+			}
 		}
 	}
 
@@ -98,6 +107,13 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	private fun collectUiState() {
 		collectStateFlow(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
 			taskAdapter.submitList(it)
+		}
+
+		collectStateFlow(viewModel.errorMessage) { errorMessage ->
+			errorMessage?.let {
+				Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
+				viewModel.clearErrorMessage()
+			}
 		}
 	}
 
