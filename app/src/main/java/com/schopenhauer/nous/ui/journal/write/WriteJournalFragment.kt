@@ -35,7 +35,11 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 		(activity as MainActivity).isNotDefaultNavHost = false
 	}
 
-	override fun initViews() {}
+	override fun initViews() {
+		binding.topAppBar.setNavigationOnClickListener {
+			findNavController().popBackStack()
+		}
+	}
 
 	override fun onDetach() {
 		super.onDetach()
