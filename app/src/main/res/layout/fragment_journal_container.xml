@@ -9,11 +9,11 @@
     tools:context=".ui.main.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-      android:id="@+id/nav_host_fragment"
+      android:id="@+id/nav_host_fragment_journal"
       android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      app:defaultNavHost="true"
+      app:defaultNavHost="false"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

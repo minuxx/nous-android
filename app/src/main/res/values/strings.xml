@@ -3,9 +3,14 @@
 
     <string name="journals">업무 일지</string>
     <string name="detail">상세</string>
+    <string name="write_journal">업무 일지 작성</string>
+
     <string name="bookmark">북마크</string>
     <string name="notification">알림</string>
 
+    <string name="datetime_label">날짜</string>
+    <string name="save">저장</string>
+
     <string name="content_description_notification">알림</string>
-    <string name="description_journals_fab">업무 일지 작성 버튼</string>
+    <string name="content_description_journals_fab">업무 일지 작성 버튼</string>
 </resources>

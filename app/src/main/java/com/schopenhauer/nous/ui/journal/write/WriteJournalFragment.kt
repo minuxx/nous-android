@@ -1,8 +1,10 @@
 package com.schopenhauer.nous.ui.journal.write
 
-import android.os.Bundle
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
 import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.main.MainActivity
@@ -14,17 +16,34 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 		{ layoutInflater, container, isAttach ->
 			FragmentWriteJournalBinding.inflate(layoutInflater, container, isAttach)
 		}
+	private var onBackPressedCallback: OnBackPressedCallback? = null
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		(requireActivity() as MainActivity).hideBottomNavigationView()
+	override fun onAttach(context: Context) {
+		super.onAttach(context)
+		onBackPressedCallback = object : OnBackPressedCallback(true) {
+			override fun handleOnBackPressed() {
+				findNavController().popBackStack()
+			}
+		}
+		(activity as MainActivity).onBackPressedDispatcher.addCallback(this, onBackPressedCallback!!)
+		(activity as MainActivity).hideBottomNavigationView()
 	}
-
-	override fun initViews() {}
 
 	override fun onDestroy() {
 		super.onDestroy()
-		(requireActivity() as MainActivity).showBottomNavigationView()
+		(activity as MainActivity).showBottomNavigationView()
+		(activity as MainActivity).isNotDefaultNavHost = false
+	}
+
+	override fun initViews() {
+		binding.topAppBar.setNavigationOnClickListener {
+			findNavController().popBackStack()
+		}
+	}
+
+	override fun onDetach() {
+		super.onDetach()
+		onBackPressedCallback?.remove()
 	}
 
 	companion object {

@@ -1,29 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
-    <variable
-      name="vm"
-      type="com.schopenhauer.nous.ui.detail.TDetailViewModel" />
 
-    <import type="com.schopenhauer.nous.domain.model.Item" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-      android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/app_bar_layout"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="WriteJournal"
-      android:textAppearance="@style/TextAppearance.Nous.HeadlineLarge"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+      <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/top_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:buttonGravity="center_vertical"
+        app:menu="@menu/write_journal_top_app_bar"
+        app:navigationIcon="@drawable/ic_angle_left"
+        app:title="@string/write_journal" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
 
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/date_input_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:endIconDrawable="@drawable/ic_calendar"
+          app:endIconMode="custom"
+          app:endIconTint="@color/md_theme_onPrimaryContainer"
+          app:errorEnabled="false"
+          app:hintEnabled="false">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/date_input_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:paddingVertical="-4dp"
+            android:textAppearance="@style/TextAppearance.Nous.BodyLarge"
+            android:textCursorDrawable="@drawable/cursor"
+            tools:text="2024/2/21" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/task_recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:clipToPadding="false"
+          android:overScrollMode="never"
+          android:paddingVertical="8dp" />
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+      android:id="@+id/task_input_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/md_theme_surfaceContainer"
+      android:orientation="horizontal"
+      android:paddingHorizontal="16dp"
+      android:paddingVertical="8dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent">
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/task_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:boxBackgroundColor="@color/md_theme_surface"
+        app:boxCornerRadiusBottomEnd="@dimen/round_extra_large"
+        app:boxCornerRadiusBottomStart="@dimen/round_extra_large"
+        app:boxCornerRadiusTopEnd="@dimen/round_extra_large"
+        app:boxCornerRadiusTopStart="@dimen/round_extra_large"
+        app:endIconDrawable="@drawable/ic_pencil"
+        app:endIconMode="custom"
+        app:endIconScaleType="center"
+        app:endIconTint="@color/md_theme_onPrimaryContainer"
+        app:errorEnabled="false"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:cursorVisible="false"
+          android:paddingVertical="-4dp"
+          android:textAppearance="@style/TextAppearance.Nous.BodyLarge"
+          android:textCursorDrawable="@drawable/cursor" />
+      </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

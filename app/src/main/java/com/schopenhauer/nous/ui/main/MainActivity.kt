@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 	private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 	private lateinit var navController: NavController
 	private var doubleBackToExitPressedOnce = false
+	var isNotDefaultNavHost = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		installSplashScreen()
@@ -34,6 +35,15 @@ class MainActivity : AppCompatActivity() {
 		navController.navigatorProvider += navigator
 		navController.setGraph(R.navigation.nav_graph)
 		binding.bottomNav.setupWithNavController(navController)
+
+		savedInstanceState?.let {
+			isNotDefaultNavHost = it.getBoolean(DEFAULT_NAV_HOST_FLAG)
+		}
+	}
+
+	override fun onSaveInstanceState(outState: Bundle) {
+		super.onSaveInstanceState(outState)
+		outState.putBoolean(DEFAULT_NAV_HOST_FLAG, isNotDefaultNavHost)
 	}
 
 	fun hideBottomNavigationView() {
@@ -46,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
 	@Deprecated("Deprecated in Java")
 	override fun onBackPressed() {
-		if (doubleBackToExitPressedOnce) {
+		if (isNotDefaultNavHost || doubleBackToExitPressedOnce) {
 			super.onBackPressed()
 			return
 		}
@@ -57,5 +67,6 @@ class MainActivity : AppCompatActivity() {
 
 	companion object {
 		private const val TAG = "MainActivity"
+		private const val DEFAULT_NAV_HOST_FLAG = "default-nav-host"
 	}
 }
