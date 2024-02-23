@@ -50,6 +50,11 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 			findNavController().popBackStack()
 		}
 
+		binding.topAppBar.setOnMenuItemClickListener {
+			viewModel.saveJournal()
+			true
+		}
+
 		binding.dateInputLayout.setEndIconOnClickListener {
 			(activity as MainActivity).hideSoftKeyboard()
 			datePicker?.show(childFragmentManager, TAG)

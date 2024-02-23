@@ -14,4 +14,5 @@ class JournalLocalDataSource @Inject constructor(
 	suspend fun getAllJournals() = execute {
 		journalDao.getAllJournals()
 	}
+
 }

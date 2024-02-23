@@ -1,18 +1,22 @@
 package com.schopenhauer.nous.ui.journal.write
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Task
+import com.schopenhauer.nous.domain.usecase.SaveJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.TASK_CONTENT_EMPTY
+import com.schopenhauer.nous.util.Result
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WriteJournalViewModel @Inject constructor(
-
+	private val saveJournalUseCase: SaveJournalUseCase
 ) : ViewModel() {
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
@@ -39,7 +43,19 @@ class WriteJournalViewModel @Inject constructor(
 
 	fun eraseTask(id: Int) {
 		val newTasks = _uiState.value.tasks.filter { it.id != id }
-		_uiState.update {it.copy(tasks =newTasks) }
+		_uiState.update {it.copy(tasks = newTasks) }
+	}
+
+	fun saveJournal() = viewModelScope.launch {
+		if (_uiState.value.tasks.isEmpty()) {
+			_errorMessage.update { TASK_CONTENT_EMPTY.message }
+			return@launch
+		}
+
+		when(val res = saveJournalUseCase(_uiState.value.date, _uiState.value.tasks)) {
+			is Result.Success -> {}
+			is Result.Error -> {}
+		}
 	}
 
 	fun clearErrorMessage() = _errorMessage.update { null }
