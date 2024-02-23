@@ -6,5 +6,6 @@ enum class ErrorType(val code: String, val message: String) {
   LOCAL("LocalError", "로컬 작업에 실패했습니다"),
   NETWORK("NetworkError", "네트워크 연결을 확인해주세요"),
 
-  TASK_CONTENT_EMPTY("", "업무 내용을 입력해주세요")
+  TASK_CONTENT_EMPTY("", "업무 내용을 입력해주세요"),
+  ALREADY_SAVED_JOURNAL("AlredaySavedJournal", "해당 날짜에 업무 일지가 이미 존재해요")
 }

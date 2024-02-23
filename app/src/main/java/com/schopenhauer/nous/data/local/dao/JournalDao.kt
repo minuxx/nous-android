@@ -13,4 +13,7 @@ interface JournalDao {
 
 	@Query("SELECT * FROM journals")
 	suspend fun getAllJournals(): List<JournalEntity>
+
+	@Query("SELECT COUNT(*) FROM journals WHERE date = :date")
+	suspend fun getJournalCountByDate(date: String): Int
 }

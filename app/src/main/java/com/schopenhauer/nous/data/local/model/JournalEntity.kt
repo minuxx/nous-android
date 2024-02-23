@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "journals")
 data class JournalEntity (
 	@PrimaryKey(autoGenerate = true) val id: Int = 0,
-	val dateTime: String,
+	val date: String,
 	val mainTag: String,
 )

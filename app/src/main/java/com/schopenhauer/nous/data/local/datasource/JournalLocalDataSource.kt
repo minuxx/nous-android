@@ -15,4 +15,8 @@ class JournalLocalDataSource @Inject constructor(
 		journalDao.getAllJournals()
 	}
 
+	suspend fun hasJournalWithDate(date: String) = execute {
+		val journalCount = journalDao.getJournalCountByDate(date)
+		journalCount >= 1
+	}
 }
