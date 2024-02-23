@@ -30,7 +30,7 @@ class JournalsViewModel @Inject constructor(
 		}
 	}
 
-	fun toggleBookmark(journalId: Int) {}
+	fun toggleBookmark(journalId: Long) {}
 
 	data class UiState(
 		val journals: List<Journal> = listOf(),

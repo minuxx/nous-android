@@ -35,13 +35,13 @@ class WriteJournalViewModel @Inject constructor(
 		}
 
 		val newTasks = _uiState.value.tasks + Task(
-			id = _uiState.value.tasks.size + 1,
+			id = (_uiState.value.tasks.size + 1).toLong(),
 			content = content
 		)
 		_uiState.update { it.copy(tasks = newTasks) }
 	}
 
-	fun eraseTask(id: Int) {
+	fun eraseTask(id: Long) {
 		val newTasks = _uiState.value.tasks.filter { it.id != id }
 		_uiState.update {it.copy(tasks = newTasks) }
 	}

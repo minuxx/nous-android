@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "journals")
 data class JournalEntity (
-	@PrimaryKey(autoGenerate = true) val id: Int = 0,
+	@PrimaryKey(autoGenerate = true) val id: Long = 0,
 	val date: String,
-	val mainTag: String,
+	val mainTag: String = "",
 )

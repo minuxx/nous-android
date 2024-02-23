@@ -9,7 +9,7 @@ import com.schopenhauer.nous.databinding.ListItemTaskBinding
 import com.schopenhauer.nous.domain.model.Task
 
 class TaskAdapter(
-	private val itemClickListener: (Int) -> Unit
+	private val itemClickListener: (Long) -> Unit
 ) : ListAdapter<Task, TaskAdapter.TaskViewHolder>(diffUtil) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

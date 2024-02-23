@@ -19,4 +19,8 @@ class JournalLocalDataSource @Inject constructor(
 		val journalCount = journalDao.getJournalCountByDate(date)
 		journalCount >= 1
 	}
+
+	suspend fun saveJournal(journal: JournalEntity) = execute {
+		journalDao.insertJournal(journal)
+	}
 }

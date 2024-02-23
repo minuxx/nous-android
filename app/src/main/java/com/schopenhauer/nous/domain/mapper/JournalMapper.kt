@@ -7,7 +7,7 @@ import com.schopenhauer.nous.domain.model.Task
 
 fun Journal.toJournalEntity(): JournalEntity {
 	return JournalEntity(
-		dateTime = dateTime,
+		date = date,
 		mainTag = mainTag
 	)
 }
@@ -15,7 +15,7 @@ fun Journal.toJournalEntity(): JournalEntity {
 fun JournalEntity.toJournal(): Journal {
 	return Journal(
 		id = id,
-		dateTime = dateTime,
+		date = date,
 		mainTag = mainTag
 	)
 }

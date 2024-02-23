@@ -18,13 +18,18 @@ class JournalsRepositoryImpl @Inject constructor(
 	override suspend fun getJournals() = journalLocalDataSource.getAllJournals()
 
 	override suspend fun saveJournal(date: String, tasks: List<TaskEntity>): Result<Unit> {
-		val res = journalLocalDataSource.hasJournalWithDate(date)
-		if (res is Result.Success) {
-			if (res.data == true) { // 1. 저장된 같은 날짜의 업무 일지 있는지 확인
+		val hasJournalRes = journalLocalDataSource.hasJournalWithDate(date)
+		if (hasJournalRes is Result.Success) {
+			if (hasJournalRes.data == true) { // 1. 저장된 같은 날짜의 업무 일지 있는지 확인
 				return Result.Error(ALREADY_SAVED_JOURNAL.code, ALREADY_SAVED_JOURNAL.message)
 			}
+
+			// 2. JournalEntity 저장 및 ID 가져오기
+			val saveJournalRes = journalLocalDataSource.saveJournal(JournalEntity(date = date))
+			if (saveJournalRes is Result.Success && saveJournalRes.data != null) {
+				val newTasks = tasks.map{ it.copy(journalId = saveJournalRes.data) }
+			}
 		}
-		// 2. JournalEntity 저장 및 다시 가져오기
 		// 3. taskEntities 에 journalId 할당 후 저장하기
 		return Result.Success(null)
 	}
