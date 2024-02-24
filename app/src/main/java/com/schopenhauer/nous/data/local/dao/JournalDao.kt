@@ -8,7 +8,7 @@ import com.schopenhauer.nous.data.local.model.JournalEntity
 
 @Dao
 interface JournalDao {
-	// 더미 데이터
+	// 더미 데이터 용
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertJournals(journals: List<JournalEntity>)
 

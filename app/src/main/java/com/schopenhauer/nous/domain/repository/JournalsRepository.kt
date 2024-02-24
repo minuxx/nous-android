@@ -7,5 +7,5 @@ import com.schopenhauer.nous.util.Result
 interface JournalsRepository {
   suspend fun writeJournals(journals: List<JournalEntity>): Result<Unit>
   suspend fun getJournals(): Result<List<JournalEntity>>
-  suspend fun saveJournal(date: String, tasks: List<TaskEntity>): Result<Unit>
+  suspend fun saveJournal(date: String, tasks: List<TaskEntity>): Result<String>
 }
