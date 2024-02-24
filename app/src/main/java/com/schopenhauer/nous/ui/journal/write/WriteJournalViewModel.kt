@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.domain.usecase.SaveJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.FAILURE_SAVE_JOURNAL
+import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.TASK_CONTENT_EMPTY
 import com.schopenhauer.nous.util.Message.SUCCESS_SAVE_JOURNAL
 import com.schopenhauer.nous.util.Result
@@ -64,7 +64,7 @@ class WriteJournalViewModel @Inject constructor(
 			is Result.Error -> {
 				when (res.code) {
 					ALREADY_SAVED_JOURNAL.code,
-					FAILURE_SAVE_JOURNAL.code -> _uiEffect.emit(UiEffect.OnError(res.code, res.message))
+					FAIL_SAVE_JOURNAL.code -> _uiEffect.emit(UiEffect.OnError(res.code, res.message))
 				}
 			}
 		}

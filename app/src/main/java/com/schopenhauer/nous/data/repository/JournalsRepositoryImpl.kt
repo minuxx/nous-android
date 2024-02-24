@@ -4,7 +4,7 @@ import com.schopenhauer.nous.data.local.datasource.JournalLocalDataSource
 import com.schopenhauer.nous.data.local.model.JournalEntity
 import com.schopenhauer.nous.data.local.model.TaskEntity
 import com.schopenhauer.nous.domain.repository.JournalsRepository
-import com.schopenhauer.nous.util.ErrorType.FAILURE_SAVE_JOURNAL
+import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
 import com.schopenhauer.nous.util.Message.SUCCESS_SAVE_JOURNAL
 import com.schopenhauer.nous.util.Result
@@ -39,11 +39,11 @@ class JournalsRepositoryImpl @Inject constructor(
 			return if (saveTasksRes is Result.Success) {
 				Result.Success(SUCCESS_SAVE_JOURNAL.content)
 			} else {
-				Result.Error(FAILURE_SAVE_JOURNAL.code, FAILURE_SAVE_JOURNAL.message)
+				Result.Error(FAIL_SAVE_JOURNAL.code, FAIL_SAVE_JOURNAL.message)
 			}
 		}
 
-		return Result.Error(FAILURE_SAVE_JOURNAL.code, FAILURE_SAVE_JOURNAL.message)
+		return Result.Error(FAIL_SAVE_JOURNAL.code, FAIL_SAVE_JOURNAL.message)
 	}
 
 	companion object {

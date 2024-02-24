@@ -34,10 +34,10 @@ class JournalAdapter(
 
 		fun bind(journal: Journal) {
 			binding.dateTv.text = journal.date
-			binding.mainTagChip.apply {
-				text = journal.mainTag
-
-			}
+//			binding.mainTagChip.apply {
+//				text = journal.mainTag
+//
+//			}
 		}
 	}
 
