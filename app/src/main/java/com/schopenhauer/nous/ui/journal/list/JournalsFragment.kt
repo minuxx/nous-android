@@ -34,7 +34,7 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 	private fun initJournalRecyclerView() {
 		journalAdapter = JournalAdapter {
 			(activity as MainActivity).isNotDefaultNavHost = true
-			val bundle = Bundle().apply { putLong(JOURNAL_ID_KEY, 0L) }
+			val bundle = Bundle().apply { putLong(JOURNAL_ID_KEY, it) }
 			findNavController().navigate(R.id.action_journals_to_journal_detail, bundle)
 		}
 

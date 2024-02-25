@@ -43,9 +43,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	}
 
 	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter {
-
-		}
+		taskAdapter = TaskAdapter {}
 
 		binding.taskRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
