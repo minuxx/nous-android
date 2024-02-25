@@ -9,10 +9,13 @@
     android:id="@+id/journals"
     android:name="com.schopenhauer.nous.ui.journal.list.JournalsFragment"
     android:label="JournalsFragment"
-    tools:layout="@layout/fragment_journals" >
+    tools:layout="@layout/fragment_journals">
     <action
       android:id="@+id/action_journals_to_write_journal"
       app:destination="@id/write_journal" />
+    <action
+      android:id="@+id/action_journals_to_journal_detail"
+      app:destination="@id/journal_detail"/>
   </fragment>
 
   <fragment
@@ -20,4 +23,10 @@
     android:name="com.schopenhauer.nous.ui.journal.write.WriteJournalFragment"
     android:label="WriteJournalFragment"
     tools:layout="@layout/fragment_write_journal" />
+
+  <fragment
+    android:id="@+id/journal_detail"
+    android:name="com.schopenhauer.nous.ui.journal.detail.JournalDetailFragment"
+    android:label="JournalDetailFragment"
+    tools:layout="@layout/fragment_journal_detail"/>
 </navigation>
