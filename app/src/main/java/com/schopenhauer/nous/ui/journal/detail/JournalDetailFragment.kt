@@ -2,12 +2,12 @@ package com.schopenhauer.nous.ui.journal.detail
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.R
@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
+	private val viewModel: JournalDetailViewModel by viewModels()
 	private lateinit var taskAdapter: TaskAdapter
 	private var onBackPressedCallback: OnBackPressedCallback? = null
 
@@ -65,6 +66,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 			findNavController().popBackStack()
 			return
 		}
+		viewModel.setJournalId(journalId)
 	}
 
 	override fun onDestroy() {
