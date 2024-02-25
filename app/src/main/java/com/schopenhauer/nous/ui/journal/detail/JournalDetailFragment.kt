@@ -45,6 +45,11 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		binding.topAppBar.setNavigationOnClickListener {
 			findNavController().popBackStack()
 		}
+
+		binding.topAppBar.setOnMenuItemClickListener {
+			viewModel.deleteJournal()
+			true
+		}
 	}
 
 	private fun initTaskRecyclerView() {
@@ -83,7 +88,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	private fun collectUiEffect() {
 		collectStateFlow(viewModel.uiEffect) {
 			when(it) {
-				is UiEffect.OnSuccess -> {}
+				is UiEffect.OnSuccessDeleteJournal -> findNavController().popBackStack()
 				is UiEffect.OnError -> {
 					when(it.code) {
 						ErrorType.FAIL_LOAD_JOURNAL.code -> findNavController().popBackStack()

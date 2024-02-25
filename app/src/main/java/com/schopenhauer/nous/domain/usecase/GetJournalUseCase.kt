@@ -21,8 +21,4 @@ class GetJournalUseCase @Inject constructor(
 			is Result.Error -> res
 		}
 	}
-
-	companion object {
-		private const val TAG = "GetJournalsUseCase"
-	}
 }

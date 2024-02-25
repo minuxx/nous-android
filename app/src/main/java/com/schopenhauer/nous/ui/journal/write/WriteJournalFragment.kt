@@ -90,7 +90,7 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	}
 
 	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter(isDeletable = true) { taskId -> viewModel.eraseTask(taskId) }
+		taskAdapter = TaskAdapter(isDeletable = true) { taskId -> viewModel.deleteTask(taskId) }
 		binding.taskRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
 			adapter = taskAdapter

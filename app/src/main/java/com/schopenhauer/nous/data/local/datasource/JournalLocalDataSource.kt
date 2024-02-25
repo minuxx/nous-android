@@ -35,7 +35,15 @@ class JournalLocalDataSource @Inject constructor(
 		journalDao.getJournal(id)
 	}
 
-	suspend fun getTasksOfJournal(journalId: Long) = execute {
+	suspend fun getTasks(journalId: Long) = execute {
 		taskDao.getTasksOfJournal(journalId)
+	}
+
+	suspend fun deleteJournal(id: Long) = execute {
+		journalDao.deleteJournal(id)
+	}
+
+	suspend fun deleteTasks(journalId: Long) = execute {
+		taskDao.deleteTasks(journalId)
 	}
 }

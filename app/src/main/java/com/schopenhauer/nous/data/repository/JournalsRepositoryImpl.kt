@@ -6,6 +6,7 @@ import com.schopenhauer.nous.data.local.model.TaskEntity
 import com.schopenhauer.nous.data.repository.model.JournalWithTasks
 import com.schopenhauer.nous.domain.repository.JournalsRepository
 import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
+import com.schopenhauer.nous.util.ErrorType.FAIL_DELETE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.Message.SUCCESS_SAVE_JOURNAL
@@ -50,14 +51,25 @@ class JournalsRepositoryImpl @Inject constructor(
 
 	override suspend fun getJournal(id: Long): Result<JournalWithTasks> {
 		val getJournalRes = journalLocalDataSource.getJournal(id)
-		val getTasksOfJournalRes = journalLocalDataSource.getTasksOfJournal(id)
-		if (getJournalRes is Result.Success && getTasksOfJournalRes is Result.Success) {
-			if (getJournalRes.data != null && getTasksOfJournalRes.data != null) {
-				return Result.Success(JournalWithTasks(journal = getJournalRes.data, tasks = getTasksOfJournalRes.data))
+		val getTasksRes = journalLocalDataSource.getTasks(id)
+		if (getJournalRes is Result.Success && getTasksRes is Result.Success) {
+			if (getJournalRes.data != null && getTasksRes.data != null) {
+				return Result.Success(JournalWithTasks(journal = getJournalRes.data, tasks = getTasksRes.data))
 			}
 		}
 
 		return Result.Error(FAIL_LOAD_JOURNAL.code, FAIL_LOAD_JOURNAL.message)
+	}
+
+	override suspend fun deleteJournal(id: Long): Result<String> {
+		val deleteJournalRes = journalLocalDataSource.deleteJournal(id)
+		val deleteTasksRes = journalLocalDataSource.deleteTasks(id)
+
+		if (deleteJournalRes is Result.Success && deleteTasksRes is Result.Success) {
+			return Result.Success(SUCCESS_SAVE_JOURNAL.content)
+		}
+
+		return Result.Error(FAIL_DELETE_JOURNAL.code, FAIL_DELETE_JOURNAL.message)
 	}
 
 	companion object {

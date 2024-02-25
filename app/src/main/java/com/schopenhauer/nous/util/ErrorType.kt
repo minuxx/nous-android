@@ -11,5 +11,6 @@ enum class ErrorType(val code: String, val message: String) {
   FAIL_SAVE_JOURNAL("FailSaveJournal", "업무 일지를 저장하지 못했어요"),
   TASK_CONTENT_EMPTY("TaskContentEmpty", "업무 내용을 입력해주세요"),
   ALREADY_SAVED_JOURNAL("AlreadySavedJournal", "해당 날짜에 업무 일지가 이미 존재해요"),
-  FAIL_LOAD_JOURNAL("FailLoadJournal", "업무 일지를 읽는데 실패했어요")
+  FAIL_LOAD_JOURNAL("FailLoadJournal", "업무 일지를 읽는데 실패했어요"),
+  FAIL_DELETE_JOURNAL("FailDeleteJournal", "업무 일지를 삭제하는데 실패했어요")
 }

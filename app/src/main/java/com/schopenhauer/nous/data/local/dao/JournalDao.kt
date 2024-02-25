@@ -1,6 +1,7 @@
 package com.schopenhauer.nous.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -23,4 +24,7 @@ interface JournalDao {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertJournal(journal: JournalEntity): Long
+
+	@Query("DELETE FROM journals WHERE id = :id")
+	suspend fun deleteJournal(id: Long)
 }
