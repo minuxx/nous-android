@@ -1,62 +1,80 @@
 package com.schopenhauer.nous.ui.main
 
-import android.view.LayoutInflater
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.viewpager2.widget.ViewPager2
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.plusAssign
+import androidx.navigation.ui.setupWithNavController
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.ActivityMainBinding
-import com.schopenhauer.nous.ui.base.BaseActivity
-import com.schopenhauer.nous.ui.main.MainViewPagerAdapter.Companion.FRG_DETAIL_POSITION
-import com.schopenhauer.nous.ui.main.MainViewPagerAdapter.Companion.JOURNALS_FRAGMENT_POSITION
+import com.schopenhauer.nous.ui.base.KeepStateNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>() {
-	override val bindingInflater: (LayoutInflater) -> ActivityMainBinding =
-		{ layoutInflater ->
-			ActivityMainBinding.inflate(layoutInflater)
-		}
+class MainActivity : AppCompatActivity() {
+	private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+	private lateinit var navController: NavController
+	private var doubleBackToExitPressedOnce = false
+	var isNotDefaultNavHost = false
 
-	override fun onBeforeCreate() {
-		super.onBeforeCreate()
+	override fun onCreate(savedInstanceState: Bundle?) {
 		installSplashScreen()
-	}
+		super.onCreate(savedInstanceState)
+		setContentView(binding.root)
+		val navHostFragment =
+			supportFragmentManager.findFragmentById(binding.navHostFragment.id) as NavHostFragment
+		val navigator =
+			KeepStateNavigator(this, navHostFragment.childFragmentManager, binding.navHostFragment.id)
 
-	override fun initViews() {
-		initViewPager()
-		initBottomNav()
-	}
+		navController = navHostFragment.navController
+		navController.navigatorProvider += navigator
+		navController.setGraph(R.navigation.nav_graph)
+		binding.bottomNav.setupWithNavController(navController)
 
-	private fun initViewPager() {
-		binding.viewPager.apply {
-			adapter = MainViewPagerAdapter(this@MainActivity)
-			registerOnPageChangeCallback(createOnPageChangeCallback())
-			isUserInputEnabled = false
+		savedInstanceState?.let {
+			isNotDefaultNavHost = it.getBoolean(DEFAULT_NAV_HOST_FLAG)
 		}
 	}
 
-	private fun createOnPageChangeCallback(): ViewPager2.OnPageChangeCallback {
-		return object : ViewPager2.OnPageChangeCallback() {
-			override fun onPageSelected(position: Int) {
-				super.onPageSelected(position)
-				binding.bottomNav.menu.getItem(position).isChecked = true
-			}
+	override fun onSaveInstanceState(outState: Bundle) {
+		super.onSaveInstanceState(outState)
+		outState.putBoolean(DEFAULT_NAV_HOST_FLAG, isNotDefaultNavHost)
+	}
+
+	fun hideBottomNavigationView() {
+		binding.bottomNav.visibility = View.GONE
+	}
+
+	fun showBottomNavigationView() {
+		binding.bottomNav.visibility = View.VISIBLE
+	}
+
+	fun hideSoftKeyboard() {
+		val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+		this.currentFocus?.let {
+			imm.hideSoftInputFromWindow(it.windowToken, 0)
 		}
 	}
 
-	private fun initBottomNav() {
-		binding.bottomNav.setOnItemSelectedListener {
-			return@setOnItemSelectedListener when (it.itemId) {
-				R.id.journals -> {
-					binding.viewPager.currentItem = JOURNALS_FRAGMENT_POSITION
-					true
-				}
-				R.id.detail -> {
-					binding.viewPager.currentItem = FRG_DETAIL_POSITION
-					true
-				}
-				else -> false
-			}
+	@Deprecated("Deprecated in Java")
+	override fun onBackPressed() {
+		if (isNotDefaultNavHost || doubleBackToExitPressedOnce) {
+			super.onBackPressed()
+			return
 		}
+
+		doubleBackToExitPressedOnce = true
+		Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+	}
+
+	companion object {
+		private const val TAG = "MainActivity"
+		private const val DEFAULT_NAV_HOST_FLAG = "default-nav-host"
 	}
 }
