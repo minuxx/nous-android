@@ -12,11 +12,12 @@ fun Journal.toJournalEntity(): JournalEntity {
 	)
 }
 
-fun JournalEntity.toJournal(): Journal {
+fun JournalEntity.toJournal(tasks: List<Task> = listOf()): Journal {
 	return Journal(
 		id = id,
 		date = date,
-		mainTag = mainTag
+		mainTag = mainTag,
+		tasks = tasks
 	)
 }
 
