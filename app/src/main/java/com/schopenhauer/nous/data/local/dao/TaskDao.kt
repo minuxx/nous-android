@@ -11,6 +11,12 @@ interface TaskDao {
 	@Query("SELECT * FROM tasks")
 	suspend fun getAllTasks(): List<TaskEntity>
 
+	@Query("SELECT * FROM tasks WHERE journalId = :journalId")
+	suspend fun getTasksOfJournal(journalId: Long): List<TaskEntity>
+
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertTasks(tasks: List<TaskEntity>)
+
+	@Query("DELETE FROM tasks WHERE journalId = :journalId")
+	suspend fun deleteTasks(journalId: Long)
 }

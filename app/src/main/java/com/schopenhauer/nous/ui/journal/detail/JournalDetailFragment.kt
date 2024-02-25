@@ -2,24 +2,29 @@ package com.schopenhauer.nous.ui.journal.detail
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEffect
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
-import com.schopenhauer.nous.ui.journal.write.TaskAdapter
+import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
+import com.schopenhauer.nous.util.ErrorType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
+	private val viewModel: JournalDetailViewModel by viewModels()
 	private lateinit var taskAdapter: TaskAdapter
 	private var onBackPressedCallback: OnBackPressedCallback? = null
 
@@ -40,11 +45,15 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		binding.topAppBar.setNavigationOnClickListener {
 			findNavController().popBackStack()
 		}
+
+		binding.topAppBar.setOnMenuItemClickListener {
+			viewModel.deleteJournal()
+			true
+		}
 	}
 
 	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter {}
-
+		taskAdapter = TaskAdapter(isDeletable = false)
 		binding.taskRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
 			adapter = taskAdapter
@@ -57,6 +66,8 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		readArguments()
+		collectUiState()
+		collectUiEffect()
 	}
 
 	private fun readArguments() {
@@ -64,6 +75,26 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		if (journalId == 0L) {
 			findNavController().popBackStack()
 			return
+		}
+		viewModel.setJournalId(journalId)
+	}
+
+	private fun collectUiState() {
+		collectStateFlow(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
+			taskAdapter.submitList(it)
+		}
+	}
+
+	private fun collectUiEffect() {
+		collectStateFlow(viewModel.uiEffect) {
+			when(it) {
+				is UiEffect.OnSuccessDeleteJournal -> findNavController().popBackStack()
+				is UiEffect.OnError -> {
+					when(it.code) {
+						ErrorType.FAIL_LOAD_JOURNAL.code -> findNavController().popBackStack()
+					}
+				}
+			}
 		}
 	}
 
@@ -87,7 +118,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 				isAttach
 			).also { binding ->
 				binding.lifecycleOwner = this@JournalDetailFragment
-//				binding.vm = viewModel
+				binding.vm = viewModel
 			}
 		}
 
