@@ -33,7 +33,7 @@ object LocalModule {
 
 	@Provides
 	@Singleton
-	fun provideJournalLocalDataSource(journalDao: JournalDao): JournalLocalDataSource {
-		return JournalLocalDataSource(journalDao)
+	fun provideJournalLocalDataSource(journalDao: JournalDao, taskDao: TaskDao): JournalLocalDataSource {
+		return JournalLocalDataSource(journalDao, taskDao)
 	}
 }

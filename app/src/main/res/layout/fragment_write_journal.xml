@@ -8,6 +8,8 @@
     <variable
       name="vm"
       type="com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel" />
+
+    <import type="android.view.View"/>
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,5 +124,15 @@
           android:textCursorDrawable="@drawable/cursor" />
       </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      android:visibility="@{vm.uiState.loading ? View.VISIBLE : View.GONE}"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

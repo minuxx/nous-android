@@ -9,7 +9,7 @@ import com.schopenhauer.nous.databinding.ListItemJournalBinding
 import com.schopenhauer.nous.domain.model.Journal
 
 class JournalAdapter(
-	private val itemClickListener: (Int) -> Unit
+	private val itemClickListener: (Long) -> Unit
 ) : ListAdapter<Journal, JournalAdapter.JournalViewHolder>(diffUtil) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JournalViewHolder {
@@ -33,11 +33,11 @@ class JournalAdapter(
 		}
 
 		fun bind(journal: Journal) {
-			binding.datetimeTv.text = journal.dateTime
-			binding.mainTagChip.apply {
-				text = journal.mainTag
-
-			}
+			binding.dateTv.text = journal.date
+//			binding.mainTagChip.apply {
+//				text = journal.mainTag
+//
+//			}
 		}
 	}
 

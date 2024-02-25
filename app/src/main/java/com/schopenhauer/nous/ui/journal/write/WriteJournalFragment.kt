@@ -17,6 +17,8 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEffect.OnError
+import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEffect.OnSuccess
 import com.schopenhauer.nous.ui.main.MainActivity
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +50,11 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 
 		binding.topAppBar.setNavigationOnClickListener {
 			findNavController().popBackStack()
+		}
+
+		binding.topAppBar.setOnMenuItemClickListener {
+			viewModel.saveJournal()
+			true
 		}
 
 		binding.dateInputLayout.setEndIconOnClickListener {
@@ -90,7 +97,7 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 			itemAnimator = null
 			setHasFixedSize(false)
 			isNestedScrollingEnabled = false
-			addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+			addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
 				if (bottom != oldBottom) {
 					binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
 					if (taskAdapter.itemCount != 0) binding.taskInputEt.requestFocus()
@@ -102,17 +109,20 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		collectUiState()
+		collectUiEffect()
 	}
 
 	private fun collectUiState() {
 		collectStateFlow(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
 			taskAdapter.submitList(it)
 		}
+	}
 
-		collectStateFlow(viewModel.errorMessage) { errorMessage ->
-			errorMessage?.let {
-				Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
-				viewModel.clearErrorMessage()
+	private fun collectUiEffect() {
+		collectStateFlow(viewModel.uiEffect) {
+			when(it) {
+				is OnSuccess -> findNavController().popBackStack()
+				is OnError -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
 			}
 		}
 	}
