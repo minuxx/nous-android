@@ -28,13 +28,15 @@
       tools:text="누스 프로젝트 업무 일지 작성 화면 UI 구성" />
 
     <ImageButton
-      android:id="@+id/erase_ib"
+      android:id="@+id/delete_ib"
       android:layout_width="36dp"
       android:layout_height="36dp"
       android:background="@null"
+      android:visibility="gone"
       android:contentDescription="@string/content_description_delete_task"
       android:src="@drawable/ic_trash"
-      app:tint="@color/md_theme_error" />
+      app:tint="@color/md_theme_error"
+      tools:visibility="visible"/>
   </LinearLayout>
 
   <com.google.android.material.divider.MaterialDivider

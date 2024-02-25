@@ -15,7 +15,7 @@ import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEffect
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
-import com.schopenhauer.nous.ui.journal.write.TaskAdapter
+import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
 import com.schopenhauer.nous.util.ErrorType
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,8 +48,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	}
 
 	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter {}
-
+		taskAdapter = TaskAdapter(isDeletable = false)
 		binding.taskRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
 			adapter = taskAdapter

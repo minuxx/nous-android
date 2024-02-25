@@ -17,6 +17,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEffect.OnError
 import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEffect.OnSuccess
 import com.schopenhauer.nous.ui.main.MainActivity
@@ -89,8 +90,7 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	}
 
 	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter { taskId -> viewModel.eraseTask(taskId) }
-
+		taskAdapter = TaskAdapter(isDeletable = true) { taskId -> viewModel.eraseTask(taskId) }
 		binding.taskRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
 			adapter = taskAdapter
