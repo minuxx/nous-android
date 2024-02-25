@@ -2,6 +2,7 @@ package com.schopenhauer.nous.ui.journal.detail
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
 import com.schopenhauer.nous.ui.journal.write.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,6 +58,15 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		readArguments()
+	}
+
+	private fun readArguments() {
+		val journalId = arguments?.getLong(JOURNAL_ID_KEY, 0L) ?: 0L
+		if (journalId == 0L) {
+			findNavController().popBackStack()
+			return
+		}
 	}
 
 	override fun onDestroy() {
@@ -73,7 +84,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		{ inflater, container, isAttach ->
 			DataBindingUtil.inflate<FragmentJournalDetailBinding?>(
 				inflater,
-				R.layout.fragment_write_journal,
+				R.layout.fragment_journal_detail,
 				container,
 				isAttach
 			).also { binding ->
@@ -83,6 +94,6 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		}
 
 	companion object {
-		const val TAG = "WriteJournalFragment"
+		const val TAG = "JournalDetailFragment"
 	}
 }
