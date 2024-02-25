@@ -3,9 +3,11 @@ package com.schopenhauer.nous.data.repository
 import com.schopenhauer.nous.data.local.datasource.JournalLocalDataSource
 import com.schopenhauer.nous.data.local.model.JournalEntity
 import com.schopenhauer.nous.data.local.model.TaskEntity
+import com.schopenhauer.nous.data.repository.model.JournalWithTasks
 import com.schopenhauer.nous.domain.repository.JournalsRepository
-import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
+import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
+import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.Message.SUCCESS_SAVE_JOURNAL
 import com.schopenhauer.nous.util.Result
 import javax.inject.Inject
@@ -44,6 +46,18 @@ class JournalsRepositoryImpl @Inject constructor(
 		}
 
 		return Result.Error(FAIL_SAVE_JOURNAL.code, FAIL_SAVE_JOURNAL.message)
+	}
+
+	override suspend fun getJournal(id: Long): Result<JournalWithTasks> {
+		val getJournalRes = journalLocalDataSource.getJournal(id)
+		val getTasksOfJournalRes = journalLocalDataSource.getTasksOfJournal(id)
+		if (getJournalRes is Result.Success && getTasksOfJournalRes is Result.Success) {
+			if (getJournalRes.data != null && getTasksOfJournalRes.data != null) {
+				return Result.Success(JournalWithTasks(journal = getJournalRes.data, tasks = getTasksOfJournalRes.data))
+			}
+		}
+
+		return Result.Error(FAIL_LOAD_JOURNAL.code, FAIL_LOAD_JOURNAL.message)
 	}
 
 	companion object {

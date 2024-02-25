@@ -7,7 +7,7 @@
 
     <variable
       name="vm"
-      type="com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel" />
+      type="com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel" />
 
     <import type="android.view.View" />
   </data>
@@ -54,6 +54,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:paddingHorizontal="16dp"
+          android:text="@{vm.UiState.date}"
           android:drawablePadding="8dp"
           android:textAppearance="@style/TextAppearance.Nous.TitleLarge"
           app:drawableStartCompat="@drawable/ic_calendar"

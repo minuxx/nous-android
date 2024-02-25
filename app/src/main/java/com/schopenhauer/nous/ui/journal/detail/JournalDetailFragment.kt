@@ -13,10 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEffect
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
 import com.schopenhauer.nous.ui.journal.write.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
+import com.schopenhauer.nous.util.ErrorType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
@@ -58,6 +62,8 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		readArguments()
+		collectUiState()
+		collectUiEffect()
 	}
 
 	private fun readArguments() {
@@ -67,6 +73,25 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 			return
 		}
 		viewModel.setJournalId(journalId)
+	}
+
+	private fun collectUiState() {
+		collectStateFlow(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
+			taskAdapter.submitList(it)
+		}
+	}
+
+	private fun collectUiEffect() {
+		collectStateFlow(viewModel.uiEffect) {
+			when(it) {
+				is UiEffect.OnSuccess -> {}
+				is UiEffect.OnError -> {
+					when(it.code) {
+						ErrorType.FAIL_LOAD_JOURNAL.code -> findNavController().popBackStack()
+					}
+				}
+			}
+		}
 	}
 
 	override fun onDestroy() {
@@ -89,7 +114,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 				isAttach
 			).also { binding ->
 				binding.lifecycleOwner = this@JournalDetailFragment
-//				binding.vm = viewModel
+				binding.vm = viewModel
 			}
 		}
 

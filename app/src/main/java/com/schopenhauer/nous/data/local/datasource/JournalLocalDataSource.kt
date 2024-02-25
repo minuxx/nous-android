@@ -30,4 +30,12 @@ class JournalLocalDataSource @Inject constructor(
 	suspend fun saveTasks(tasks: List<TaskEntity>) = execute {
 		taskDao.insertTasks(tasks)
 	}
+
+	suspend fun getJournal(id: Long) = execute {
+		journalDao.getJournal(id)
+	}
+
+	suspend fun getTasksOfJournal(journalId: Long) = execute {
+		taskDao.getTasksOfJournal(journalId)
+	}
 }

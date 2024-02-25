@@ -2,15 +2,10 @@ package com.schopenhauer.nous.ui.journal.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.schopenhauer.nous.domain.model.Journal
 import com.schopenhauer.nous.domain.model.Task
-import com.schopenhauer.nous.domain.usecase.SaveJournalUseCase
-import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.TASK_CONTENT_EMPTY
-import com.schopenhauer.nous.util.Message.SUCCESS_SAVE_JOURNAL
+import com.schopenhauer.nous.domain.usecase.GetJournalUseCase
+import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
 import com.schopenhauer.nous.util.Result
-import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JournalDetailViewModel @Inject constructor(
+	private val getJournalUseCase: GetJournalUseCase
 ) : ViewModel() {
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
@@ -31,6 +27,31 @@ class JournalDetailViewModel @Inject constructor(
 
 	fun setJournalId(journalId: Long) {
 		_uiState.update { it.copy(journalId = journalId) }
+		getJournal()
+	}
+
+	private fun getJournal() = viewModelScope.launch {
+		if (_uiState.value.journalId == 0L) return@launch
+
+		when (val res = getJournalUseCase(_uiState.value.journalId)) {
+			is Result.Success -> {
+				if (res.data != null) {
+					_uiState.update { it.copy(date = res.data.date, tasks = res.data.tasks) }
+				} else {
+					_uiEffect.emit(UiEffect.OnError(FAIL_LOAD_JOURNAL.code, FAIL_LOAD_JOURNAL.message))
+				}
+			}
+			is Result.Error -> {
+				when (res.code) {
+					FAIL_LOAD_JOURNAL.code -> _uiEffect.emit(
+						UiEffect.OnError(
+							FAIL_LOAD_JOURNAL.code,
+							FAIL_LOAD_JOURNAL.message
+						)
+					)
+				}
+			}
+		}
 	}
 
 	data class UiState(
