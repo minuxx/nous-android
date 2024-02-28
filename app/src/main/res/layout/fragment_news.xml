@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
@@ -16,9 +17,9 @@
         style="?attr/collapsingToolbarLayoutMediumStyle"
         android:layout_width="match_parent"
         android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
-        app:expandedTitleTextAppearance="@style/TextAppearance.Nous.TitleLarge"
         app:collapsedTitleTextAppearance="@style/TextAppearance.Nous.TitleMedium"
         app:contentScrim="@color/md_theme_surface"
+        app:expandedTitleTextAppearance="@style/TextAppearance.Nous.TitleLarge"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:titleCollapseMode="scale">
 
@@ -26,27 +27,19 @@
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
           android:elevation="0dp"
-          app:title="@string/employment_news"/>
+          app:title="@string/employment_news" />
       </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/journal_recycler_view"
+      android:id="@+id/news_recycler_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:clipToPadding="false"
       android:overScrollMode="never"
       android:paddingHorizontal="16dp"
       android:paddingVertical="8dp"
-      app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/write_journal_fab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|end"
-      android:layout_margin="16dp"
-      android:contentDescription="@string/content_description_journals_fab"
-      app:srcCompat="@drawable/ic_pencil" />
+      app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+      tools:listitem="@layout/list_item_news" />
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
