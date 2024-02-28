@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -18,6 +20,8 @@ android {
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "NAVER_CLIENT_ID", getProperty("NAVER_CLIENT_ID"))
+        buildConfigField("String", "NAVER_CLIENT_SECRET", getProperty("NAVER_CLIENT_SECRET"))
     }
     buildFeatures {
         buildConfig = true
@@ -98,4 +102,8 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
+}
+
+fun getProperty(key: String): String {
+    return gradleLocalProperties(rootDir).getProperty(key)
 }
