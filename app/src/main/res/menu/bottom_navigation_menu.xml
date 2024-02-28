@@ -4,7 +4,7 @@
     android:id="@+id/news"
     android:enabled="true"
     android:icon="@drawable/ic_news"
-    android:title="@string/employment_news" />
+    android:title="@string/news" />
 
   <item
     android:id="@+id/journal"

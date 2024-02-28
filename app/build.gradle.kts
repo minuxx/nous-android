@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -18,6 +20,8 @@ android {
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "NAVER_CLIENT_ID", getProperty("NAVER_CLIENT_ID"))
+        buildConfigField("String", "NAVER_CLIENT_SECRET", getProperty("NAVER_CLIENT_SECRET"))
     }
     buildFeatures {
         buildConfig = true
@@ -75,6 +79,7 @@ dependencies {
     val hiltVersion = "2.48.1"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
 
     // Navigation
     val navVersion = "2.3.5"
@@ -98,4 +103,8 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
+}
+
+fun getProperty(key: String): String {
+    return gradleLocalProperties(rootDir).getProperty(key)
 }

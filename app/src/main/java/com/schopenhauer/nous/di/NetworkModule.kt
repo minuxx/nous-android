@@ -1,13 +1,14 @@
 package com.schopenhauer.nous.di
 
 import com.schopenhauer.nous.BuildConfig
-import com.schopenhauer.nous.data.remote.APP_BASE_URL
 import com.schopenhauer.nous.data.remote.CONNECT_TIMEOUT_SECONDS
-import com.schopenhauer.nous.data.remote.OTHER_BASE_URL
+import com.schopenhauer.nous.data.remote.NAVER_SEARCH_BASE_URL
 import com.schopenhauer.nous.data.remote.READ_TIMEOUT_SECONDS
 import com.schopenhauer.nous.data.remote.WRITE_TIMEOUT_SECONDS
-import com.schopenhauer.nous.data.remote.api.AppApi
-import com.schopenhauer.nous.data.remote.datasource.AppRemoteDataSource
+import com.schopenhauer.nous.data.remote.X_NAVER_CLIENT_ID_HEADER
+import com.schopenhauer.nous.data.remote.X_NAVER_CLIENT_SECRET_HEADER
+import com.schopenhauer.nous.data.remote.api.NaverSearchApi
+import com.schopenhauer.nous.data.remote.datasource.NaverRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,22 +47,23 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun provideAppRetrofit(okHttpClient: OkHttpClient): Retrofit {
+  fun provideNaverSearchRetrofit(okHttpClient: OkHttpClient): Retrofit {
     val newClient = okHttpClient.newBuilder()
-      .addNetworkInterceptor(provideAppNetworkInterceptor())
+      .addNetworkInterceptor(provideNaverSearchNetworkInterceptor())
       .build()
 
     return Retrofit.Builder()
-      .baseUrl(APP_BASE_URL)
+      .baseUrl(NAVER_SEARCH_BASE_URL)
       .addConverterFactory(GsonConverterFactory.create())
       .client(newClient)
       .build()
   }
 
-  private fun provideAppNetworkInterceptor() = Interceptor {
+  private fun provideNaverSearchNetworkInterceptor() = Interceptor {
     val originRequest = it.request()
     val newRequest = originRequest.newBuilder()
-      .addHeader("Authorization", "")
+      .addHeader(X_NAVER_CLIENT_ID_HEADER, BuildConfig.NAVER_CLIENT_ID)
+      .addHeader(X_NAVER_CLIENT_SECRET_HEADER, BuildConfig.NAVER_CLIENT_SECRET)
       .method(originRequest.method, originRequest.body)
       .build()
     val response = it.proceed(newRequest)
@@ -71,38 +73,13 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun provideOtherRetrofit(okHttpClient: OkHttpClient): Retrofit {
-    val newClient = okHttpClient.newBuilder()
-      .addNetworkInterceptor(provideOtherNetworkInterceptor())
-      .build()
-
-    return Retrofit.Builder()
-      .baseUrl(OTHER_BASE_URL)
-      .addConverterFactory(GsonConverterFactory.create())
-      .client(newClient)
-      .build()
-  }
-
-  private fun provideOtherNetworkInterceptor() = Interceptor {
-    val originRequest = it.request()
-    val newRequest = originRequest.newBuilder()
-      .addHeader("Authorization", "")
-      .method(originRequest.method, originRequest.body)
-      .build()
-    val response = it.proceed(newRequest)
-
-    response
+  fun provideNaverSearchApi(retrofit: Retrofit): NaverSearchApi {
+    return retrofit.create(NaverSearchApi::class.java)
   }
 
   @Provides
   @Singleton
-  fun provideAppApi(retrofit: Retrofit): AppApi {
-    return retrofit.create(AppApi::class.java)
-  }
-
-  @Provides
-  @Singleton
-  fun provideAppRemoteDataSource(appApi: AppApi): AppRemoteDataSource {
-    return AppRemoteDataSource(appApi)
+  fun provideNewsRemoteDataSource(naverSearchApi: NaverSearchApi): NaverRemoteDataSource {
+    return NaverRemoteDataSource(naverSearchApi)
   }
 }

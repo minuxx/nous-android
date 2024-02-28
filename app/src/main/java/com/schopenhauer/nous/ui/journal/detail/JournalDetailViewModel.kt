@@ -3,8 +3,8 @@ package com.schopenhauer.nous.ui.journal.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Task
-import com.schopenhauer.nous.domain.usecase.DeleteJournalUseCase
-import com.schopenhauer.nous.domain.usecase.GetJournalUseCase
+import com.schopenhauer.nous.domain.usecase.journal.DeleteJournalUseCase
+import com.schopenhauer.nous.domain.usecase.journal.GetJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.FAIL_DELETE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
 import com.schopenhauer.nous.util.Message.SUCCESS_DELETE_JOURNAL
