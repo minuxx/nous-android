@@ -6,6 +6,12 @@
   app:startDestination="@id/journal">
 
   <keep_state_fragment
+    android:id="@+id/news"
+    android:name="com.schopenhauer.nous.ui.news.list.NewsFragment"
+    android:label="NewsFragment"
+    tools:layout="@layout/fragment_news"/>
+
+  <keep_state_fragment
     android:id="@+id/journal"
     android:name="com.schopenhauer.nous.ui.journal.JournalContainerFragment"
     android:label="JournalContainerFragment"
