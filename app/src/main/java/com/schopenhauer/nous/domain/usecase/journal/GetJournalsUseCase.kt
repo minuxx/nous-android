@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.domain.usecase
+package com.schopenhauer.nous.domain.usecase.journal
 
 import android.util.Log
 import com.schopenhauer.nous.domain.mapper.toJournal

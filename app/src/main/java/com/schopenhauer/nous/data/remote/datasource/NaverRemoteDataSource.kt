@@ -1,6 +1,6 @@
 package com.schopenhauer.nous.data.remote.datasource
 
-import com.schopenhauer.nous.data.remote.PAGE_SIZE
+import com.schopenhauer.nous.data.remote.NAVER_SEARCH_PAGE_SIZE
 import com.schopenhauer.nous.data.remote.api.NaverSearchApi
 import javax.inject.Inject
 
@@ -11,7 +11,7 @@ class NaverRemoteDataSource @Inject constructor(
   suspend fun fetchNews(query: String, page: Int) = apiCall {
     naverSearchApi.fetchNews(
       query = query,
-      offset = ((page - 1) * PAGE_SIZE) + 1
+      offset = ((page - 1) * NAVER_SEARCH_PAGE_SIZE) + 1
     )
   }
 }

@@ -71,7 +71,6 @@ object NetworkModule {
     response
   }
 
-
   @Provides
   @Singleton
   fun provideNaverSearchApi(retrofit: Retrofit): NaverSearchApi {
@@ -80,7 +79,7 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun provideAppRemoteDataSource(naverSearchApi: NaverSearchApi): NaverRemoteDataSource {
+  fun provideNewsRemoteDataSource(naverSearchApi: NaverSearchApi): NaverRemoteDataSource {
     return NaverRemoteDataSource(naverSearchApi)
   }
 }

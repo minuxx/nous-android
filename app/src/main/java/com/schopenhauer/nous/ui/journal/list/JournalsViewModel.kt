@@ -3,7 +3,7 @@ package com.schopenhauer.nous.ui.journal.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Journal
-import com.schopenhauer.nous.domain.usecase.GetJournalsUseCase
+import com.schopenhauer.nous.domain.usecase.journal.GetJournalsUseCase
 import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNALS
 import com.schopenhauer.nous.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel

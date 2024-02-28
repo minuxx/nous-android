@@ -79,6 +79,7 @@ dependencies {
     val hiltVersion = "2.48.1"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
 
     // Navigation
     val navVersion = "2.3.5"
