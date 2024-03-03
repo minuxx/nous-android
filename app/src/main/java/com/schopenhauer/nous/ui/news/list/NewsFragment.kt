@@ -45,6 +45,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 
 	private fun collectUiState() {
 		collectStateFlow(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
+			Log.d(TAG, "received news: ${it.size}")
 			newsAdapter.submitList(it)
 		}
 	}
