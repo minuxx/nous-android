@@ -1,9 +1,13 @@
 package com.schopenhauer.nous.ui.news.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.News
 import com.schopenhauer.nous.domain.usecase.news.GetNewsPageUseCase
+import com.schopenhauer.nous.util.ErrorType
+import com.schopenhauer.nous.util.ErrorType.NAVER_SYSTEM
+import com.schopenhauer.nous.util.ErrorType.NETWORK
 import com.schopenhauer.nous.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,7 +46,12 @@ class NewsViewModel @Inject constructor(
 				yield()
 			}
 
-			is Result.Error -> {}
+			is Result.Error -> {
+				when(res.code) {
+					NETWORK.code,
+					NAVER_SYSTEM.code -> _uiEffect.emit(UiEffect.OnError(res.code, res.message))
+				}
+			}
 		}
 		_uiState.update { it.copy(isPageLoading = false) }
 	}
@@ -59,7 +68,6 @@ class NewsViewModel @Inject constructor(
 
 	sealed class UiEffect {
 		data class OnError(val code: String, val message: String) : UiEffect()
-		data class OnSuccess(val message: String) : UiEffect()
 	}
 
 	companion object {

@@ -11,8 +11,8 @@ interface NaverSearchApi {
 	@GET("search/news.json")
 	suspend fun fetchNews(
 		@Query("query") query: String = NAVER_EMPLOYMENT_NEWS_QUERY,
-		@Query("start") offset: Int,
+		@Query("start") start: Int,
 		@Query("display") display: Int = NAVER_SEARCH_PAGE_SIZE,
-		@Query("sort") sort: String = "date"
+		@Query("sort") sort: String = "dat"
 	): Response<GetNewsesResponse>
 }

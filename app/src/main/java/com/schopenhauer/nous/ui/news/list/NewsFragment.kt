@@ -1,14 +1,17 @@
 package com.schopenhauer.nous.ui.news.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.databinding.FragmentNewsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.base.PaginationScrollListener
+import com.schopenhauer.nous.ui.news.list.NewsViewModel.UiEffect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -41,11 +44,21 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		collectUiState()
+		collectUiEffect()
 	}
 
 	private fun collectUiState() {
-		collectStateFlow(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
+		collectState(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
+			Log.d("GetNews", "${it.size}")
 			newsAdapter.submitList(it)
+		}
+	}
+
+	private fun collectUiEffect() {
+		collectState(viewModel.uiEffect) {
+			when (it) {
+				is UiEffect.OnError -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+			}
 		}
 	}
 

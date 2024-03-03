@@ -1,6 +1,7 @@
 package com.schopenhauer.nous.ui.journal.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,13 +65,13 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 	}
 
 	private fun collectUiState() {
-		collectStateFlow(viewModel.uiState.map { it.journals }.distinctUntilChanged()) {
+		collectState(viewModel.uiState.map { it.journals }.distinctUntilChanged()) {
 			journalAdapter.submitList(it)
 		}
 	}
 
 	private fun collectUiEffect() {
-		collectStateFlow(viewModel.uiEffect) {
+		collectState(viewModel.uiEffect) {
 			when (it) {
 				is UiEffect.OnSuccess -> findNavController().popBackStack()
 				is UiEffect.OnError -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()

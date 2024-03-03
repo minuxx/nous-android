@@ -10,8 +10,9 @@ class NaverRemoteDataSource @Inject constructor(
 ) : BaseRemoteDataSource() {
 
   suspend fun fetchNews(page: Int) = apiCall {
+    Log.d("GetNews", "offset num: ${((page - 1) * NAVER_SEARCH_PAGE_SIZE) + 1}")
     naverSearchApi.fetchNews(
-      offset = ((page - 1) * NAVER_SEARCH_PAGE_SIZE) + 1
+      start = ((page - 1) * NAVER_SEARCH_PAGE_SIZE) + 1
     )
   }
 }
