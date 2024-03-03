@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentNewsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.base.PaginationScrollListener
 import com.schopenhauer.nous.ui.journal.list.JournalAdapter
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment
 import com.schopenhauer.nous.ui.main.MainActivity
@@ -30,11 +31,17 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 
 	private fun initJournalRecyclerView() {
 		newsAdapter = NewsAdapter {}
+		val linearLayoutManager = LinearLayoutManager(requireActivity())
 		binding.newsRecyclerView.apply {
-			layoutManager = LinearLayoutManager(requireActivity())
+			layoutManager = linearLayoutManager
 			adapter = newsAdapter
 			itemAnimator = null
 			setHasFixedSize(true)
+			addOnScrollListener(object : PaginationScrollListener(linearLayoutManager) {
+				override fun loadMoreItems() { viewModel.getNews() }
+				override fun isLastPage() = viewModel.isLastPage()
+				override fun isPageLoading() = viewModel.isPageLoading()
+			})
 		}
 	}
 
@@ -45,7 +52,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 
 	private fun collectUiState() {
 		collectStateFlow(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
-			Log.d(TAG, "received news: ${it.size}")
+			Log.d("GetNews", "received news: ${it.size}")
 			newsAdapter.submitList(it)
 		}
 	}
