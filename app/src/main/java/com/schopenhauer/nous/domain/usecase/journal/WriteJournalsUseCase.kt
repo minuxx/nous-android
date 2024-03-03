@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.domain.usecase
+package com.schopenhauer.nous.domain.usecase.journal
 
 import com.schopenhauer.nous.domain.mapper.toJournalEntity
 import com.schopenhauer.nous.domain.model.Journal

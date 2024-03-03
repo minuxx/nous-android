@@ -3,7 +3,7 @@ package com.schopenhauer.nous.ui.journal.write
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Task
-import com.schopenhauer.nous.domain.usecase.SaveJournalUseCase
+import com.schopenhauer.nous.domain.usecase.journal.SaveJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.TASK_CONTENT_EMPTY

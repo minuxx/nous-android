@@ -1,22 +1,23 @@
 package com.schopenhauer.nous.util
 
 import org.json.JSONObject
+import com.schopenhauer.nous.util.ErrorType.UNKNOWN
 
 object ErrorConverter {
-  private const val KEY_KAKAO_ERROR_TYPE = "errorType"
-  private const val KEY_APP_ERROR_CODE = "code"
-  private const val KEY_NOTHING = "nothing"
-  private const val KEY_MESSAGE = "message"
+  private const val NAVER_ERROR_CODE_KEY = "errorCode"
+  private const val NAVER_ERROR_MESSAGE_KEY = "errorMessage"
 
   fun fromJson(json: String): Result.Error {
     return try {
       val jsonObj = JSONObject(json)
       val code = when {
-        jsonObj.has(KEY_APP_ERROR_CODE) -> jsonObj.getString(KEY_APP_ERROR_CODE)
-        jsonObj.has(KEY_KAKAO_ERROR_TYPE) -> jsonObj.getString(KEY_KAKAO_ERROR_TYPE)
-        else -> jsonObj.getString(KEY_NOTHING)
+        jsonObj.has(NAVER_ERROR_CODE_KEY) -> jsonObj.getString(NAVER_ERROR_CODE_KEY)
+        else -> UNKNOWN.code
       }
-      val message = jsonObj.getString(KEY_MESSAGE)
+      val message = when {
+        jsonObj.has(NAVER_ERROR_MESSAGE_KEY) -> jsonObj.getString(NAVER_ERROR_MESSAGE_KEY)
+        else -> UNKNOWN.message
+      }
 
       Result.Error(code, message)
     } catch (e: Exception) {

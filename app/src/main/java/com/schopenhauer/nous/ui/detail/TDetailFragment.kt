@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 	private val viewModel: TDetailViewModel by viewModels()
+
 	override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding =
 		{ inflater, container, isAttach ->
 			DataBindingUtil.inflate<FragmentDetailBinding?>(
@@ -25,5 +26,7 @@ class TDetailFragment : BaseFragment<FragmentDetailBinding>() {
 			}
 		}
 
-	override fun initViews() {}
+	override fun initViews() {
+		viewModel.setItemId(1)
+	}
 }
