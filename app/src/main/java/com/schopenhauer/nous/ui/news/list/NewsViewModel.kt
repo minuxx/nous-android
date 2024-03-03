@@ -25,7 +25,7 @@ class NewsViewModel @Inject constructor(
 	val uiEffect = _uiEffect.asSharedFlow()
 
 	fun getNews() = viewModelScope.launch {
-		when (val res = getNewsUseCase("채용", 1)) {
+		when (val res = getNewsUseCase(1)) {
 			is Result.Success -> {
 				_uiState.update { it.copy(newses = res.data ?: emptyList()) }
 			}

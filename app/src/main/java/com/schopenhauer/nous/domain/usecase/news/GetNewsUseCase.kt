@@ -10,8 +10,8 @@ import javax.inject.Inject
 class GetNewsUseCase @Inject constructor(
 	private val newsRepository: NewsRepository
 ) {
-	suspend operator fun invoke(query: String, page: Int) = withContext(Dispatchers.Default) {
-		when(val res = newsRepository.getNews(query, page)) {
+	suspend operator fun invoke(page: Int) = withContext(Dispatchers.Default) {
+		when(val res = newsRepository.getNews(page)) {
 			is Result.Success -> {
 				val news = res.data?.map { it.toNews() } ?: emptyList()
 				Result.Success(news)

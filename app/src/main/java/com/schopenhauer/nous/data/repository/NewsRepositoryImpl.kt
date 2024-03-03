@@ -10,8 +10,8 @@ class NewsRepositoryImpl @Inject constructor(
 	private val naverRemoteDataSource: NaverRemoteDataSource
 ) : NewsRepository {
 
-	override suspend fun getNews(query: String, page: Int): Result<List<NewsApiModel>> {
-		return when(val res = naverRemoteDataSource.fetchNews(query, page)) {
+	override suspend fun getNews(page: Int): Result<List<NewsApiModel>> {
+		return when(val res = naverRemoteDataSource.fetchNews(page)) {
 			is Result.Success -> {
 				Result.Success(res.data?.newsApiModels)
 			}
