@@ -1,7 +1,6 @@
 package com.schopenhauer.nous.ui.journal.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEffect
 import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEffect
 
 @AndroidEntryPoint
 class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {

@@ -1,11 +1,9 @@
 package com.schopenhauer.nous.ui.news.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.News
 import com.schopenhauer.nous.domain.usecase.news.GetNewsPageUseCase
-import com.schopenhauer.nous.util.ErrorType
 import com.schopenhauer.nous.util.ErrorType.NAVER_SYSTEM
 import com.schopenhauer.nous.util.ErrorType.NETWORK
 import com.schopenhauer.nous.util.Result

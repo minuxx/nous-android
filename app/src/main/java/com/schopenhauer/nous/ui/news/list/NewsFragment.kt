@@ -1,7 +1,6 @@
 package com.schopenhauer.nous.ui.news.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +48,6 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 
 	private fun collectUiState() {
 		collectState(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
-			Log.d("GetNews", "${it.size}")
 			newsAdapter.submitList(it)
 		}
 	}
