@@ -3,7 +3,7 @@ package com.schopenhauer.nous.ui.news.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.News
-import com.schopenhauer.nous.domain.usecase.news.GetNewsUseCase
+import com.schopenhauer.nous.domain.usecase.news.GetNewsPageUseCase
 import com.schopenhauer.nous.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-	private val getNewsUseCase: GetNewsUseCase
+	private val getNewsPageUseCase: GetNewsPageUseCase
 ) : ViewModel() {
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
@@ -27,13 +27,16 @@ class NewsViewModel @Inject constructor(
 
 	fun getNews() = viewModelScope.launch {
 		_uiState.update { it.copy(isPageLoading = true) }
-		when (val res = getNewsUseCase(_uiState.value.page)) {
+		when (val res = getNewsPageUseCase(_uiState.value.page)) {
 			is Result.Success -> {
-				val newNewses = _uiState.value.newses + (res.data ?: emptyList())
+				val newNewses = _uiState.value.newses + (res.data?.newses ?: emptyList())
+				val totalCnt = res.data?.totalCnt ?: 0
+
 				_uiState.update {
 					it.copy(
 						page = _uiState.value.page + 1,
-						newses = newNewses
+						newses = newNewses,
+						isLastPage = totalCnt <= newNewses.size
 					)
 				}
 				yield()

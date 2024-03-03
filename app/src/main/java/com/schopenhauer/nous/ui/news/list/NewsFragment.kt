@@ -1,21 +1,14 @@
 package com.schopenhauer.nous.ui.news.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentNewsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.base.PaginationScrollListener
-import com.schopenhauer.nous.ui.journal.list.JournalAdapter
-import com.schopenhauer.nous.ui.journal.list.JournalsFragment
-import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -52,7 +45,6 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 
 	private fun collectUiState() {
 		collectStateFlow(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
-			Log.d("GetNews", "received news: ${it.size}")
 			newsAdapter.submitList(it)
 		}
 	}
