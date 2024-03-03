@@ -1,6 +1,7 @@
 package com.schopenhauer.nous.ui.news.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import com.schopenhauer.nous.ui.journal.list.JournalAdapter
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment
 import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class NewsFragment : BaseFragment<FragmentNewsBinding>() {
@@ -33,6 +36,23 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 			itemAnimator = null
 			setHasFixedSize(true)
 		}
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		collectUiState()
+	}
+
+	private fun collectUiState() {
+		collectStateFlow(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
+			Log.d(TAG, "received: ${it.size}")
+			newsAdapter.submitList(it)
+		}
+	}
+
+	override fun onStart() {
+		super.onStart()
+		viewModel.getNews()
 	}
 
 	override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentNewsBinding =

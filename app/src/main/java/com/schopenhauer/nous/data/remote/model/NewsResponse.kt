@@ -3,14 +3,6 @@ package com.schopenhauer.nous.data.remote.model
 import com.google.gson.annotations.SerializedName
 
 data class NewsResponse(
-	@SerializedName("rss") val rss: RSS
-)
-
-data class RSS(
-	@SerializedName("channel") val channel: Channel,
-)
-
-data class Channel(
 	@SerializedName("lastBuildDate") val lastBuildDate: String,
 	@SerializedName("total") val total: Int,
 	@SerializedName("start") val start: Int,
