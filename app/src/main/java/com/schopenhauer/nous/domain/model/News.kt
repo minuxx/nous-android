@@ -7,3 +7,8 @@ data class News (
 	val date: String,
 	val link: String,
 )
+
+data class NewsPage(
+	val newses: List<News>,
+	val totalCnt: Int
+)

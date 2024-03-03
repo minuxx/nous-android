@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEffect
 import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEffect
 
 @AndroidEntryPoint
 class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
@@ -64,13 +64,13 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 	}
 
 	private fun collectUiState() {
-		collectStateFlow(viewModel.uiState.map { it.journals }.distinctUntilChanged()) {
+		collectState(viewModel.uiState.map { it.journals }.distinctUntilChanged()) {
 			journalAdapter.submitList(it)
 		}
 	}
 
 	private fun collectUiEffect() {
-		collectStateFlow(viewModel.uiEffect) {
+		collectState(viewModel.uiEffect) {
 			when (it) {
 				is UiEffect.OnSuccess -> findNavController().popBackStack()
 				is UiEffect.OnError -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()

@@ -25,10 +25,6 @@ class JournalsViewModel @Inject constructor(
 	private val _uiEffect = MutableSharedFlow<UiEffect>()
 	val uiEffect = _uiEffect.asSharedFlow()
 
-	init {
-		getJournals()
-	}
-
 	fun getJournals() = viewModelScope.launch {
 		when (val res = getJournalsUseCase()) {
 			is Result.Success -> _uiState.update { it.copy(journals = res.data ?: emptyList()) }
@@ -40,8 +36,6 @@ class JournalsViewModel @Inject constructor(
 			)
 		}
 	}
-
-	fun toggleBookmark(journalId: Long) {}
 
 	data class UiState(
 		val journals: List<Journal> = listOf(),

@@ -80,13 +80,13 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	}
 
 	private fun collectUiState() {
-		collectStateFlow(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
+		collectState(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
 			taskAdapter.submitList(it)
 		}
 	}
 
 	private fun collectUiEffect() {
-		collectStateFlow(viewModel.uiEffect) {
+		collectState(viewModel.uiEffect) {
 			when(it) {
 				is UiEffect.OnSuccessDeleteJournal -> findNavController().popBackStack()
 				is UiEffect.OnError -> {

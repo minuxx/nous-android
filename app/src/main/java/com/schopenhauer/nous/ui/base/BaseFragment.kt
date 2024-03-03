@@ -42,7 +42,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 		Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
 	}
 
-	fun <T> Fragment.collectStateFlow(flow: Flow<T>, collector: FlowCollector<T>) {
+	fun <T> Fragment.collectState(flow: Flow<T>, collector: FlowCollector<T>) {
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				flow.collect(collector)

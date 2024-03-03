@@ -8,10 +8,9 @@ class NaverRemoteDataSource @Inject constructor(
   private val naverSearchApi: NaverSearchApi
 ) : BaseRemoteDataSource() {
 
-  suspend fun fetchNews(query: String, page: Int) = apiCall {
+  suspend fun fetchNews(page: Int) = apiCall {
     naverSearchApi.fetchNews(
-      query = query,
-      offset = ((page - 1) * NAVER_SEARCH_PAGE_SIZE) + 1
+      start = ((page - 1) * NAVER_SEARCH_PAGE_SIZE) + 1
     )
   }
 }
