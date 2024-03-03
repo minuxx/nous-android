@@ -1,5 +1,7 @@
 package com.schopenhauer.nous.ui.news.list
 
+import android.text.Html
+import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -34,8 +36,8 @@ class NewsAdapter(
 
 		fun bind(news: News) {
 			with(binding) {
-				titleTv.text = news.title
-				descriptionTv.text = news.description
+				titleTv.text = Html.fromHtml(news.title, FROM_HTML_MODE_LEGACY).toString()
+				descriptionTv.text = Html.fromHtml(news.description, FROM_HTML_MODE_LEGACY).toString()
 				dateTv.text = news.date
 			}
 		}
