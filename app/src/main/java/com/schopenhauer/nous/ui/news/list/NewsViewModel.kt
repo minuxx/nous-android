@@ -14,6 +14,10 @@ class NewsViewModel @Inject constructor(
 	private val getNewsUseCase: GetNewsUseCase
 ) : ViewModel() {
 
+	init {
+		getNews()
+	}
+
 	fun getNews() = viewModelScope.launch {
 		when(val res = getNewsUseCase("채용", 2)) {
 			is Result.Success -> {NewsViewModel
