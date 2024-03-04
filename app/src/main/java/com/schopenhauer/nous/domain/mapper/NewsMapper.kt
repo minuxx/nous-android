@@ -5,7 +5,7 @@ import com.schopenhauer.nous.domain.model.News
 
 fun NewsItem.toNews(): News {
 	return News(
-		id = originalLink,
+		id = link,
 		title = title,
 		description = description,
 		link = originalLink,

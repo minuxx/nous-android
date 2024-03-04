@@ -1,5 +1,7 @@
 package com.schopenhauer.nous.ui.news.list
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +27,9 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 	}
 
 	private fun initJournalRecyclerView() {
-		newsAdapter = NewsAdapter {}
+		newsAdapter = NewsAdapter { link ->
+			startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+		}
 		val linearLayoutManager = LinearLayoutManager(requireActivity())
 		binding.newsRecyclerView.apply {
 			layoutManager = linearLayoutManager
