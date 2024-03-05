@@ -14,12 +14,12 @@ class SettingViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(UiState())
   val uiState = _uiState.asStateFlow()
 
-  fun setItemId(itemId: Long) {
-    _uiState.update { it.copy(itemId = itemId) }
+  fun setVersion(version: String) {
+    _uiState.update { it.copy(version = version) }
   }
 
   data class UiState(
-    val itemId: Long = 0
+    val version: String = ""
   )
 
   companion object {
