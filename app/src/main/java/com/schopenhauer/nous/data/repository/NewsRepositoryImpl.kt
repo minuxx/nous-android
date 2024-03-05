@@ -15,8 +15,8 @@ class NewsRepositoryImpl @Inject constructor(
 			is Result.Success -> {
 				Result.Success(
 					NewsItemPage(
-						newsItems = res.data?.items ?: emptyList(),
-						totalCnt = res.data?.total ?: 0
+						newsItems = res.data.items,
+						totalCnt = res.data.total
 					)
 				)
 			}

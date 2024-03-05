@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.databinding.ListItemNewsBinding
 import com.schopenhauer.nous.domain.model.News
-import com.schopenhauer.nous.util.formatNewsDate
 
 class NewsAdapter(
 	private val itemClickListener: (String) -> Unit
@@ -39,7 +38,7 @@ class NewsAdapter(
 			with(binding) {
 				titleTv.text = Html.fromHtml(news.title, FROM_HTML_MODE_LEGACY).toString()
 				descriptionTv.text = Html.fromHtml(news.description, FROM_HTML_MODE_LEGACY).toString()
-				dateTv.text = formatNewsDate(news.date)
+				dateTv.text = news.date
 			}
 		}
 	}

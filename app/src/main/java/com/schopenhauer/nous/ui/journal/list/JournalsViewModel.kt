@@ -27,7 +27,7 @@ class JournalsViewModel @Inject constructor(
 
 	fun getJournals() = viewModelScope.launch {
 		when (val res = getJournalsUseCase()) {
-			is Result.Success -> _uiState.update { it.copy(journals = res.data ?: emptyList()) }
+			is Result.Success -> _uiState.update { it.copy(journals = res.data) }
 			is Result.Error -> _uiEffect.emit(
 				UiEffect.OnError(
 					FAIL_LOAD_JOURNALS.code,

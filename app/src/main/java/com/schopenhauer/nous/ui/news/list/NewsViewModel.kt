@@ -31,8 +31,8 @@ class NewsViewModel @Inject constructor(
 		_uiState.update { it.copy(isPageLoading = true) }
 		when (val res = getNewsPageUseCase(_uiState.value.page)) {
 			is Result.Success -> {
-				val newNewses = _uiState.value.newses + (res.data?.newses ?: emptyList())
-				val totalCnt = res.data?.totalCnt ?: 0
+				val newNewses = _uiState.value.newses + res.data.newses
+				val totalCnt = res.data.totalCnt
 
 				_uiState.update {
 					it.copy(

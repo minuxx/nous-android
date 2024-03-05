@@ -7,7 +7,6 @@ import com.schopenhauer.nous.domain.usecase.journal.SaveJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.TASK_CONTENT_EMPTY
-import com.schopenhauer.nous.util.Message.SUCCESS_SAVE_JOURNAL
 import com.schopenhauer.nous.util.Result
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -60,7 +59,7 @@ class WriteJournalViewModel @Inject constructor(
 
 		_uiState.update { it.copy(isLoading = true) }
 		when (val res = saveJournalUseCase(_uiState.value.date, _uiState.value.tasks)) {
-			is Result.Success -> _uiEffect.emit(UiEffect.OnSuccess(res.data ?: SUCCESS_SAVE_JOURNAL.content))
+			is Result.Success -> _uiEffect.emit(UiEffect.OnSuccess(res.data))
 			is Result.Error -> {
 				when (res.code) {
 					ALREADY_SAVED_JOURNAL.code,

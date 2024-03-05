@@ -13,8 +13,8 @@
     android:title="@string/journals" />
 
   <item
-    android:id="@+id/detail"
+    android:id="@+id/setting"
     android:enabled="true"
-    android:icon="@drawable/ic_detail"
-    android:title="@string/detail" />
+    android:icon="@drawable/ic_setting"
+    android:title="@string/setting" />
 </menu>
