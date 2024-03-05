@@ -14,8 +14,8 @@ class GetJournalUseCase @Inject constructor(
 	suspend operator fun invoke(id: Long) = withContext(Dispatchers.Default) {
 		when(val res = journalsRepository.getJournal(id)) {
 			is Result.Success -> {
-				val tasks = res.data?.tasks?.map { it.toTask() } ?: emptyList()
-				val journal = res.data?.journal?.toJournal(tasks)
+				val tasks = res.data.tasks.map { it.toTask() } ?: emptyList()
+				val journal = res.data.journal.toJournal(tasks)
 				Result.Success(journal)
 			}
 			is Result.Error -> res

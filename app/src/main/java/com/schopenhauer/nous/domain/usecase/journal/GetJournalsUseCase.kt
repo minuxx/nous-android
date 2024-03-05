@@ -17,7 +17,7 @@ class GetJournalsUseCase @Inject constructor(
 		when(val res = journalsRepository.getJournals()) {
 			is Result.Success -> {
 				try {
-					val journals = res.data?.map { it.toJournal() } ?: emptyList()
+					val journals = res.data.map { it.toJournal() } ?: emptyList()
 					val sortedJournals = journals.sortedByDescending { parseDate(it.date) }
 					Result.Success(sortedJournals)
 				} catch (e: Exception) {

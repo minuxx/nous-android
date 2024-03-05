@@ -60,7 +60,7 @@ class WriteJournalViewModel @Inject constructor(
 
 		_uiState.update { it.copy(isLoading = true) }
 		when (val res = saveJournalUseCase(_uiState.value.date, _uiState.value.tasks)) {
-			is Result.Success -> _uiEffect.emit(UiEffect.OnSuccess(res.data ?: SUCCESS_SAVE_JOURNAL.content))
+			is Result.Success -> _uiEffect.emit(UiEffect.OnSuccess(res.data))
 			is Result.Error -> {
 				when (res.code) {
 					ALREADY_SAVED_JOURNAL.code,

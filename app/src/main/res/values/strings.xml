@@ -2,7 +2,7 @@
     <string name="app_name">누스</string>
 
     <string name="journals">업무 일지</string>
-    <string name="detail">상세</string>
+    <string name="setting">설정</string>
     <string name="write_journal">업무 일지 작성</string>
     <string name="journal_detail">업무 일지</string>
     <string name="news">채용 소식</string>

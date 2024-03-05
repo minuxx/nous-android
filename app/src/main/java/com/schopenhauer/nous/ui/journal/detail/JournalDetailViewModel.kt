@@ -1,5 +1,6 @@
 package com.schopenhauer.nous.ui.journal.detail
 
+import android.os.Build.VERSION_CODES.O
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Task
@@ -37,14 +38,7 @@ class JournalDetailViewModel @Inject constructor(
 	private fun getJournal() = viewModelScope.launch {
 		if (_uiState.value.journalId == 0L) return@launch
 		when (val res = getJournalUseCase(_uiState.value.journalId)) {
-			is Result.Success -> {
-				if (res.data != null) {
-					_uiState.update { it.copy(date = res.data.date, tasks = res.data.tasks) }
-				} else {
-					_uiEffect.emit(UiEffect.OnError(FAIL_LOAD_JOURNAL.code, FAIL_LOAD_JOURNAL.message))
-				}
-			}
-
+			is Result.Success -> _uiState.update { it.copy(date = res.data.date, tasks = res.data.tasks) }
 			is Result.Error -> {
 				when (res.code) {
 					FAIL_LOAD_JOURNAL.code -> _uiEffect.emit(
@@ -63,11 +57,7 @@ class JournalDetailViewModel @Inject constructor(
 
 		_uiState.update { it.copy(isLoading = true) }
 		when (val res = deleteJournalUseCase(_uiState.value.journalId)) {
-			is Result.Success -> _uiEffect.emit(
-				UiEffect.OnSuccessDeleteJournal(
-					res.data ?: SUCCESS_DELETE_JOURNAL.content
-				)
-			)
+			is Result.Success -> _uiEffect.emit(UiEffect.OnSuccessDeleteJournal(res.data))
 			is Result.Error -> {
 				when (res.code) {
 					FAIL_DELETE_JOURNAL.code -> _uiEffect.emit(
@@ -86,9 +76,11 @@ class JournalDetailViewModel @Inject constructor(
 		val isLoading: Boolean = false,
 		val journalId: Long = 0L,
 		val date: String = "",
-		val tasks: List<Task> = listOf()
+		val tasks: List<Task> = listOf(),
+		val event: UiEffect? = null
 	)
 
+	// 이벤트 흐름이 두 개가 된다 -> Ui 상태 안에서 이벤트를 정의하고 이벤트를 전달한다.
 	sealed class UiEffect {
 		data class OnError(val code: String, val message: String) : UiEffect()
 		data class OnSuccessDeleteJournal(val message: String) : UiEffect()

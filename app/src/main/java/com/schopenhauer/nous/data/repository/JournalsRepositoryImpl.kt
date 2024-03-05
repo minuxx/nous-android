@@ -25,7 +25,7 @@ class JournalsRepositoryImpl @Inject constructor(
 	override suspend fun saveJournal(date: String, tasks: List<TaskEntity>): Result<String> {
 		val hasJournalRes = journalLocalDataSource.hasJournalWithDate(date)
 		// 1. 저장된 같은 날짜의 업무 일지 있는지 확인
-		if (hasJournalRes is Result.Success && hasJournalRes.data == true) {
+		if (hasJournalRes is Result.Success && hasJournalRes.data) {
 			return Result.Error(
 				ALREADY_SAVED_JOURNAL.code,
 				ALREADY_SAVED_JOURNAL.message
@@ -34,7 +34,7 @@ class JournalsRepositoryImpl @Inject constructor(
 
 		// 2. JournalEntity 저장 및 ID 가져오기
 		val saveJournalRes = journalLocalDataSource.saveJournal(JournalEntity(date = date))
-		if (saveJournalRes is Result.Success && saveJournalRes.data != null) {
+		if (saveJournalRes is Result.Success) {
 			// 3. taskEntities 에 journalId 할당 후 저장하기
 			val journalId = saveJournalRes.data
 			val newTasks = tasks.map { it.copy(journalId = journalId) }
@@ -53,9 +53,7 @@ class JournalsRepositoryImpl @Inject constructor(
 		val getJournalRes = journalLocalDataSource.getJournal(id)
 		val getTasksRes = journalLocalDataSource.getTasks(id)
 		if (getJournalRes is Result.Success && getTasksRes is Result.Success) {
-			if (getJournalRes.data != null && getTasksRes.data != null) {
-				return Result.Success(JournalWithTasks(journal = getJournalRes.data, tasks = getTasksRes.data))
-			}
+			return Result.Success(JournalWithTasks(journal = getJournalRes.data, tasks = getTasksRes.data))
 		}
 
 		return Result.Error(FAIL_LOAD_JOURNAL.code, FAIL_LOAD_JOURNAL.message)
