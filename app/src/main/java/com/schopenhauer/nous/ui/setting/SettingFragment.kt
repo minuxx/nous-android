@@ -27,6 +27,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
 		}
 
 	override fun initViews() {
-		viewModel.setItemId(1)
+
 	}
 }

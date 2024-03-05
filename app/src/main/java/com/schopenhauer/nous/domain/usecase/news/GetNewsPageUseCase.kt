@@ -14,8 +14,8 @@ class GetNewsPageUseCase @Inject constructor(
 	suspend operator fun invoke(page: Int) = withContext(Dispatchers.Default) {
 		when (val res = newsRepository.getNews(page)) {
 			is Result.Success -> {
-				val newses = res.data.newsItems.map { it.toNews() } ?: emptyList()
-				val totalCnt = res.data.totalCnt ?: 0
+				val newses = res.data.newsItems.map { it.toNews() }
+				val totalCnt = res.data.totalCnt
 				Result.Success(
 					NewsPage(
 						newses = newses,
