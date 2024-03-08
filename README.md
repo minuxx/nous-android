@@ -13,6 +13,11 @@
 - Kotlin based, Coroutines + Flow for asynchronous.
 - Minimum SDK level 24
 
+### Architecture
+- UI Layer -> Domain Layer -> Data Layer
+- MVVM Architecture (View - ViewModel - Model)
+- Repository Pattern
+
 ### Jetpack
 - Lifecycle
 - ViewModel
@@ -25,11 +30,8 @@
 - Material Desgin3
 - ksp
 - Retrofit2 & OkHttp3
-- Naver Search Open API
 - Glide
 - Gson
 
-### Architecture
-- UI Layer -> Domain Layer -> Data Layer
-- MVVM Architecture (View - ViewModel - Model)
-- Repository Pattern
+### Open API
+- Naver Search Open API
