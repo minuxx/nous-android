@@ -16,7 +16,6 @@ enum class JournalError(val code: String, val message: String) {
 	SAVE("J401", "업무 일지를 저장하지 못했어요"),
 	ALREADY("J402", "해당 날짜에 업무 일지가 이미 존재해요"),
 	REMOVE("J403", "업무 일지를 삭제하지 못했어요"),
-
 	SORT("J404", "업무 일지를 정렬하지 못했어요")
 }
 

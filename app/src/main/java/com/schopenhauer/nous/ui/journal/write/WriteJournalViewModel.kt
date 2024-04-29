@@ -2,12 +2,10 @@ package com.schopenhauer.nous.ui.journal.write
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.schopenhauer.nous.data.Result
+import com.schopenhauer.nous.domain.model.JournalError
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.domain.usecase.journal.SaveJournalUseCase
-import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.TASK_CONTENT_EMPTY
-import com.schopenhauer.nous.data.Result
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,8 +23,8 @@ class WriteJournalViewModel @Inject constructor(
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
 
-	private val _uiEffect = MutableSharedFlow<UiEffect>()
-	val uiEffect = _uiEffect.asSharedFlow()
+	private val _uiEvent = MutableSharedFlow<UiEvent>()
+	val uiEvent = _uiEvent.asSharedFlow()
 
 	fun setDate(date: String) {
 		_uiState.update { it.copy(date = date) }
@@ -34,7 +32,7 @@ class WriteJournalViewModel @Inject constructor(
 
 	fun writeTask(content: String) = viewModelScope.launch {
 		if (content.isEmpty()) {
-			_uiEffect.emit(UiEffect.OnError(TASK_CONTENT_EMPTY.code, TASK_CONTENT_EMPTY.message))
+			updateUiEvent(UiEvent.OnShowToastMessage("업무 내용을 입력해주세요"))
 			return@launch
 		}
 
@@ -53,22 +51,27 @@ class WriteJournalViewModel @Inject constructor(
 	fun saveJournal() = viewModelScope.launch {
 		if (_uiState.value.isLoading) return@launch
 		if (_uiState.value.tasks.isEmpty()) {
-			_uiEffect.emit(UiEffect.OnError(TASK_CONTENT_EMPTY.code, TASK_CONTENT_EMPTY.message))
+			updateUiEvent(UiEvent.OnShowToastMessage("업무 내용을 입력해주세요"))
 			return@launch
 		}
 
 		_uiState.update { it.copy(isLoading = true) }
 		when (val res = saveJournalUseCase(_uiState.value.date, _uiState.value.tasks)) {
-			is Result.Success -> _uiEffect.emit(UiEffect.OnSuccess(res.data))
-			is Result.Error -> {
-				when (res.code) {
-					ALREADY_SAVED_JOURNAL.code,
-					FAIL_SAVE_JOURNAL.code -> _uiEffect.emit(UiEffect.OnError(res.code, res.message))
+			is Result.Success -> updateUiEvent(UiEvent.OnSuccessSaveJournal)
+			is Result.Failure -> {
+				when (res.error.code) {
+					JournalError.ALREADY.code,
+					JournalError.SAVE.code -> updateUiEvent(UiEvent.OnShowToastMessage(res.error.message))
 				}
 			}
 		}
 		_uiState.update { it.copy(isLoading = false) }
 	}
+
+	private fun updateUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
+		_uiEvent.emit(uiEvent)
+	}
+
 
 	data class UiState(
 		val isLoading: Boolean = false,
@@ -76,9 +79,9 @@ class WriteJournalViewModel @Inject constructor(
 		val tasks: List<Task> = listOf(),
 	)
 
-	sealed class UiEffect {
-		data class OnError(val code: String, val message: String) : UiEffect()
-		data class OnSuccess(val message: String) : UiEffect()
+	sealed class UiEvent {
+		data object OnSuccessSaveJournal : UiEvent()
+		data class OnShowToastMessage(val message: String) : UiEvent()
 	}
 
 	companion object {

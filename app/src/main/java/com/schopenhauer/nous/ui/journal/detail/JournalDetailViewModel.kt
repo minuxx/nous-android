@@ -8,6 +8,7 @@ import com.schopenhauer.nous.domain.usecase.journal.GetJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.FAIL_DELETE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
 import com.schopenhauer.nous.data.Result
+import com.schopenhauer.nous.domain.model.JournalError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,13 +21,13 @@ import javax.inject.Inject
 @HiltViewModel
 class JournalDetailViewModel @Inject constructor(
 	private val getJournalUseCase: GetJournalUseCase,
-	private val deleteJournalUseCase: RemoveJournalUseCase
+	private val removeJournalUseCase: RemoveJournalUseCase
 ) : ViewModel() {
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
 
-	private val _uiEffect = MutableSharedFlow<UiEffect>()
-	val uiEffect = _uiEffect.asSharedFlow()
+	private val _uiEvent = MutableSharedFlow<UiEvent>()
+	val uiEvent = _uiEvent.asSharedFlow()
 
 	fun setJournalId(journalId: Long) {
 		_uiState.update { it.copy(journalId = journalId) }
@@ -34,40 +35,33 @@ class JournalDetailViewModel @Inject constructor(
 	}
 
 	private fun getJournal() = viewModelScope.launch {
-		if (_uiState.value.journalId == 0L) return@launch
-		when (val res = getJournalUseCase(_uiState.value.journalId)) {
+		val journalId = _uiState.value.journalId
+
+		when (val res = getJournalUseCase(journalId)) {
 			is Result.Success -> _uiState.update { it.copy(date = res.data.date, tasks = res.data.tasks) }
-			is Result.Error -> {
-				when (res.code) {
-					FAIL_LOAD_JOURNAL.code -> _uiEffect.emit(
-						UiEffect.OnError(
-							FAIL_LOAD_JOURNAL.code,
-							FAIL_LOAD_JOURNAL.message
-						)
-					)
+			is Result.Failure -> {
+				when (res.error.code) {
+					JournalError.LOAD.code -> updateUiEvent(UiEvent.OnFailLoadJournal)
 				}
 			}
 		}
 	}
 
-	fun deleteJournal() = viewModelScope.launch {
-		if (_uiState.value.journalId == 0L || _uiState.value.isLoading) return@launch
+	fun removeJournal() = viewModelScope.launch {
+		val journalId = _uiState.value.journalId
 
-		_uiState.update { it.copy(isLoading = true) }
-		when (val res = deleteJournalUseCase(_uiState.value.journalId)) {
-			is Result.Success -> _uiEffect.emit(UiEffect.OnSuccessDeleteJournal(res.data))
-			is Result.Error -> {
-				when (res.code) {
-					FAIL_DELETE_JOURNAL.code -> _uiEffect.emit(
-						UiEffect.OnError(
-							FAIL_LOAD_JOURNAL.code,
-							FAIL_LOAD_JOURNAL.message
-						)
-					)
+		when (val res = removeJournalUseCase(journalId)) {
+			is Result.Success -> updateUiEvent(UiEvent.OnSuccessRemoveJournal)
+			is Result.Failure -> {
+				when (res.error.code) {
+					JournalError.REMOVE.code -> updateUiEvent(UiEvent.OnShowToastMessage(res.error.message))
 				}
 			}
 		}
-		_uiState.update { it.copy(isLoading = false) }
+	}
+
+	private fun updateUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
+		_uiEvent.emit(uiEvent)
 	}
 
 	data class UiState(
@@ -75,13 +69,13 @@ class JournalDetailViewModel @Inject constructor(
 		val journalId: Long = 0L,
 		val date: String = "",
 		val tasks: List<Task> = listOf(),
-		val event: UiEffect? = null
 	)
 
 	// 이벤트 흐름이 두 개가 된다 -> Ui 상태 안에서 이벤트를 정의하고 이벤트를 전달한다.
-	sealed class UiEffect {
-		data class OnError(val code: String, val message: String) : UiEffect()
-		data class OnSuccessDeleteJournal(val message: String) : UiEffect()
+	sealed class UiEvent {
+		data object OnFailLoadJournal : UiEvent()
+		data object OnSuccessRemoveJournal : UiEvent()
+		data class OnShowToastMessage(val message: String) : UiEvent()
 	}
 
 	companion object {

@@ -1,10 +1,12 @@
 package com.schopenhauer.nous.ui.journal.detail
 
+import android.app.ProgressDialog.show
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -13,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
-import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEffect
+import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEvent
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
 import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
@@ -48,7 +50,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		}
 
 		binding.topAppBar.setOnMenuItemClickListener {
-			viewModel.deleteJournal()
+			viewModel.removeJournal()
 			true
 		}
 	}
@@ -68,7 +70,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		super.onViewCreated(view, savedInstanceState)
 		readArguments()
 		collectUiState()
-		collectUiEffect()
+		collectUiEvent()
 	}
 
 	private fun readArguments() {
@@ -86,15 +88,12 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		}
 	}
 
-	private fun collectUiEffect() {
-		collectState(viewModel.uiEffect) {
-			when(it) {
-				is UiEffect.OnSuccessDeleteJournal -> findNavController().popBackStack()
-				is UiEffect.OnError -> {
-					when(it.code) {
-						ErrorType.FAIL_LOAD_JOURNAL.code -> findNavController().popBackStack()
-					}
-				}
+	private fun collectUiEvent() {
+		collectState(viewModel.uiEvent) { event ->
+			when (event) {
+				is UiEvent.OnSuccessRemoveJournal -> findNavController().popBackStack()
+				is UiEvent.OnFailLoadJournal -> findNavController().popBackStack()
+				is UiEvent.OnShowToastMessage -> Toast.makeText(requireActivity(), event.message, Toast.LENGTH_SHORT).show()
 			}
 		}
 	}
