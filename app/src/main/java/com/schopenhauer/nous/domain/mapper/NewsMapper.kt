@@ -1,6 +1,6 @@
 package com.schopenhauer.nous.domain.mapper
 
-import com.schopenhauer.nous.data.remote.model.NewsItem
+import com.schopenhauer.nous.data.network.models.NewsItem
 import com.schopenhauer.nous.domain.model.News
 
 fun NewsItem.toNews(): News {

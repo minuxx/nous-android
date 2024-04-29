@@ -1,9 +1,9 @@
 package com.schopenhauer.nous.data.repository
 
-import com.schopenhauer.nous.data.remote.datasource.NaverRemoteDataSource
-import com.schopenhauer.nous.data.remote.model.NewsItemPage
+import com.schopenhauer.nous.data.network.datasource.NaverRemoteDataSource
+import com.schopenhauer.nous.data.network.models.NewsItemPage
 import com.schopenhauer.nous.domain.repository.NewsRepository
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(

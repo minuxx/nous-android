@@ -7,7 +7,7 @@ import com.schopenhauer.nous.domain.usecase.journal.SaveJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.TASK_CONTENT_EMPTY
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

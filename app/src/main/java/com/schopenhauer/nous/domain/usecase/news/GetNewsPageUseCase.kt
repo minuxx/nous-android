@@ -3,7 +3,7 @@ package com.schopenhauer.nous.domain.usecase.news
 import com.schopenhauer.nous.domain.mapper.toNews
 import com.schopenhauer.nous.domain.model.NewsPage
 import com.schopenhauer.nous.domain.repository.NewsRepository
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

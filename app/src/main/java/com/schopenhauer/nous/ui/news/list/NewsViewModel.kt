@@ -6,7 +6,7 @@ import com.schopenhauer.nous.domain.model.News
 import com.schopenhauer.nous.domain.usecase.news.GetNewsPageUseCase
 import com.schopenhauer.nous.util.ErrorType.NAVER_SYSTEM
 import com.schopenhauer.nous.util.ErrorType.NETWORK
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.data.remote
+package com.schopenhauer.nous.data.network
 
 const val READ_TIMEOUT_SECONDS = 15L
 const val CONNECT_TIMEOUT_SECONDS = 15L

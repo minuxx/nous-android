@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Journal
 import com.schopenhauer.nous.domain.usecase.journal.GetJournalsUseCase
 import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNALS
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

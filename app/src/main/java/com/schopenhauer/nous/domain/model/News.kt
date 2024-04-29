@@ -13,6 +13,10 @@ data class NewsPage(
 	val totalCnt: Int
 )
 
+enum class NewsError(val code: String, val message: String) {
+
+}
+
 enum class NewsFailure : Failure {
 	LOAD_JOURNALS {
 		override fun code() = "J4000"

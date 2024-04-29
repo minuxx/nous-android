@@ -1,5 +1,6 @@
 package com.schopenhauer.nous.util
 
+import com.schopenhauer.nous.data.Result
 import org.json.JSONObject
 import com.schopenhauer.nous.util.ErrorType.UNKNOWN
 

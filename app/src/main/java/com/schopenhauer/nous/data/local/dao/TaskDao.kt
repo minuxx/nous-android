@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.schopenhauer.nous.data.local.model.TaskEntity
+import com.schopenhauer.nous.data.local.entities.TaskEntity
 
 @Dao
 interface TaskDao {

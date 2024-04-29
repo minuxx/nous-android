@@ -1,14 +1,14 @@
 package com.schopenhauer.nous.di
 
 import com.schopenhauer.nous.BuildConfig
-import com.schopenhauer.nous.data.remote.CONNECT_TIMEOUT_SECONDS
-import com.schopenhauer.nous.data.remote.NAVER_SEARCH_BASE_URL
-import com.schopenhauer.nous.data.remote.READ_TIMEOUT_SECONDS
-import com.schopenhauer.nous.data.remote.WRITE_TIMEOUT_SECONDS
-import com.schopenhauer.nous.data.remote.X_NAVER_CLIENT_ID_HEADER
-import com.schopenhauer.nous.data.remote.X_NAVER_CLIENT_SECRET_HEADER
-import com.schopenhauer.nous.data.remote.api.NaverSearchApi
-import com.schopenhauer.nous.data.remote.datasource.NaverRemoteDataSource
+import com.schopenhauer.nous.data.network.CONNECT_TIMEOUT_SECONDS
+import com.schopenhauer.nous.data.network.NAVER_SEARCH_BASE_URL
+import com.schopenhauer.nous.data.network.READ_TIMEOUT_SECONDS
+import com.schopenhauer.nous.data.network.WRITE_TIMEOUT_SECONDS
+import com.schopenhauer.nous.data.network.X_NAVER_CLIENT_ID_HEADER
+import com.schopenhauer.nous.data.network.X_NAVER_CLIENT_SECRET_HEADER
+import com.schopenhauer.nous.data.network.api.NaverSearchApi
+import com.schopenhauer.nous.data.network.datasource.NaverRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

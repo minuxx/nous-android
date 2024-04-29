@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.data.remote.datasource
+package com.schopenhauer.nous.data.network.datasource
 
 import android.util.Log
 import com.schopenhauer.nous.util.ErrorConverter
@@ -12,7 +12,7 @@ import org.json.JSONException
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
 
 open class BaseRemoteDataSource {
 

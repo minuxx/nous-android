@@ -1,14 +1,13 @@
 package com.schopenhauer.nous.domain.repository
 
-import com.schopenhauer.nous.data.local.model.JournalEntity
-import com.schopenhauer.nous.data.local.model.TaskEntity
-import com.schopenhauer.nous.data.repository.model.JournalWithTasks
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
+import com.schopenhauer.nous.domain.model.Journal
+import com.schopenhauer.nous.domain.model.Task
 
 interface JournalsRepository {
-  suspend fun writeJournals(journals: List<JournalEntity>): Result<Unit> // 더미 데이터용
-  suspend fun getJournals(): Result<List<JournalEntity>>
-  suspend fun saveJournal(date: String, tasks: List<TaskEntity>): Result<String>
-  suspend fun getJournal(id: Long): Result<JournalWithTasks>
-  suspend fun deleteJournal(id: Long): Result<String>
+  suspend fun saveJournals(journals: List<Journal>): Result<Unit> // 더미 데이터용
+  suspend fun getJournals(): Result<List<Journal>>
+  suspend fun saveJournal(date: String, tasks: List<Task>): Result<Unit>
+  suspend fun getJournal(id: Long): Result<Journal>
+  suspend fun removeJournal(id: Long): Result<Unit>
 }

@@ -3,11 +3,11 @@ package com.schopenhauer.nous.ui.journal.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Task
-import com.schopenhauer.nous.domain.usecase.journal.DeleteJournalUseCase
+import com.schopenhauer.nous.domain.usecase.journal.RemoveJournalUseCase
 import com.schopenhauer.nous.domain.usecase.journal.GetJournalUseCase
 import com.schopenhauer.nous.util.ErrorType.FAIL_DELETE_JOURNAL
 import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
-import com.schopenhauer.nous.util.Result
+import com.schopenhauer.nous.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class JournalDetailViewModel @Inject constructor(
 	private val getJournalUseCase: GetJournalUseCase,
-	private val deleteJournalUseCase: DeleteJournalUseCase
+	private val deleteJournalUseCase: RemoveJournalUseCase
 ) : ViewModel() {
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()

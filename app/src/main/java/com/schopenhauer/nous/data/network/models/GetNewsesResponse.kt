@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.data.remote.model
+package com.schopenhauer.nous.data.network.models
 
 import com.google.gson.annotations.SerializedName
 

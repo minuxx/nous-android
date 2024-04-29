@@ -1,73 +1,91 @@
 package com.schopenhauer.nous.data.repository
 
-import com.schopenhauer.nous.data.local.datasource.JournalLocalDataSource
-import com.schopenhauer.nous.data.local.model.JournalEntity
-import com.schopenhauer.nous.data.local.model.TaskEntity
-import com.schopenhauer.nous.data.repository.model.JournalWithTasks
+import com.schopenhauer.nous.data.Error
+import com.schopenhauer.nous.data.Result
+import com.schopenhauer.nous.data.local.dao.JournalDao
+import com.schopenhauer.nous.data.local.dao.TaskDao
+import com.schopenhauer.nous.data.local.entities.JournalEntity
+import com.schopenhauer.nous.data.local.entities.asDomain
+import com.schopenhauer.nous.domain.model.Journal
+import com.schopenhauer.nous.domain.model.JournalError.ALREADY
+import com.schopenhauer.nous.domain.model.JournalError.LOAD
+import com.schopenhauer.nous.domain.model.JournalError.REMOVE
+import com.schopenhauer.nous.domain.model.JournalError.SAVE
+import com.schopenhauer.nous.domain.model.Task
+import com.schopenhauer.nous.domain.model.asEntity
 import com.schopenhauer.nous.domain.repository.JournalsRepository
-import com.schopenhauer.nous.util.ErrorType.ALREADY_SAVED_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.FAIL_DELETE_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.FAIL_SAVE_JOURNAL
-import com.schopenhauer.nous.util.Message.SUCCESS_SAVE_JOURNAL
-import com.schopenhauer.nous.util.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class JournalsRepositoryImpl @Inject constructor(
-	private val journalLocalDataSource: JournalLocalDataSource
+	private val journalDao: JournalDao,
+	private val taskDao: TaskDao
 ) : JournalsRepository {
 
-	override suspend fun writeJournals(journals: List<JournalEntity>) =
-		journalLocalDataSource.insertJournals(journals)
+	override suspend fun saveJournals(journals: List<Journal>) = withContext(Dispatchers.IO) {
+		try {
+			journalDao.insertJournals(journals.map { it.asEntity() })
 
-	override suspend fun getJournals() = journalLocalDataSource.getAllJournals()
-
-	override suspend fun saveJournal(date: String, tasks: List<TaskEntity>): Result<String> {
-		val hasJournalRes = journalLocalDataSource.hasJournalWithDate(date)
-		// 1. 저장된 같은 날짜의 업무 일지 있는지 확인
-		if (hasJournalRes is Result.Success && hasJournalRes.data) {
-			return Result.Error(
-				ALREADY_SAVED_JOURNAL.code,
-				ALREADY_SAVED_JOURNAL.message
-			)
+			Result.Success(Unit)
+		} catch (e: Exception) {
+			Result.Failure(Error.Journal(SAVE))
 		}
+	}
 
-		// 2. JournalEntity 저장 및 ID 가져오기
-		val saveJournalRes = journalLocalDataSource.saveJournal(JournalEntity(date = date))
-		if (saveJournalRes is Result.Success) {
-			// 3. taskEntities 에 journalId 할당 후 저장하기
-			val journalId = saveJournalRes.data
-			val newTasks = tasks.map { it.copy(journalId = journalId) }
-			val saveTasksRes = journalLocalDataSource.saveTasks(newTasks)
-			return if (saveTasksRes is Result.Success) {
-				Result.Success(SUCCESS_SAVE_JOURNAL.content)
-			} else {
-				Result.Error(FAIL_SAVE_JOURNAL.code, FAIL_SAVE_JOURNAL.message)
+	override suspend fun getJournals() = withContext(Dispatchers.IO) {
+		try {
+			val journals = journalDao.getAllJournals()
+
+			Result.Success(journals.map { it.asDomain() })
+		} catch (e: Exception) {
+			Result.Failure(Error.Journal(LOAD))
+		}
+	}
+
+	override suspend fun saveJournal(date: String, tasks: List<Task>) = withContext(Dispatchers.IO) {
+		try {
+			// 저장된 같은 날짜의 업무 일지 있는지 확인
+			val journal = journalDao.getJournalCountByDate(date)
+			if (journal > 0) {
+				Result.Failure(Error.Journal(ALREADY)) // FIXME 테스트
 			}
-		}
 
-		return Result.Error(FAIL_SAVE_JOURNAL.code, FAIL_SAVE_JOURNAL.message)
+			// JournalEntity 저장 및 ID 가져오기
+			val journalId = journalDao.insertJournal(JournalEntity(date = date))
+			// journalId 할당 후 태스크 목록 저장하기
+			val newTasks = tasks.map { it.asEntity(journalId) }
+			taskDao.insertTasks(newTasks)
+
+			Result.Success(Unit)
+		} catch (e: Exception) {
+			Result.Failure(Error.Journal(SAVE))
+		}
 	}
 
-	override suspend fun getJournal(id: Long): Result<JournalWithTasks> {
-		val getJournalRes = journalLocalDataSource.getJournal(id)
-		val getTasksRes = journalLocalDataSource.getTasks(id)
-		if (getJournalRes is Result.Success && getTasksRes is Result.Success) {
-			return Result.Success(JournalWithTasks(journal = getJournalRes.data, tasks = getTasksRes.data))
-		}
+	override suspend fun getJournal(id: Long) = withContext(Dispatchers.IO) {
+		try {
+			val taskEntities = taskDao.getTasksOfJournal(id)
+			val journalEntity = journalDao.getJournal(id)
 
-		return Result.Error(FAIL_LOAD_JOURNAL.code, FAIL_LOAD_JOURNAL.message)
+			val tasks = taskEntities.map { it.asDomain() }
+			val journal = journalEntity.asDomain(tasks)
+
+			Result.Success(journal)
+		} catch (e: Exception) {
+			Result.Failure(Error.Journal(LOAD))
+		}
 	}
 
-	override suspend fun deleteJournal(id: Long): Result<String> {
-		val deleteJournalRes = journalLocalDataSource.deleteJournal(id)
-		val deleteTasksRes = journalLocalDataSource.deleteTasks(id)
+	override suspend fun removeJournal(id: Long) = withContext(Dispatchers.IO) {
+		try {
+			journalDao.deleteJournal(id)
+			taskDao.deleteTasks(id)
 
-		if (deleteJournalRes is Result.Success && deleteTasksRes is Result.Success) {
-			return Result.Success(SUCCESS_SAVE_JOURNAL.content)
+			Result.Success(Unit)
+		} catch (e: Exception) {
+			Result.Failure(Error.Journal(REMOVE))
 		}
-
-		return Result.Error(FAIL_DELETE_JOURNAL.code, FAIL_DELETE_JOURNAL.message)
 	}
 
 	companion object {

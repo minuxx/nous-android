@@ -10,7 +10,5 @@ import javax.inject.Inject
 class WriteJournalsUseCase @Inject constructor(
 	private val journalsRepository: JournalsRepository
 ) {
-	suspend operator fun invoke(journals: List<Journal>) = withContext(Dispatchers.Default) {
-		journalsRepository.writeJournals(journals.map { it.toJournalEntity() })
-	}
+	suspend operator fun invoke(journals: List<Journal>) = journalsRepository.saveJournals(journals)
 }

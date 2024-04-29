@@ -1,9 +1,9 @@
-package com.schopenhauer.nous.data.remote.api
+package com.schopenhauer.nous.data.network.api
 
-import com.schopenhauer.nous.data.remote.NAVER_SEARCH_EMPLOYMENT_NEWS_QUERY
-import com.schopenhauer.nous.data.remote.NAVER_SEARCH_NEWS_SORT_STRATEGY
-import com.schopenhauer.nous.data.remote.NAVER_SEARCH_PAGE_SIZE
-import com.schopenhauer.nous.data.remote.model.GetNewsesResponse
+import com.schopenhauer.nous.data.network.NAVER_SEARCH_EMPLOYMENT_NEWS_QUERY
+import com.schopenhauer.nous.data.network.NAVER_SEARCH_NEWS_SORT_STRATEGY
+import com.schopenhauer.nous.data.network.NAVER_SEARCH_PAGE_SIZE
+import com.schopenhauer.nous.data.network.models.GetNewsesResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

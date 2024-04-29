@@ -1,7 +1,7 @@
-package com.schopenhauer.nous.data.remote.datasource
+package com.schopenhauer.nous.data.network.datasource
 
-import com.schopenhauer.nous.data.remote.NAVER_SEARCH_PAGE_SIZE
-import com.schopenhauer.nous.data.remote.api.NaverSearchApi
+import com.schopenhauer.nous.data.network.NAVER_SEARCH_PAGE_SIZE
+import com.schopenhauer.nous.data.network.api.NaverSearchApi
 import javax.inject.Inject
 
 class NaverRemoteDataSource @Inject constructor(

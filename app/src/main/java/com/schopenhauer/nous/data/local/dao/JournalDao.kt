@@ -1,11 +1,10 @@
 package com.schopenhauer.nous.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.schopenhauer.nous.data.local.model.JournalEntity
+import com.schopenhauer.nous.data.local.entities.JournalEntity
 
 @Dao
 interface JournalDao {
