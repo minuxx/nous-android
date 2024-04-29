@@ -1,5 +1,7 @@
 package com.schopenhauer.nous.domain.model
 
+import com.schopenhauer.nous.data.network.models.NewsApiModel
+
 data class News (
 	val id: String,
 	val title: String,
@@ -14,16 +16,5 @@ data class NewsPage(
 )
 
 enum class NewsError(val code: String, val message: String) {
-
-}
-
-enum class NewsFailure : Failure {
-	LOAD_JOURNALS {
-		override fun code() = "J4000"
-		override fun message() = "업무 일지들을 가져오는 실패했어요"
-	},
-	SAVE_JOURNAL {
-		override fun code() = "J4001"
-		override fun message() = "업무 일지를 저장하지 못했어요"
-	};
+	LOAD("SE99", "뉴스를 불러오지 못했어요")
 }

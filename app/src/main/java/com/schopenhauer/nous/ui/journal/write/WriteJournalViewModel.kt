@@ -72,7 +72,6 @@ class WriteJournalViewModel @Inject constructor(
 		_uiEvent.emit(uiEvent)
 	}
 
-
 	data class UiState(
 		val isLoading: Boolean = false,
 		val date: String = millisToDate(),

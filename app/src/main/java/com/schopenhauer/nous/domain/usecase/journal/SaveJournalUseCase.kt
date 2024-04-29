@@ -1,10 +1,7 @@
 package com.schopenhauer.nous.domain.usecase.journal
 
-import com.schopenhauer.nous.domain.mapper.toTaskEntity
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.domain.repository.JournalsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SaveJournalUseCase @Inject constructor(

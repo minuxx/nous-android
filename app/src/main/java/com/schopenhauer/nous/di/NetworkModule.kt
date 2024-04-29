@@ -8,7 +8,6 @@ import com.schopenhauer.nous.data.network.WRITE_TIMEOUT_SECONDS
 import com.schopenhauer.nous.data.network.X_NAVER_CLIENT_ID_HEADER
 import com.schopenhauer.nous.data.network.X_NAVER_CLIENT_SECRET_HEADER
 import com.schopenhauer.nous.data.network.api.NaverSearchApi
-import com.schopenhauer.nous.data.network.datasource.NaverRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,11 +74,5 @@ object NetworkModule {
   @Singleton
   fun provideNaverSearchApi(retrofit: Retrofit): NaverSearchApi {
     return retrofit.create(NaverSearchApi::class.java)
-  }
-
-  @Provides
-  @Singleton
-  fun provideNewsRemoteDataSource(naverSearchApi: NaverSearchApi): NaverRemoteDataSource {
-    return NaverRemoteDataSource(naverSearchApi)
   }
 }

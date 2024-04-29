@@ -1,16 +1,17 @@
 package com.schopenhauer.nous.data.network.models
 
 import com.google.gson.annotations.SerializedName
+import com.schopenhauer.nous.domain.model.News
 
 data class GetNewsesResponse(
 	@SerializedName("lastBuildDate") val lastBuildDate: String,
 	@SerializedName("total") val total: Int,
 	@SerializedName("start") val start: Int,
 	@SerializedName("display") val display: Int,
-	@SerializedName("items") val items: List<NewsItem>,
+	@SerializedName("items") val items: List<NewsApiModel>,
 )
 
-data class NewsItem(
+data class NewsApiModel(
 	@SerializedName("title") val title: String,
 	@SerializedName("link") val link: String,
 	@SerializedName("originallink") val originalLink: String,
@@ -18,7 +19,12 @@ data class NewsItem(
 	@SerializedName("pubDate") val pubDate: String,
 )
 
-data class NewsItemPage(
-	val newsItems: List<NewsItem>,
-	val totalCnt: Int
-)
+fun NewsApiModel.asDomain(): News {
+	return News(
+		id = link,
+		title = title,
+		description = description,
+		link = originalLink,
+		date = pubDate
+	)
+}

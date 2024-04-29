@@ -4,7 +4,6 @@ import android.content.Context
 import com.schopenhauer.nous.data.local.NousDatabase
 import com.schopenhauer.nous.data.local.dao.JournalDao
 import com.schopenhauer.nous.data.local.dao.TaskDao
-import com.schopenhauer.nous.data.local.datasource.JournalLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,10 +29,4 @@ object LocalModule {
 	@Provides
 	fun provideJournalDao(nousDatabase: NousDatabase): JournalDao =
 		nousDatabase.journalDao()
-
-	@Provides
-	@Singleton
-	fun provideJournalLocalDataSource(journalDao: JournalDao, taskDao: TaskDao): JournalLocalDataSource {
-		return JournalLocalDataSource(journalDao, taskDao)
-	}
 }

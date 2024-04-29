@@ -18,8 +18,7 @@ import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.journal.TaskAdapter
-import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEvent.OnError
-import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEvent.OnSuccessSaveJournal
+import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEvent
 import com.schopenhauer.nous.ui.main.MainActivity
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -121,8 +120,8 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	private fun collectUiEffect() {
 		collectState(viewModel.uiEvent) {
 			when(it) {
-				is OnSuccessSaveJournal -> findNavController().popBackStack()
-				is OnError -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+				is UiEvent.OnSuccessSaveJournal -> findNavController().popBackStack()
+				is UiEvent.OnShowToastMessage -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
 			}
 		}
 	}

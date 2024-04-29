@@ -1,6 +1,5 @@
 package com.schopenhauer.nous.ui.journal.detail
 
-import android.app.ProgressDialog.show
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +18,6 @@ import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEvent
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
 import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
-import com.schopenhauer.nous.util.ErrorType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.domain.usecase.journal.RemoveJournalUseCase
 import com.schopenhauer.nous.domain.usecase.journal.GetJournalUseCase
-import com.schopenhauer.nous.util.ErrorType.FAIL_DELETE_JOURNAL
-import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNAL
 import com.schopenhauer.nous.data.Result
 import com.schopenhauer.nous.domain.model.JournalError
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -17,3 +17,4 @@ interface NaverSearchApi {
 		@Query("sort") sort: String = NAVER_SEARCH_NEWS_SORT_STRATEGY
 	): Response<GetNewsesResponse>
 }
+

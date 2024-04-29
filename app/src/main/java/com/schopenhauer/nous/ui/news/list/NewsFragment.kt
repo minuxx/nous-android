@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.databinding.FragmentNewsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.base.PaginationScrollListener
-import com.schopenhauer.nous.ui.news.list.NewsViewModel.UiEffect
+import com.schopenhauer.nous.ui.news.list.NewsViewModel.UiEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -57,9 +57,9 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 	}
 
 	private fun collectUiEffect() {
-		collectState(viewModel.uiEffect) {
-			when (it) {
-				is UiEffect.OnError -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+		collectState(viewModel.uiEvent) { event ->
+			when (event) {
+				is UiEvent.OnShowToastMessage -> Toast.makeText(requireActivity(), event.message, Toast.LENGTH_SHORT).show()
 			}
 		}
 	}
