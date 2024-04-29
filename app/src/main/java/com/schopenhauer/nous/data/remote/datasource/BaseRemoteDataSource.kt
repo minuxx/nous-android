@@ -34,11 +34,11 @@ open class BaseRemoteDataSource {
 
   private fun handleNetworkException(e: Exception): Result.Error = when (e) {
     is HttpException -> {
-      Log.w(TAG, "HTTP error: ${e.code()}, Message: ${e.message()}")
+      Log.e(TAG, "HTTP error: ${e.code()}, Message: ${e.message()}")
       Result.Error(NETWORK.code, NETWORK.message)
     }
     is IOException -> {
-      Log.w(TAG, "Network error: ${e.message ?: NETWORK.message}")
+      Log.e(TAG, "Network error: ${e.message ?: NETWORK.message}")
       Result.Error(NETWORK.code, NETWORK.message)
     }
     else -> {

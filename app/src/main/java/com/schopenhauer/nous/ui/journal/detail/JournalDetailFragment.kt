@@ -28,6 +28,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	private lateinit var taskAdapter: TaskAdapter
 	private var onBackPressedCallback: OnBackPressedCallback? = null
 
+
 	override fun onAttach(context: Context) {
 		super.onAttach(context)
 		onBackPressedCallback = object : OnBackPressedCallback(true) {
