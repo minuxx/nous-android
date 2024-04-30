@@ -2,10 +2,9 @@ package com.schopenhauer.nous.ui.journal.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.schopenhauer.nous.data.Result
 import com.schopenhauer.nous.domain.model.Journal
 import com.schopenhauer.nous.domain.usecase.journal.GetJournalsUseCase
-import com.schopenhauer.nous.util.ErrorType.FAIL_LOAD_JOURNALS
-import com.schopenhauer.nous.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,19 +21,18 @@ class JournalsViewModel @Inject constructor(
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
 
-	private val _uiEffect = MutableSharedFlow<UiEffect>()
-	val uiEffect = _uiEffect.asSharedFlow()
+	private val _uiEvent = MutableSharedFlow<UiEvent>()
+	val uiEvent = _uiEvent.asSharedFlow()
 
 	fun getJournals() = viewModelScope.launch {
 		when (val res = getJournalsUseCase()) {
 			is Result.Success -> _uiState.update { it.copy(journals = res.data) }
-			is Result.Error -> _uiEffect.emit(
-				UiEffect.OnError(
-					FAIL_LOAD_JOURNALS.code,
-					FAIL_LOAD_JOURNALS.message
-				)
-			)
+			is Result.Failure -> updateUiEvent(UiEvent.OnShowToastMessage(res.error.message))
 		}
+	}
+
+	private fun updateUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
+		_uiEvent.emit(uiEvent)
 	}
 
 	data class UiState(
@@ -42,9 +40,8 @@ class JournalsViewModel @Inject constructor(
 		val isNoResult: Boolean = false,
 	)
 
-	sealed class UiEffect {
-		data class OnError(val code: String, val message: String) : UiEffect()
-		data class OnSuccess(val message: String) : UiEffect()
+	sealed class UiEvent {
+		data class OnShowToastMessage(val message: String) : UiEvent()
 	}
 
 	companion object {

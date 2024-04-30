@@ -1,10 +1,9 @@
 package com.schopenhauer.nous.domain.usecase.journal
 
-import android.util.Log
-import com.schopenhauer.nous.domain.mapper.toJournal
+import com.schopenhauer.nous.data.Error
+import com.schopenhauer.nous.data.Result
+import com.schopenhauer.nous.domain.model.JournalError.SORT
 import com.schopenhauer.nous.domain.repository.JournalsRepository
-import com.schopenhauer.nous.util.ErrorType.PARSE
-import com.schopenhauer.nous.util.Result
 import com.schopenhauer.nous.util.parseDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,15 +16,15 @@ class GetJournalsUseCase @Inject constructor(
 		when(val res = journalsRepository.getJournals()) {
 			is Result.Success -> {
 				try {
-					val journals = res.data.map { it.toJournal() }
+					val journals = res.data
 					val sortedJournals = journals.sortedByDescending { parseDate(it.date) }
+
 					Result.Success(sortedJournals)
 				} catch (e: Exception) {
-					Log.e(TAG, "${PARSE.message}, Message: ${e.message}")
-					Result.Error(PARSE.code, PARSE.message)
+					Result.Failure(Error.Journal(SORT))
 				}
 			}
-			is Result.Error -> res
+			is Result.Failure -> res
 		}
 	}
 

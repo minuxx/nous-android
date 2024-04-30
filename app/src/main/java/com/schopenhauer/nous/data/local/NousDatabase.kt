@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.schopenhauer.nous.data.local.dao.JournalDao
 import com.schopenhauer.nous.data.local.dao.TaskDao
-import com.schopenhauer.nous.data.local.model.JournalEntity
-import com.schopenhauer.nous.data.local.model.TaskEntity
+import com.schopenhauer.nous.data.local.entities.JournalEntity
+import com.schopenhauer.nous.data.local.entities.TaskEntity
 
 @Database(entities = [TaskEntity::class, JournalEntity::class], version = 1, exportSchema = false)
 abstract class NousDatabase : RoomDatabase() {

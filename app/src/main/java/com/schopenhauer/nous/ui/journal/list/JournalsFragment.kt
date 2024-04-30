@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
-import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEffect
+import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEvent
 import com.schopenhauer.nous.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -60,7 +60,7 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		collectUiState()
-		collectUiEffect()
+		collectUiEvent()
 	}
 
 	private fun collectUiState() {
@@ -69,11 +69,10 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 		}
 	}
 
-	private fun collectUiEffect() {
-		collectState(viewModel.uiEffect) {
-			when (it) {
-				is UiEffect.OnSuccess -> findNavController().popBackStack()
-				is UiEffect.OnError -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+	private fun collectUiEvent() {
+		collectState(viewModel.uiEvent) { event ->
+			when (event) {
+				is UiEvent.OnShowToastMessage -> Toast.makeText(requireActivity(), event.message, Toast.LENGTH_SHORT).show()
 			}
 		}
 	}

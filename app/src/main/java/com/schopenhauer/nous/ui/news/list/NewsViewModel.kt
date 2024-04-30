@@ -2,11 +2,11 @@ package com.schopenhauer.nous.ui.news.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.schopenhauer.nous.data.Result
+import com.schopenhauer.nous.data.network.NetworkError
 import com.schopenhauer.nous.domain.model.News
+import com.schopenhauer.nous.domain.model.NewsError
 import com.schopenhauer.nous.domain.usecase.news.GetNewsPageUseCase
-import com.schopenhauer.nous.util.ErrorType.NAVER_SYSTEM
-import com.schopenhauer.nous.util.ErrorType.NETWORK
-import com.schopenhauer.nous.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,8 +24,8 @@ class NewsViewModel @Inject constructor(
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
 
-	private val _uiEffect = MutableSharedFlow<UiEffect>()
-	val uiEffect = _uiEffect.asSharedFlow()
+	private val _uiEvent = MutableSharedFlow<UiEvent>()
+	val uiEvent = _uiEvent.asSharedFlow()
 
 	fun getNews() = viewModelScope.launch {
 		_uiState.update { it.copy(isPageLoading = true) }
@@ -44,10 +44,10 @@ class NewsViewModel @Inject constructor(
 				yield()
 			}
 
-			is Result.Error -> {
-				when(res.code) {
-					NETWORK.code,
-					NAVER_SYSTEM.code -> _uiEffect.emit(UiEffect.OnError(res.code, res.message))
+			is Result.Failure -> {
+				when(res.error.code) {
+					NetworkError.CONNECT.code,
+					NewsError.LOAD.code -> updateUiEvent(UiEvent.OnShowToastMessage(res.error.message))
 				}
 			}
 		}
@@ -57,6 +57,10 @@ class NewsViewModel @Inject constructor(
 	fun isPageLoading() = _uiState.value.isPageLoading
 	fun isLastPage() = _uiState.value.isLastPage
 
+	private fun updateUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
+		_uiEvent.emit(uiEvent)
+	}
+
 	data class UiState(
 		val page: Int = 1,
 		val newses: List<News> = listOf(),
@@ -64,8 +68,8 @@ class NewsViewModel @Inject constructor(
 		val isLastPage: Boolean = false
 	)
 
-	sealed class UiEffect {
-		data class OnError(val code: String, val message: String) : UiEffect()
+	sealed class UiEvent {
+		data class OnShowToastMessage(val message: String) : UiEvent()
 	}
 
 	companion object {
