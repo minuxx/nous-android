@@ -48,7 +48,7 @@ class JournalsRepositoryImpl @Inject constructor(
 			// 저장된 같은 날짜의 업무 일지 있는지 확인
 			val journal = journalDao.getJournalCountByDate(date)
 			if (journal > 0) {
-				Result.Failure(Error.Journal(ALREADY)) // FIXME 테스트
+				return@withContext Result.Failure(Error.Journal(ALREADY)) // FIXME 테스트
 			}
 
 			// JournalEntity 저장 및 ID 가져오기
