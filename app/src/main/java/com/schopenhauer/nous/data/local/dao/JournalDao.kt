@@ -4,22 +4,22 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.schopenhauer.nous.data.local.entities.JournalEntity
+import com.schopenhauer.nous.data.local.entities.JournalWithTasks
 
 @Dao
 interface JournalDao {
-	// 더미 데이터 용
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insertJournals(journals: List<JournalEntity>)
-
+	@Transaction
 	@Query("SELECT * FROM journals")
-	suspend fun getAllJournals(): List<JournalEntity>
+	suspend fun getJournals(): List<JournalWithTasks>
 
+	@Transaction
 	@Query("SELECT * FROM journals WHERE id = :id")
-	suspend fun getJournal(id: Long): JournalEntity
+	suspend fun getJournal(id: Long): JournalWithTasks
 
-	@Query("SELECT COUNT(*) FROM journals WHERE date = :date")
-	suspend fun getJournalCountByDate(date: String): Long
+	@Query("SELECT COUNT(*) FROM journals WHERE timeMillis = :timeMillis")
+	suspend fun getJournalCountByDate(timeMillis: Long): Long
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertJournal(journal: JournalEntity): Long

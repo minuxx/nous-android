@@ -7,19 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.journal.write.WriteJournalViewModel.UiEvent
 import com.schopenhauer.nous.ui.main.MainActivity
+import com.schopenhauer.nous.util.getTodayTimeMillis
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -69,33 +68,35 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	}
 
 	private fun initDatePicker() {
-		val todayInMillis = MaterialDatePicker.todayInUtcMilliseconds()
+		val todayMillis = getTodayTimeMillis()
+		viewModel.setTimeMillis(todayMillis)
+
 		val oneMonthAgo = Calendar.getInstance()
 		oneMonthAgo.add(Calendar.MONTH, -1)
 
 		val constraintsBuilder = CalendarConstraints.Builder()
 			.setStart(oneMonthAgo.timeInMillis)
-			.setEnd(todayInMillis)
+			.setEnd(todayMillis)
 			.setValidator(DateValidatorPointBackward.now())
 
 		datePicker = MaterialDatePicker.Builder.datePicker()
 			.setCalendarConstraints(constraintsBuilder.build())
-			.setSelection(todayInMillis)
+			.setSelection(todayMillis)
 			.build()
 
-		datePicker?.addOnPositiveButtonClickListener {
-			viewModel.setDate(millisToDate(it))
+		datePicker?.addOnPositiveButtonClickListener { timeMillis ->
+			viewModel.setTimeMillis(timeMillis)
 		}
 	}
 
 	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter(isDeletable = true) { taskId -> viewModel.deleteTask(taskId) }
+		taskAdapter = TaskAdapter(isDeletable = true) { taskId -> viewModel.removeTask(taskId) }
 		binding.taskRecyclerView.apply {
 			layoutManager = LinearLayoutManager(requireActivity())
 			adapter = taskAdapter
 			itemAnimator = null
-			setHasFixedSize(false)
 			isNestedScrollingEnabled = false
+			setHasFixedSize(false)
 			addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
 				if (bottom != oldBottom) {
 					binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
@@ -108,18 +109,31 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		collectUiState()
-		collectUiEffect()
+		collectUiEvent()
 	}
 
 	private fun collectUiState() {
-		collectState(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
-			taskAdapter.submitList(it)
+		collectState(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) { tasks ->
+			taskAdapter.submitList(tasks)
+		}
+
+		collectState(viewModel.uiState.map { it.timeMillis }.distinctUntilChanged()) { timeMillis ->
+			val date = millisToDate(timeMillis ?: getTodayTimeMillis())
+			binding.dateInputEt.setText(date)
+		}
+
+		collectState(viewModel.uiState.map { it.isLoading }.distinctUntilChanged()) { isLoading ->
+			binding.loadingBar.visibility = if (isLoading) {
+				View.VISIBLE
+			} else {
+				View.GONE
+			}
 		}
 	}
 
-	private fun collectUiEffect() {
+	private fun collectUiEvent() {
 		collectState(viewModel.uiEvent) {
-			when(it) {
+			when (it) {
 				is UiEvent.OnSuccessSaveJournal -> findNavController().popBackStack()
 				is UiEvent.OnShowToastMessage -> Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
 			}
@@ -139,16 +153,8 @@ class WriteJournalFragment : BaseFragment<FragmentWriteJournalBinding>() {
 	}
 
 	override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentWriteJournalBinding =
-		{ inflater, container, isAttach ->
-			DataBindingUtil.inflate<FragmentWriteJournalBinding?>(
-				inflater,
-				R.layout.fragment_write_journal,
-				container,
-				isAttach
-			).also { binding ->
-				binding.lifecycleOwner = this@WriteJournalFragment
-				binding.vm = viewModel
-			}
+		{ layoutInflater, container, isAttach ->
+			FragmentWriteJournalBinding.inflate(layoutInflater, container, isAttach)
 		}
 
 	companion object {

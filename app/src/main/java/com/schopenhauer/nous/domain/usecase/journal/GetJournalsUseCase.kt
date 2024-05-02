@@ -17,7 +17,7 @@ class GetJournalsUseCase @Inject constructor(
 			is Result.Success -> {
 				try {
 					val journals = res.data
-					val sortedJournals = journals.sortedByDescending { parseDate(it.date) }
+					val sortedJournals = journals.sortedByDescending { it.timeMillis }
 
 					Result.Success(sortedJournals)
 				} catch (e: Exception) {

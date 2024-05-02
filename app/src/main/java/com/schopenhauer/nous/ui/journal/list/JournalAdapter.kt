@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.schopenhauer.nous.databinding.ListItemJournalBinding
 import com.schopenhauer.nous.domain.model.Journal
+import com.schopenhauer.nous.util.millisToDate
 
 class JournalAdapter(
 	private val itemClickListener: (Long) -> Unit
@@ -33,7 +34,7 @@ class JournalAdapter(
 		}
 
 		fun bind(journal: Journal) {
-			binding.dateTv.text = journal.date
+			binding.dateTv.text = millisToDate(journal.timeMillis)
 		}
 	}
 
