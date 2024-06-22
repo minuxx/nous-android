@@ -1,6 +1,5 @@
 package com.schopenhauer.nous.ui.journal.detail
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,7 +37,7 @@ fun TaskItemColumn(
 				onClickIcon = onClickIcon,
 				modifier = Modifier.padding(
 					horizontal = dimensionResource(id = R.dimen.padding_medium),
-					vertical = dimensionResource(id = R.dimen.padding_small)
+					vertical = dimensionResource(id = R.dimen.padding_extra_small)
 				)
 			)
 		}
