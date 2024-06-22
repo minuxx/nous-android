@@ -7,18 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.databinding.DataBindingUtil
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
-import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEvent
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
-import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
+import com.schopenhauer.nous.ui.theme.NousTheme
 import com.schopenhauer.nous.util.getTodayTimeMillis
 import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.map
 @AndroidEntryPoint
 class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	private val viewModel: JournalDetailViewModel by viewModels()
-	private lateinit var taskAdapter: TaskAdapter
 	private var onBackPressedCallback: OnBackPressedCallback? = null
 
 
@@ -43,28 +42,29 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		(activity as MainActivity).hideBottomNavigationView()
 	}
 
-	override fun initViews() {
-		initTaskRecyclerView()
+	override fun initViews() {}
 
-		binding.topAppBar.setNavigationOnClickListener {
-			findNavController().popBackStack()
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+		super.onCreateView(inflater, container, savedInstanceState)
+		binding.composeView.apply {
+			setContent {
+				NousTheme {
+					setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+					val uiState by viewModel.uiState.collectAsState()
+
+					Surface {
+						JournalDetailScreen(
+							date = millisToDate(uiState.timeMillis ?: getTodayTimeMillis()),
+							tasks = uiState.tasks,
+							onClickBack = { findNavController().popBackStack() },
+							onRemoveJournal = { viewModel.removeJournal() }
+						)
+					}
+				}
+			}
 		}
 
-		binding.topAppBar.setOnMenuItemClickListener {
-			viewModel.removeJournal()
-			true
-		}
-	}
-
-	private fun initTaskRecyclerView() {
-		taskAdapter = TaskAdapter(isDeletable = false)
-		binding.taskRecyclerView.apply {
-			layoutManager = LinearLayoutManager(requireActivity())
-			adapter = taskAdapter
-			itemAnimator = null
-			setHasFixedSize(false)
-			isNestedScrollingEnabled = false
-		}
+		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,15 +84,6 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	}
 
 	private fun collectUiState() {
-		collectState(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
-			taskAdapter.submitList(it)
-		}
-
-		collectState(viewModel.uiState.map { it.timeMillis }.distinctUntilChanged()) { timeMillis ->
-			val date = millisToDate(timeMillis ?: getTodayTimeMillis())
-			binding.dateTv.text = date
-		}
-
 		collectState(viewModel.uiState.map { it.isLoading }.distinctUntilChanged()) { isLoading ->
 			binding.loadingBar.visibility = if (isLoading) {
 				View.VISIBLE

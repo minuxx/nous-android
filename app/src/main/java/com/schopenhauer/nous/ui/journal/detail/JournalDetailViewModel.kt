@@ -2,11 +2,11 @@ package com.schopenhauer.nous.ui.journal.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.schopenhauer.nous.domain.model.Task
-import com.schopenhauer.nous.domain.usecase.journal.RemoveJournalUseCase
-import com.schopenhauer.nous.domain.usecase.journal.GetJournalUseCase
 import com.schopenhauer.nous.data.Result
 import com.schopenhauer.nous.domain.model.JournalError
+import com.schopenhauer.nous.domain.model.Task
+import com.schopenhauer.nous.domain.usecase.journal.GetJournalUseCase
+import com.schopenhauer.nous.domain.usecase.journal.RemoveJournalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
