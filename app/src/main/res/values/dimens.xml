@@ -7,4 +7,12 @@
   <dimen name="round_large">16dp</dimen>
   <dimen name="round_extra_large">28dp</dimen>
   <dimen name="round_full">100dp</dimen>
+
+  <dimen name="padding_extra_small">6dp</dimen>
+  <dimen name="padding_small">8dp</dimen>
+  <dimen name="padding_medium">16dp</dimen>
+  <dimen name="padding_large">24dp</dimen>
+  <dimen name="list_item_height_medium">48dp</dimen>
+  <dimen name="icon_size_medium">24dp</dimen>
+  <dimen name="image_size">64dp</dimen>
 </resources>
