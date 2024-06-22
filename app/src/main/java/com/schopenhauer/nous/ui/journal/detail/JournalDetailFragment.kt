@@ -13,11 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
+import com.schopenhauer.nous.databinding.FragmentWriteJournalBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEvent
 import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
 import com.schopenhauer.nous.ui.journal.TaskAdapter
 import com.schopenhauer.nous.ui.main.MainActivity
+import com.schopenhauer.nous.util.getTodayTimeMillis
+import com.schopenhauer.nous.util.millisToDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -84,6 +87,19 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 		collectState(viewModel.uiState.map { it.tasks }.distinctUntilChanged()) {
 			taskAdapter.submitList(it)
 		}
+
+		collectState(viewModel.uiState.map { it.timeMillis }.distinctUntilChanged()) { timeMillis ->
+			val date = millisToDate(timeMillis ?: getTodayTimeMillis())
+			binding.dateTv.text = date
+		}
+
+		collectState(viewModel.uiState.map { it.isLoading }.distinctUntilChanged()) { isLoading ->
+			binding.loadingBar.visibility = if (isLoading) {
+				View.VISIBLE
+			} else {
+				View.GONE
+			}
+		}
 	}
 
 	private fun collectUiEvent() {
@@ -108,16 +124,8 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 	}
 
 	override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentJournalDetailBinding =
-		{ inflater, container, isAttach ->
-			DataBindingUtil.inflate<FragmentJournalDetailBinding?>(
-				inflater,
-				R.layout.fragment_journal_detail,
-				container,
-				isAttach
-			).also { binding ->
-				binding.lifecycleOwner = this@JournalDetailFragment
-				binding.vm = viewModel
-			}
+		{ layoutInflater, container, isAttach ->
+			FragmentJournalDetailBinding.inflate(layoutInflater, container, isAttach)
 		}
 
 	companion object {

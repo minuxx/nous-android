@@ -1,6 +1,5 @@
 package com.schopenhauer.nous.ui.setting
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -10,7 +9,6 @@ import com.schopenhauer.nous.BuildConfig
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentSettingBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
-import com.schopenhauer.nous.util.Message
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,16 +31,13 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
 	override fun initViews() {
 		viewModel.setVersion(BuildConfig.VERSION_NAME)
 		binding.termsOfUseContainer.setOnClickListener {
-			Toast.makeText(requireActivity(), Message.READY_DEVELOPMENT.content, Toast.LENGTH_SHORT)
-				.show()
+			Toast.makeText(requireActivity(),"개발 준비중이에요", Toast.LENGTH_SHORT).show()
 		}
 		binding.privacyPolicyContainer.setOnClickListener {
-			Toast.makeText(requireActivity(), Message.READY_DEVELOPMENT.content, Toast.LENGTH_SHORT)
-				.show()
+			Toast.makeText(requireActivity(), "개발 준비중이에요", Toast.LENGTH_SHORT).show()
 		}
 		binding.openSourceLicenseContainer.setOnClickListener {
-			Toast.makeText(requireActivity(), Message.READY_DEVELOPMENT.content, Toast.LENGTH_SHORT)
-				.show()
+			Toast.makeText(requireActivity(), "개발 준비중이에요", Toast.LENGTH_SHORT).show()
 		}
 	}
 }

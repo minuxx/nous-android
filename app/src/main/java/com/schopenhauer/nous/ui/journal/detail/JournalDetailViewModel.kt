@@ -33,10 +33,13 @@ class JournalDetailViewModel @Inject constructor(
 	}
 
 	private fun getJournal() = viewModelScope.launch {
-		val journalId = _uiState.value.journalId
+		val journalId = _uiState.value.journalId ?: return@launch
 
 		when (val res = getJournalUseCase(journalId)) {
-			is Result.Success -> _uiState.update { it.copy(date = res.data.date, tasks = res.data.tasks) }
+			is Result.Success -> {
+				val (id, timeMillis, tasks) = res.data
+				_uiState.update { it.copy(journalId = id, timeMillis = timeMillis, tasks = tasks) }
+			}
 			is Result.Failure -> {
 				when (res.error.code) {
 					JournalError.LOAD.code -> updateUiEvent(UiEvent.OnFailLoadJournal)
@@ -46,7 +49,7 @@ class JournalDetailViewModel @Inject constructor(
 	}
 
 	fun removeJournal() = viewModelScope.launch {
-		val journalId = _uiState.value.journalId
+		val journalId = _uiState.value.journalId ?: return@launch
 
 		when (val res = removeJournalUseCase(journalId)) {
 			is Result.Success -> updateUiEvent(UiEvent.OnSuccessRemoveJournal)
@@ -64,8 +67,8 @@ class JournalDetailViewModel @Inject constructor(
 
 	data class UiState(
 		val isLoading: Boolean = false,
-		val journalId: Long = 0L,
-		val date: String = "",
+		val journalId: Long? = null,
+		val timeMillis: Long? = null,
 		val tasks: List<Task> = listOf(),
 	)
 

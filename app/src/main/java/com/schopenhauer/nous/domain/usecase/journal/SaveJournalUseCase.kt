@@ -7,5 +7,5 @@ import javax.inject.Inject
 class SaveJournalUseCase @Inject constructor(
 	private val journalsRepository: JournalsRepository
 ) {
-	suspend operator fun invoke(date: String, tasks: List<Task>) = journalsRepository.saveJournal(date, tasks)
+	suspend operator fun invoke(timeMillis: Long?, tasks: List<Task>) = journalsRepository.saveJournal(timeMillis, tasks)
 }

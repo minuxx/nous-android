@@ -18,7 +18,9 @@ private const val DATE_PATTERN = "yyyy/MM/dd"
 private const val TIME_PATTERN = "HH:mm"
 private const val TAG = "DateUtil"
 
-fun millisToDate(millis: Long = MaterialDatePicker.todayInUtcMilliseconds()): String =
+fun getTodayTimeMillis(): Long = MaterialDatePicker.todayInUtcMilliseconds()
+
+fun millisToDate(millis: Long): String =
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 		val dateFormat = DateTimeFormatter.ofPattern(DATE_PATTERN, Locale.getDefault())
 		Instant.ofEpochMilli(millis)
