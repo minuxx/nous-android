@@ -57,7 +57,7 @@ class JournalDetailFragment : BaseFragment<FragmentJournalDetailBinding>() {
 							date = millisToDate(uiState.timeMillis ?: getTodayTimeMillis()),
 							tasks = uiState.tasks,
 							onClickBack = { findNavController().popBackStack() },
-							onRemoveJournal = { viewModel.removeJournal() }
+							onJournalRemove = { viewModel.removeJournal() }
 						)
 					}
 				}
