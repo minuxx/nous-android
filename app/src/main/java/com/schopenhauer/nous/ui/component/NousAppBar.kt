@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import com.schopenhauer.nous.R
 
 @Composable
@@ -21,11 +20,12 @@ fun NousAppBar(
 	modifier: Modifier = Modifier,
 	title: String,
 	onLeftIconClick: () -> Unit,
-	onRightClickIcon: () -> Unit
+	onRightClickIcon: () -> Unit,
+	rightText: String,
 ) {
 	Row(
 		verticalAlignment = Alignment.CenterVertically,
-		modifier = Modifier.padding(
+		modifier = modifier.padding(
 			end = dimensionResource(id = R.dimen.padding_medium)
 		)
 	) {
@@ -44,8 +44,9 @@ fun NousAppBar(
 		Spacer(modifier = Modifier.weight(1f))
 		TextButton(onClick = onRightClickIcon) {
 			Text(
-				text = stringResource(id = R.string.delete),
+				text = rightText,
 				style = MaterialTheme.typography.titleSmall,
+				color = MaterialTheme.colorScheme.onSurface
 			)
 		}
 	}

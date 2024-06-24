@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.ui.component.NousAppBar
+import com.schopenhauer.nous.ui.component.TaskItemColumn
 import com.schopenhauer.nous.ui.theme.NousTheme
 
 @Composable
@@ -34,7 +35,8 @@ fun JournalDetailScreen(
 		NousAppBar(
 			title = stringResource(id = R.string.journal_detail),
 			onLeftIconClick = onClickBack,
-			onRightClickIcon = onJournalRemove
+			onRightClickIcon = onJournalRemove,
+			rightText = stringResource(id = R.string.delete)
 		)
 		Row(
 			verticalAlignment = Alignment.CenterVertically,

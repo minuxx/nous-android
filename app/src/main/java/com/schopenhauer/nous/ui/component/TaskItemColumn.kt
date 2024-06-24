@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal.detail
+package com.schopenhauer.nous.ui.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +12,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Task
+import com.schopenhauer.nous.ui.journal.detail.TaskItem
 import com.schopenhauer.nous.ui.theme.NousTheme
 
 @Composable
