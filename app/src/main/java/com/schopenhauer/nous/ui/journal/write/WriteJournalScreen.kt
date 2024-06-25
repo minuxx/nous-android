@@ -9,12 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -105,5 +111,51 @@ fun WriteJournalScreenPreview() {
 			) {
 			}
 		}
+	}
+}
+
+@Composable
+fun TaskOutlinedTextField(
+	modifier: Modifier = Modifier,
+	content: String,
+	onValueChange: (String) -> Unit
+) {
+	Surface(
+		modifier = modifier.fillMaxWidth(),
+		color = MaterialTheme.colorScheme.surfaceVariant
+	) {
+		OutlinedTextField(
+			modifier = Modifier
+				.padding(
+				horizontal = dimensionResource(id = R.dimen.padding_medium),
+				vertical = dimensionResource(id = R.dimen.padding_small)
+			),
+			shape = RoundedCornerShape(dimensionResource(R.dimen.round_extra_large)),
+			value = content,
+			onValueChange = onValueChange,
+
+		)
+	}
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TaskOutlinedTextFieldLightPreview() {
+	NousTheme {
+		TaskOutlinedTextField(
+			content = "",
+			onValueChange = {}
+		)
+	}
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TaskOutlinedTextFieldDarkPreview() {
+	NousTheme(darkTheme = true) {
+		TaskOutlinedTextField(
+			content = "",
+			onValueChange = {}
+		)
 	}
 }
