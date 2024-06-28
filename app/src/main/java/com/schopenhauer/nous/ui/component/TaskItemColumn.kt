@@ -20,7 +20,7 @@ fun TaskItemColumn(
 	modifier: Modifier = Modifier,
 	tasks: List<Task>,
 	onClick: () -> Unit,
-	onClickIcon: (() -> Unit)? = null,
+	onClickIcon: ((Long) -> Unit)? = null,
 ) {
 	LazyColumn(
 		contentPadding = PaddingValues(vertical = dimensionResource(id = R.dimen.padding_small)),
@@ -35,7 +35,7 @@ fun TaskItemColumn(
 			TaskItem(
 				content = item.content,
 				onClick = onClick,
-				onClickIcon = onClickIcon,
+				onClickIcon = { onClickIcon?.invoke(item.id) },
 				modifier = Modifier.padding(
 					horizontal = dimensionResource(id = R.dimen.padding_medium),
 					vertical = dimensionResource(id = R.dimen.padding_extra_small)
