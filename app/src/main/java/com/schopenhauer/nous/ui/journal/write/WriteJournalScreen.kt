@@ -1,6 +1,5 @@
 package com.schopenhauer.nous.ui.journal.write
 
-import android.os.Build
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,22 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,26 +34,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Task
+import com.schopenhauer.nous.ui.component.JournalDatePickerDialog
 import com.schopenhauer.nous.ui.component.NousAppBar
 import com.schopenhauer.nous.ui.component.TaskItemColumn
 import com.schopenhauer.nous.ui.theme.NousTheme
-import java.time.DayOfWeek
-import java.time.Instant
-import java.time.ZoneId
-import java.util.Calendar
-import java.util.TimeZone
+import com.schopenhauer.nous.util.getTodayTimeMillis
+import com.schopenhauer.nous.util.millisToDate
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun WriteJournalScreen(
 	modifier: Modifier = Modifier,
-	date: String,
+	selectedDateMillis: Long?,
 	tasks: List<Task>,
 	onClickBack: () -> Unit,
 	onSaveJournal: () -> Unit,
 	onRemoveTask: (Long) -> Unit,
-	taskContent: String = "",
 	onWriteTask: (String) -> Unit,
-	onTimeMillisChanged: (Long?) -> Unit
+	onDateMillisChanged: (Long?) -> Unit
 ) {
 	var shouldShowDatePicker by rememberSaveable { mutableStateOf(false) }
 
@@ -78,7 +69,7 @@ fun WriteJournalScreen(
 			modifier = Modifier
 				.fillMaxWidth()
 				.padding(horizontal = dimensionResource(id = R.dimen.padding_medium)),
-			date = date,
+			date = millisToDate(selectedDateMillis ?: getTodayTimeMillis()),
 			onClick = { shouldShowDatePicker = true }
 		)
 		Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_medium)))
@@ -90,17 +81,16 @@ fun WriteJournalScreen(
 			}
 		)
 		Spacer(modifier = Modifier.weight(1f))
-		TaskOutlinedTextField(
-			content = taskContent,
-			onValueChange = onWriteTask,
-		)
-	}
+		TaskOutlinedTextField(onWriteTask = onWriteTask)
 
-	if (shouldShowDatePicker) {
-		JournalDatePickerDialog(
-			onTimeMillisChanged = onTimeMillisChanged,
-			onDismiss = { shouldShowDatePicker = false }
-		)
+		if (shouldShowDatePicker) {
+			JournalDatePickerDialog(
+				title = stringResource(id = R.string.dialog_date_picker_title_journal),
+				selectedDateMillis = selectedDateMillis,
+				onTimeMillisChanged = onDateMillisChanged,
+				onDismiss = { shouldShowDatePicker = false }
+			)
+		}
 	}
 }
 
@@ -110,7 +100,7 @@ fun WriteJournalScreenPreview() {
 	NousTheme {
 		Surface {
 			WriteJournalScreen(
-				date = "2024/06/24",
+				selectedDateMillis = System.currentTimeMillis(),
 				tasks = listOf(
 					Task(
 						id = 1,
@@ -121,7 +111,7 @@ fun WriteJournalScreenPreview() {
 				onSaveJournal = {},
 				onRemoveTask = {},
 				onWriteTask = {},
-				onTimeMillisChanged = {}
+				onDateMillisChanged = {}
 			)
 		}
 	}
@@ -133,7 +123,7 @@ fun WriteJournalScreenDarkPreview() {
 	NousTheme(darkTheme = true) {
 		Surface {
 			WriteJournalScreen(
-				date = "2024/06/24",
+				selectedDateMillis = System.currentTimeMillis(),
 				tasks = listOf(
 					Task(
 						id = 1,
@@ -144,7 +134,7 @@ fun WriteJournalScreenDarkPreview() {
 				onSaveJournal = {},
 				onRemoveTask = {},
 				onWriteTask = {},
-				onTimeMillisChanged = {}
+				onDateMillisChanged = {}
 			)
 		}
 	}
@@ -211,52 +201,13 @@ fun DateSelectFieldDarkPreview() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun JournalDatePickerDialog(
-	onTimeMillisChanged: (Long?) -> Unit,
-	onDismiss: () -> Unit
-) {
-	val datePickerState = rememberDatePickerState(
-		initialDisplayedMonthMillis = System.currentTimeMillis(),
-		yearRange = 1900..2000,
-		selectableDates = object : SelectableDates {
-			override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-				return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-					val dayOfWeek = Instant.ofEpochMilli(utcTimeMillis).atZone(ZoneId.of("UTC"))
-						.toLocalDate().dayOfWeek
-					dayOfWeek != DayOfWeek.SUNDAY && dayOfWeek != DayOfWeek.SATURDAY
-				} else {
-					val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-					calendar.timeInMillis = utcTimeMillis
-					calendar[Calendar.DAY_OF_WEEK] != Calendar.SUNDAY && calendar[Calendar.DAY_OF_WEEK] != Calendar.SATURDAY
-				}
-			}
-
-			override fun isSelectableYear(year: Int): Boolean {
-				return true
-			}
-		}
-	)
-
-	DatePickerDialog(
-		onDismissRequest = {
-			onDismiss()
-		}, confirmButton = {
-			onDismiss()
-		}
-	) {
-		onTimeMillisChanged(datePickerState.selectedDateMillis)
-		DatePicker(state = datePickerState)
-	}
-}
-
 @Composable
 fun TaskOutlinedTextField(
 	modifier: Modifier = Modifier,
-	content: String,
-	onValueChange: (String) -> Unit,
+	onWriteTask: (String) -> Unit,
 ) {
+	var taskInputText by rememberSaveable { mutableStateOf("") }
+
 	Surface(
 		modifier = modifier.fillMaxWidth(),
 		color = MaterialTheme.colorScheme.surfaceVariant
@@ -271,10 +222,15 @@ fun TaskOutlinedTextField(
 				unfocusedContainerColor = Color.White
 			),
 			shape = RoundedCornerShape(dimensionResource(R.dimen.round_extra_large)),
-			value = content,
-			onValueChange = onValueChange,
+			value = taskInputText,
+			onValueChange = {
+				taskInputText = it
+			},
 			trailingIcon = {
-				IconButton(onClick = { }) {
+				IconButton(onClick = {
+					onWriteTask(taskInputText)
+					taskInputText = ""
+				}) {
 					Icon(
 						painter = painterResource(id = R.drawable.ic_pencil),
 						contentDescription = null,
@@ -291,8 +247,7 @@ fun TaskOutlinedTextField(
 fun TaskOutlinedTextFieldLightPreview() {
 	NousTheme {
 		TaskOutlinedTextField(
-			content = "",
-			onValueChange = {},
+			onWriteTask = {},
 		)
 	}
 }
@@ -302,8 +257,7 @@ fun TaskOutlinedTextFieldLightPreview() {
 fun TaskOutlinedTextFieldDarkPreview() {
 	NousTheme(darkTheme = true) {
 		TaskOutlinedTextField(
-			content = "",
-			onValueChange = {},
+			onWriteTask = {},
 		)
 	}
 }
