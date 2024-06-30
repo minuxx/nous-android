@@ -25,7 +25,12 @@ fun getCurrentYear(): Int {
 	return dateFormat.format(todayTimeMillis).toInt()
 }
 
-fun getTodayTimeMillis(): Long = System.currentTimeMillis()
+fun getTodayTimeMillis(): Long  {
+	val currentTimeMillis = System.currentTimeMillis()
+	val timeZoneOffset = TimeZone.getDefault().getOffset(currentTimeMillis)
+
+	return currentTimeMillis + timeZoneOffset
+}
 
 fun millisToDate(millis: Long): String =
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

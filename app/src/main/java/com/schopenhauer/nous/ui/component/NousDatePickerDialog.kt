@@ -16,6 +16,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.util.getCurrentYear
+import com.schopenhauer.nous.util.getTodayTimeMillis
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,12 +29,12 @@ fun JournalDatePickerDialog(
 ) {
 	val datePickerState = rememberDatePickerState(
 		initialDisplayMode = DisplayMode.Picker,
-		initialDisplayedMonthMillis = System.currentTimeMillis(),
-		initialSelectedDateMillis = selectedDateMillis ?: System.currentTimeMillis(),
+		initialDisplayedMonthMillis = getTodayTimeMillis(),
+		initialSelectedDateMillis = selectedDateMillis ?: getTodayTimeMillis(),
 		yearRange = 1900..getCurrentYear(),
 		selectableDates = object : SelectableDates {
 			override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-				return utcTimeMillis <= System.currentTimeMillis()
+				return utcTimeMillis <= getTodayTimeMillis()
 			}
 
 			override fun isSelectableYear(year: Int): Boolean {

@@ -219,6 +219,8 @@ fun TaskOutlinedTextField(
 					vertical = dimensionResource(id = R.dimen.padding_small)
 				),
 			colors = OutlinedTextFieldDefaults.colors(
+				focusedTextColor = Color.Black,
+				focusedContainerColor = Color.White,
 				unfocusedContainerColor = Color.White
 			),
 			shape = RoundedCornerShape(dimensionResource(R.dimen.round_extra_large)),

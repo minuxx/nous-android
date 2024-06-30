@@ -7,6 +7,7 @@ import com.schopenhauer.nous.domain.model.JournalError
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.domain.model.TaskValidationException
 import com.schopenhauer.nous.domain.usecase.journal.SaveJournalUseCase
+import com.schopenhauer.nous.util.getTodayTimeMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -73,7 +74,7 @@ class WriteJournalViewModel @Inject constructor(
 	}
 
 	data class UiState(
-		val timeMillis: Long? = null,
+		val timeMillis: Long = getTodayTimeMillis(),
 		val tasks: List<Task> = listOf(),
 		val isLoading: Boolean = false,
 	)
