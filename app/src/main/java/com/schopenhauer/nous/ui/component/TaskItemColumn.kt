@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal.detail
+package com.schopenhauer.nous.ui.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +12,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Task
+import com.schopenhauer.nous.ui.journal.detail.TaskItem
 import com.schopenhauer.nous.ui.theme.NousTheme
 
 @Composable
@@ -19,7 +20,7 @@ fun TaskItemColumn(
 	modifier: Modifier = Modifier,
 	tasks: List<Task>,
 	onClick: () -> Unit,
-	onClickIcon: (() -> Unit)? = null,
+	onClickIcon: ((Long) -> Unit)? = null,
 ) {
 	LazyColumn(
 		contentPadding = PaddingValues(vertical = dimensionResource(id = R.dimen.padding_small)),
@@ -34,7 +35,7 @@ fun TaskItemColumn(
 			TaskItem(
 				content = item.content,
 				onClick = onClick,
-				onClickIcon = onClickIcon,
+				onClickIcon = { onClickIcon?.invoke(item.id) },
 				modifier = Modifier.padding(
 					horizontal = dimensionResource(id = R.dimen.padding_medium),
 					vertical = dimensionResource(id = R.dimen.padding_extra_small)

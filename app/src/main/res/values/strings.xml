@@ -24,4 +24,8 @@
     <string name="content_description_delete_task">업무 삭제</string>
     <string name="content_description_calendar">달력</string>
     <string name="content_description_angle_right">오른쪽 화살표</string>
+
+    <string name="dialog_date_picker_confirm">확인</string>
+    <string name="dialog_date_picker_dismiss">취소</string>
+    <string name="dialog_date_picker_title_journal">업무 일지 날짜</string>
 </resources>
