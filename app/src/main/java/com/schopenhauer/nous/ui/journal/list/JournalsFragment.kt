@@ -51,6 +51,10 @@ class JournalsFragment : BaseFragment<FragmentJournalsBinding>() {
 								(activity as MainActivity).isNotDefaultNavHost = true
 								val bundle = Bundle().apply { putLong(JOURNAL_ID_KEY, journalId) }
 								findNavController().navigate(R.id.action_journals_to_journal_detail, bundle)
+							},
+							onWriteJournalButtonClick = {
+								(activity as MainActivity).isNotDefaultNavHost = true
+								findNavController().navigate(R.id.action_journals_to_write_journal)
 							}
 						)
 					}

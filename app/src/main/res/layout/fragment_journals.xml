@@ -48,12 +48,12 @@
 <!--    android:paddingVertical="8dp"-->
 <!--    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />-->
 
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/write_journal_fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="16dp"
-    android:contentDescription="@string/content_description_journals_fab"
-    app:srcCompat="@drawable/ic_pencil" />
+<!--  <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--    android:id="@+id/write_journal_fab"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_gravity="bottom|end"-->
+<!--    android:layout_margin="16dp"-->
+<!--    android:contentDescription="@string/content_description_journals_fab"-->
+<!--    app:srcCompat="@drawable/ic_pencil" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
