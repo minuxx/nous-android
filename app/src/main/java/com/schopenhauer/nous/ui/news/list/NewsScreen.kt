@@ -217,7 +217,7 @@ fun NewsItem(
 		Column(
 			modifier = Modifier.padding(
 				horizontal = dimensionResource(id = R.dimen.padding_medium),
-				vertical = dimensionResource(id = R.dimen.padding_extra_small)
+				vertical = dimensionResource(id = R.dimen.padding_small)
 			),
 			verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
 		) {
