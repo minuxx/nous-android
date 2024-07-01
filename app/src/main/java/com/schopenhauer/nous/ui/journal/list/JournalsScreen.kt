@@ -35,10 +35,7 @@ fun JournalsScreen(
 		modifier = modifier.fillMaxSize()
 	) {
 		Text(
-			modifier = Modifier.padding(
-				vertical = dimensionResource(id = R.dimen.padding_small),
-				horizontal = dimensionResource(id = R.dimen.padding_medium)
-			),
+			modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 			text = stringResource(id = R.string.journals),
 			style = MaterialTheme.typography.titleLarge
 		)
@@ -101,7 +98,7 @@ fun JournalItemColumn(
 	LazyColumn(
 		modifier = modifier.fillMaxWidth(),
 		contentPadding = PaddingValues(vertical = dimensionResource(id = R.dimen.padding_small)),
-		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
 	)
 	{
 		items(
@@ -175,7 +172,7 @@ fun JournalItem(
 		Text(
 			modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 			text = date,
-			style = MaterialTheme.typography.bodyMedium
+			style = MaterialTheme.typography.bodyLarge
 		)
 	}
 }
