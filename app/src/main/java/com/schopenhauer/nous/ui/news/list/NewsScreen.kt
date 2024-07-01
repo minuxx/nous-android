@@ -45,7 +45,6 @@ fun NewsScreen(
 			.map { it.visibleItemsInfo.lastOrNull()?.index }
 			.distinctUntilChanged()
 			.collect { lastVisibleItemIndex ->
-				Log.d("NewsScreen", "${lastVisibleItemIndex}")
 				if (lastVisibleItemIndex != null) {
 					val visibleItemCount = listState.layoutInfo.visibleItemsInfo.size
 					val totalItemCount = listState.layoutInfo.totalItemsCount
