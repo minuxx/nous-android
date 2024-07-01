@@ -42,7 +42,10 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 						NewsScreen(
 							newses = uiState.newses,
 							onNewsClick = { newsId ->
-								startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(newsId))) }
+								startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(newsId))) },
+							loadMoreNews = { viewModel.getNews() },
+							isPageLoading = uiState.isPageLoading,
+							isLastPage = uiState.isLastPage
 						)
 					}
 				}

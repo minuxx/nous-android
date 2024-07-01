@@ -1,6 +1,7 @@
 package com.schopenhauer.nous.ui.news.list
 
 import android.text.Html
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,11 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -21,13 +26,40 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.News
 import com.schopenhauer.nous.ui.theme.NousTheme
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun NewsScreen(
 	modifier: Modifier = Modifier,
 	newses: List<News>,
-	onNewsClick: (String) -> Unit
+	onNewsClick: (String) -> Unit,
+	loadMoreNews: () -> Unit,
+	isPageLoading: Boolean,
+	isLastPage: Boolean
 ) {
+	val listState = rememberLazyListState()
+
+	LaunchedEffect(listState) {
+		snapshotFlow { listState.layoutInfo }
+			.map { it.visibleItemsInfo.lastOrNull()?.index }
+			.distinctUntilChanged()
+			.collect { lastVisibleItemIndex ->
+				Log.d("NewsScreen", "${lastVisibleItemIndex}")
+				if (lastVisibleItemIndex != null) {
+					val visibleItemCount = listState.layoutInfo.visibleItemsInfo.size
+					val totalItemCount = listState.layoutInfo.totalItemsCount
+
+					if (!isPageLoading && !isLastPage) {
+						if (visibleItemCount * 1.5 + lastVisibleItemIndex >= totalItemCount &&
+							lastVisibleItemIndex >= 0) {
+							loadMoreNews()
+						}
+					}
+				}
+			}
+	}
+
 	Column(
 		modifier = modifier.fillMaxSize()
 	) {
@@ -37,6 +69,7 @@ fun NewsScreen(
 			style = MaterialTheme.typography.titleLarge
 		)
 		NewsItemColumn(
+			listState = listState,
 			newses = newses,
 			onNewsClick = onNewsClick
 		)
@@ -71,7 +104,10 @@ fun NewsScreenLightPreview() {
 					link = "https:n.news.naver.com/mnews/article/018/0005778160?sid=101"
 				)
 			),
-			onNewsClick = {}
+			onNewsClick = {},
+			loadMoreNews = {},
+			isPageLoading = false,
+			isLastPage = false
 		)
 	}
 }
@@ -104,18 +140,23 @@ fun NewsScreenDarkPreview() {
 					link = "https:n.news.naver.com/mnews/article/018/0005778160?sid=101"
 				)
 			),
-			onNewsClick = {}
+			onNewsClick = {},
+			loadMoreNews = {},
+			isPageLoading = false,
+			isLastPage = false
 		)
 	}
 }
 
 @Composable
 fun NewsItemColumn(
+	listState: LazyListState,
 	modifier: Modifier = Modifier,
 	newses: List<News>,
-	onNewsClick: (String) -> Unit
+	onNewsClick: (String) -> Unit,
 ) {
 	LazyColumn(
+		state = listState,
 		modifier = modifier.fillMaxWidth(),
 		contentPadding = PaddingValues(vertical = dimensionResource(id = R.dimen.padding_small))
 	) {
@@ -163,7 +204,8 @@ fun NewsItemColumnLightPreview() {
 					link = "https:n.news.naver.com/mnews/article/018/0005778160?sid=101"
 				)
 			),
-			onNewsClick = {}
+			onNewsClick = {},
+			listState = LazyListState()
 		)
 	}
 }
@@ -196,7 +238,8 @@ fun NewsItemColumnDarkPreview() {
 					link = "https:n.news.naver.com/mnews/article/018/0005778160?sid=101"
 				)
 			),
-			onNewsClick = {}
+			onNewsClick = {},
+			listState = LazyListState()
 		)
 	}
 }
