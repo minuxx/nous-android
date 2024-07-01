@@ -32,8 +32,7 @@ fun JournalsScreen(
 	onJournalClick: (journalId: Long) -> Unit
 ) {
 	Column(
-		modifier = modifier
-			.fillMaxSize()
+		modifier = modifier.fillMaxSize()
 	) {
 		Text(
 			modifier = Modifier.padding(
@@ -102,7 +101,7 @@ fun JournalItemColumn(
 	LazyColumn(
 		modifier = modifier.fillMaxWidth(),
 		contentPadding = PaddingValues(vertical = dimensionResource(id = R.dimen.padding_small)),
-		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_extra_small))
+		verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
 	)
 	{
 		items(

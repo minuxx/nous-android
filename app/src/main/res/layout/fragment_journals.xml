@@ -4,40 +4,49 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <com.google.android.material.appbar.AppBarLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fitsSystemWindows="true"
-    app:liftOnScroll="false">
+<!--  <com.google.android.material.appbar.AppBarLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:fitsSystemWindows="true"-->
+<!--    app:liftOnScroll="false">-->
 
-    <com.google.android.material.appbar.CollapsingToolbarLayout
-      style="?attr/collapsingToolbarLayoutMediumStyle"
-      android:layout_width="match_parent"
-      android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
-      app:collapsedTitleTextAppearance="@style/TextAppearance.Nous.TitleMedium"
-      app:contentScrim="@color/md_theme_surface"
-      app:expandedTitleTextAppearance="@style/TextAppearance.Nous.TitleLarge"
-      app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-      app:titleCollapseMode="scale">
+<!--    <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--      style="?attr/collapsingToolbarLayoutMediumStyle"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="?attr/collapsingToolbarLayoutMediumSize"-->
+<!--      app:collapsedTitleTextAppearance="@style/TextAppearance.Nous.TitleMedium"-->
+<!--      app:contentScrim="@color/md_theme_surface"-->
+<!--      app:expandedTitleTextAppearance="@style/TextAppearance.Nous.TitleLarge"-->
+<!--      app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"-->
+<!--      app:titleCollapseMode="scale">-->
 
-      <com.google.android.material.appbar.MaterialToolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        app:menu="@menu/top_app_bar_journals"
-        app:title="@string/journals" />
-    </com.google.android.material.appbar.CollapsingToolbarLayout>
-  </com.google.android.material.appbar.AppBarLayout>
+<!--      <com.google.android.material.appbar.MaterialToolbar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:elevation="0dp"-->
+<!--        app:menu="@menu/top_app_bar_journals"-->
+<!--        app:title="@string/journals" />-->
+<!--    </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+<!--  </com.google.android.material.appbar.AppBarLayout>-->
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/journal_recycler_view"
+  <androidx.compose.ui.platform.ComposeView
+    android:id="@+id/compose_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:paddingHorizontal="16dp"
-    android:paddingVertical="8dp"
-    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"/>
+
+<!--  <androidx.recyclerview.widget.RecyclerView-->
+<!--    android:id="@+id/journal_recycler_view"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:clipToPadding="false"-->
+<!--    android:overScrollMode="never"-->
+<!--    android:paddingHorizontal="16dp"-->
+<!--    android:paddingVertical="8dp"-->
+<!--    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />-->
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/write_journal_fab"
