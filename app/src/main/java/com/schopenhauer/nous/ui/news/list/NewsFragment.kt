@@ -7,12 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentNewsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.base.PaginationScrollListener
+import com.schopenhauer.nous.ui.journal.list.JournalsFragment
+import com.schopenhauer.nous.ui.journal.list.JournalsScreen
+import com.schopenhauer.nous.ui.main.MainActivity
 import com.schopenhauer.nous.ui.news.list.NewsViewModel.UiEvent
+import com.schopenhauer.nous.ui.theme.NousTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -20,40 +30,32 @@ import kotlinx.coroutines.flow.map
 @AndroidEntryPoint
 class NewsFragment : BaseFragment<FragmentNewsBinding>() {
 	private val viewModel: NewsViewModel by viewModels()
-	private lateinit var newsAdapter: NewsAdapter
 
 	override fun initViews() {
-		initJournalRecyclerView()
-	}
+		binding.composeView.apply {
+			setContent {
+				NousTheme {
+					setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+					val uiState by viewModel.uiState.collectAsState()
 
-	private fun initJournalRecyclerView() {
-		newsAdapter = NewsAdapter { link ->
-			startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
-		}
-		val linearLayoutManager = LinearLayoutManager(requireActivity())
-		binding.newsRecyclerView.apply {
-			layoutManager = linearLayoutManager
-			adapter = newsAdapter
-			itemAnimator = null
-			setHasFixedSize(true)
-			addOnScrollListener(object : PaginationScrollListener(linearLayoutManager) {
-				override fun loadMoreItems() { viewModel.getNews() }
-				override fun isLastPage() = viewModel.isLastPage()
-				override fun isPageLoading() = viewModel.isPageLoading()
-			})
+					Surface {
+						NewsScreen(
+							newses = uiState.newses,
+							onNewsClick = { newsId ->
+								startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(newsId))) },
+							loadMoreNews = { viewModel.getNews() },
+							isPageLoading = uiState.isPageLoading,
+							isLastPage = uiState.isLastPage
+						)
+					}
+				}
+			}
 		}
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		collectUiState()
 		collectUiEffect()
-	}
-
-	private fun collectUiState() {
-		collectState(viewModel.uiState.map { it.newses }.distinctUntilChanged()) {
-			newsAdapter.submitList(it)
-		}
 	}
 
 	private fun collectUiEffect() {

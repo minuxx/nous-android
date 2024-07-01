@@ -21,7 +21,7 @@ data class NewsApiModel(
 
 fun NewsApiModel.asDomain(): News {
 	return News(
-		id = link,
+		id = originalLink,
 		title = title,
 		description = description,
 		link = originalLink,
