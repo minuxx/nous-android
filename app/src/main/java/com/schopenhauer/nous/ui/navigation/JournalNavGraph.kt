@@ -11,8 +11,8 @@ const val JOURNAL_GRAPH = "journal_graph"
 
 fun NavGraphBuilder.journalGraph(navController: NavHostController) {
 	navigation(
-		startDestination = JOURNALS_SCREEN,
-		route = JOURNAL_GRAPH
+		route = JOURNAL_GRAPH,
+		startDestination = JOURNALS_SCREEN
 	) {
 		journalsScreen()
 	}
