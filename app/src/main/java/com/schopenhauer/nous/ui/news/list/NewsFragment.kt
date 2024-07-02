@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import com.schopenhauer.nous.databinding.FragmentNewsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
+import com.schopenhauer.nous.ui.news.NewsScreen
 import com.schopenhauer.nous.ui.news.list.NewsViewModel.UiEvent
 import com.schopenhauer.nous.ui.theme.NousTheme
 import dagger.hilt.android.AndroidEntryPoint

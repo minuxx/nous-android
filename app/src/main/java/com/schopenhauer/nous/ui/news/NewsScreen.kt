@@ -1,7 +1,6 @@
-package com.schopenhauer.nous.ui.news.list
+package com.schopenhauer.nous.ui.news
 
 import android.text.Html
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,16 +17,37 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.News
+import com.schopenhauer.nous.ui.news.list.NewsViewModel
 import com.schopenhauer.nous.ui.theme.NousTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+
+@Composable
+fun NewsScreen(
+	modifier: Modifier = Modifier,
+	viewModel: NewsViewModel = hiltViewModel()
+) {
+	val uiState by viewModel.uiState.collectAsState()
+
+	NewsScreen(
+		modifier = modifier,
+		newses = uiState.newses,
+		onNewsClick = {},
+		loadMoreNews = {},
+		isPageLoading = uiState.isPageLoading,
+		isLastPage = uiState.isLastPage
+	)
+}
 
 @Composable
 fun NewsScreen(

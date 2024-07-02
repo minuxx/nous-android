@@ -14,6 +14,6 @@ fun NavGraphBuilder.journalGraph(navController: NavHostController) {
 		startDestination = JOURNALS_SCREEN,
 		route = JOURNAL_GRAPH
 	) {
-		journalsScreen(navController)
+		journalsScreen()
 	}
 }

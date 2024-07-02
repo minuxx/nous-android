@@ -17,6 +17,7 @@ fun NousNavHost(
 		navController = navController,
 		startDestination = startDestination
 	) {
+		newsGraph(navController)
 		journalGraph(navController)
 		settingGraph(navController)
 	}
