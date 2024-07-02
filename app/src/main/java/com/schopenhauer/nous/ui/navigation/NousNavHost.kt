@@ -4,12 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import com.schopenhauer.nous.ui.journals.JOURNALS_SCREEN
 
 @Composable
 fun NousNavHost(
 	modifier: Modifier = Modifier,
 	navController: NavHostController,
-	startDestination: String = JournalRoutes.JOURNALS
+	startDestination: String = JOURNALS_SCREEN
 ) {
 	NavHost(
 		modifier = modifier,
@@ -17,5 +18,6 @@ fun NousNavHost(
 		startDestination = startDestination
 	) {
 		journalGraph(navController)
+		settingGraph(navController)
 	}
 }
