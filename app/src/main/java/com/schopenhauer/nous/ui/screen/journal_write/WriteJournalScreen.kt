@@ -1,5 +1,6 @@
 package com.schopenhauer.nous.ui.screen.journal_write
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Task
+import com.schopenhauer.nous.ui.base.SingleEventEffect
 import com.schopenhauer.nous.ui.component.JournalDatePickerDialog
 import com.schopenhauer.nous.ui.component.NousAppBar
 import com.schopenhauer.nous.ui.component.TaskItemColumn
@@ -47,19 +50,28 @@ import com.schopenhauer.nous.util.millisToDate
 fun WriteJournalScreen(
 	modifier: Modifier = Modifier,
 	viewModel: WriteJournalViewModel = hiltViewModel(),
-	onBackClick: () -> Unit
+	onNavigateBack: () -> Unit
 ) {
 	val uiState by viewModel.uiState.collectAsState()
+	val context = LocalContext.current
+
+	SingleEventEffect(sideEffectFlow = viewModel.uiEffect) { effect ->
+		when (effect) {
+			WriteJournalUiEffect.NavigateBack -> {
+				onNavigateBack()
+			}
+
+			is WriteJournalUiEffect.ShowToast -> {
+				Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+			}
+		}
+	}
 
 	WriteJournalScreen(
 		modifier = modifier,
 		selectedDateMillis = uiState.timeMillis,
-		onDateMillisChanged = viewModel::setTimeMillis,
 		tasks = uiState.tasks,
-		onWriteTask = viewModel::writeTask,
-		onRemoveTask = viewModel::removeTask,
-		onBackClick = onBackClick,
-		onSaveJournal = viewModel::saveJournal
+		onEvent = viewModel::setUiEvent
 	)
 }
 
@@ -68,11 +80,7 @@ fun WriteJournalScreen(
 	modifier: Modifier = Modifier,
 	selectedDateMillis: Long?,
 	tasks: List<Task>,
-	onBackClick: () -> Unit,
-	onSaveJournal: () -> Unit,
-	onRemoveTask: (Long) -> Unit,
-	onWriteTask: (String) -> Unit,
-	onDateMillisChanged: (Long) -> Unit
+	onEvent: (WriteJournalUiEvent) -> Unit
 ) {
 	var shouldShowDatePicker by rememberSaveable { mutableStateOf(false) }
 
@@ -81,8 +89,12 @@ fun WriteJournalScreen(
 	) {
 		NousAppBar(
 			title = stringResource(id = R.string.write_journal),
-			onLeftIconClick = onBackClick,
-			onRightClickIcon = onSaveJournal,
+			onLeftIconClick = {
+				onEvent(WriteJournalUiEvent.OnBackClick)
+			},
+			onRightClickIcon = {
+				onEvent(WriteJournalUiEvent.OnSaveClick)
+			},
 			rightText = stringResource(id = R.string.save)
 		)
 		Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_medium)))
@@ -98,17 +110,21 @@ fun WriteJournalScreen(
 			tasks = tasks,
 			onClick = {},
 			onClickIcon = { taskId ->
-				onRemoveTask(taskId)
+				onEvent(WriteJournalUiEvent.OnRemoveTask(taskId))
 			}
 		)
 		Spacer(modifier = Modifier.weight(1f))
-		TaskOutlinedTextField(onWriteTask = onWriteTask)
+		TaskOutlinedTextField(onWriteTask = { taskContent ->
+			onEvent(WriteJournalUiEvent.OnWriteTask(taskContent))
+		})
 
 		if (shouldShowDatePicker) {
 			JournalDatePickerDialog(
 				title = stringResource(id = R.string.dialog_date_picker_title_journal),
 				selectedDateMillis = selectedDateMillis,
-				onTimeMillisChanged = onDateMillisChanged,
+				onTimeMillisChanged = { timeMillis ->
+					onEvent(WriteJournalUiEvent.OnSelectDate(timeMillis))
+				},
 				onDismiss = { shouldShowDatePicker = false }
 			)
 		}
@@ -128,11 +144,7 @@ fun WriteJournalScreenPreview() {
 						content = "컴포즈 마이그레이션",
 					)
 				),
-				onBackClick = {},
-				onSaveJournal = {},
-				onRemoveTask = {},
-				onWriteTask = {},
-				onDateMillisChanged = {}
+				onEvent = {}
 			)
 		}
 	}
@@ -151,11 +163,7 @@ fun WriteJournalScreenDarkPreview() {
 						content = "컴포즈 마이그레이션",
 					)
 				),
-				onBackClick = {},
-				onSaveJournal = {},
-				onRemoveTask = {},
-				onWriteTask = {},
-				onDateMillisChanged = {}
+				onEvent = {}
 			)
 		}
 	}

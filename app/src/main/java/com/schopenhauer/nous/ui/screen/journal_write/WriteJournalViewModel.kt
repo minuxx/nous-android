@@ -1,90 +1,120 @@
 package com.schopenhauer.nous.ui.screen.journal_write
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.data.Result
 import com.schopenhauer.nous.domain.model.JournalError
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.domain.model.TaskValidationException
 import com.schopenhauer.nous.domain.usecase.journal.SaveJournalUseCase
+import com.schopenhauer.nous.ui.base.BaseViewModel
+import com.schopenhauer.nous.ui.base.UiEffect
+import com.schopenhauer.nous.ui.base.UiEvent
+import com.schopenhauer.nous.ui.base.UiState
 import com.schopenhauer.nous.util.getTodayTimeMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WriteJournalViewModel @Inject constructor(
 	private val saveJournalUseCase: SaveJournalUseCase
-) : ViewModel() {
-	private val _uiState = MutableStateFlow(UiState())
-	val uiState = _uiState.asStateFlow()
+) : BaseViewModel<WriteJournalUiState, WriteJournalUiEvent, WriteJournalUiEffect>() {
 
-	private val _uiEvent = MutableSharedFlow<UiEvent>()
-	val uiEvent = _uiEvent.asSharedFlow()
+	override fun createInitialState(): WriteJournalUiState = WriteJournalUiState()
 
-	fun setTimeMillis(timeMillis: Long) {
-		_uiState.update { it.copy(timeMillis = timeMillis) }
-	}
+	override fun handleUiEvent(event: WriteJournalUiEvent) {
+		when (event) {
+			WriteJournalUiEvent.OnBackClick -> {
+				setUiEffect {
+					WriteJournalUiEffect.NavigateBack
+				}
+			}
 
-	fun writeTask(content: String) {
-		try {
-			val tasks = _uiState.value.tasks
-			val taskId = (tasks.size + 1).toLong()
-			val newTask = Task.create(taskId, content)
+			is WriteJournalUiEvent.OnSelectDate -> {
+				setUiState {
+					copy(timeMillis = event.timeMillis)
+				}
+			}
 
-			_uiState.update { it.copy(tasks = tasks + newTask) }
-		} catch (e: TaskValidationException) {
-			updateUiEvent(UiEvent.OnShowToastMessage(e.error.message))
+			is WriteJournalUiEvent.OnWriteTask -> {
+				writeTask(event.content)
+			}
+
+			is WriteJournalUiEvent.OnRemoveTask -> {
+				removeTask(event.taskId)
+			}
+
+			WriteJournalUiEvent.OnSaveClick -> {
+				saveJournal()
+			}
 		}
 	}
 
-	fun removeTask(id: Long) {
-		val tasks = _uiState.value.tasks
-		val newTasks = tasks.filter { it.id != id }
+	private fun writeTask(content: String) {
+		try {
+			val tasks = uiState.value.tasks
+			val taskId = (tasks.size + 1).toLong()
+			val newTask = Task.create(taskId, content)
 
-		_uiState.update { it.copy(tasks = newTasks) }
+			setUiState { copy(tasks = tasks + newTask) }
+		} catch (e: TaskValidationException) {
+			setUiEffect {
+				WriteJournalUiEffect.ShowToast(e.error.message)
+			}
+		}
 	}
 
-	fun saveJournal() = viewModelScope.launch {
-		_uiState.update { it.copy(isLoading = true) }
+	private fun removeTask(id: Long) {
+		val tasks = uiState.value.tasks
+		val newTasks = tasks.filter { it.id != id }
 
-		val (timeMillis, tasks, _) = _uiState.value
+		setUiState { copy(tasks = newTasks) }
+	}
+
+	private fun saveJournal() = viewModelScope.launch {
+		val (timeMillis, tasks) = uiState.value
+
 		when (val res = saveJournalUseCase(timeMillis, tasks)) {
-			is Result.Success -> updateUiEvent(UiEvent.OnSuccessSaveJournal)
+			is Result.Success -> {
+				setUiEffect {
+					WriteJournalUiEffect.NavigateBack
+				}
+			}
+
 			is Result.Failure -> {
 				when (res.error.code) {
 					JournalError.EMPTY_DATE.code,
 					JournalError.EMPTY_TASK.code,
 					JournalError.ALREADY.code,
-					JournalError.SAVE.code -> updateUiEvent(UiEvent.OnShowToastMessage(res.error.message))
+					JournalError.SAVE.code -> {
+						setUiEffect {
+							WriteJournalUiEffect.ShowToast(res.error.message)
+						}
+					}
 				}
 			}
 		}
-
-		_uiState.update { it.copy(isLoading = false) }
-	}
-
-	private fun updateUiEvent(uiEvent: UiEvent) = viewModelScope.launch {
-		_uiEvent.emit(uiEvent)
-	}
-
-	data class UiState(
-		val timeMillis: Long = getTodayTimeMillis(),
-		val tasks: List<Task> = listOf(),
-		val isLoading: Boolean = false,
-	)
-
-	sealed class UiEvent {
-		data object OnSuccessSaveJournal : UiEvent()
-		data class OnShowToastMessage(val message: String) : UiEvent()
 	}
 
 	companion object {
 		const val TAG = "WriteJournalViewModel"
 	}
+}
+
+data class WriteJournalUiState(
+	val timeMillis: Long = getTodayTimeMillis(),
+	val tasks: List<Task> = listOf(),
+) : UiState
+
+sealed interface WriteJournalUiEvent : UiEvent {
+	data object OnBackClick : WriteJournalUiEvent
+	data class OnSelectDate(val timeMillis: Long) : WriteJournalUiEvent
+	data object OnSaveClick : WriteJournalUiEvent
+	data class OnWriteTask(val content: String) : WriteJournalUiEvent
+	data class OnRemoveTask(val taskId: Long) : WriteJournalUiEvent
+}
+
+sealed interface WriteJournalUiEffect : UiEffect {
+	data class ShowToast(val message: String) : WriteJournalUiEffect
+	data object NavigateBack : WriteJournalUiEffect
 }

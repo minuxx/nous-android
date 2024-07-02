@@ -8,10 +8,10 @@ const val WRITE_JOURNAL_SCREEN = "write_journal"
 
 fun NavController.navigateToWriteJournal() = navigate(WRITE_JOURNAL_SCREEN)
 
-fun NavGraphBuilder.writeJournalScreen(onBackClick: () -> Unit) {
+fun NavGraphBuilder.writeJournalScreen(onNavigateBack: () -> Unit) {
 	composable(route = WRITE_JOURNAL_SCREEN) {
 		WriteJournalScreen(
-			onBackClick = onBackClick
+			onNavigateBack = onNavigateBack
 		)
 	}
 }
