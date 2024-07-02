@@ -5,6 +5,7 @@ import com.schopenhauer.nous.domain.model.NewsError
 import com.schopenhauer.nous.domain.model.TaskError
 
 sealed class Result<out T> {
+//  data object Loading : Result<Nothing>()
   data class Success<out T>(val data: T) : Result<T>()
   data class Failure(val error: Error) : Result<Nothing>()
 }

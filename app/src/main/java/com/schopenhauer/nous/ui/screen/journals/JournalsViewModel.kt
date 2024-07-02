@@ -1,5 +1,6 @@
 package com.schopenhauer.nous.ui.screen.journals
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.data.Result
@@ -22,11 +23,6 @@ import javax.inject.Inject
 class JournalsViewModel @Inject constructor(
 	private val getJournalsUseCase: GetJournalsUseCase
 ) : BaseViewModel<JournalsUiState, JournalsUiEvent, JournalsUiEffect>() {
-
-	init {
-		getJournals()
-	}
-
 	override fun createInitialState(): JournalsUiState = JournalsUiState.Idle
 
 	fun getJournals() = viewModelScope.launch {

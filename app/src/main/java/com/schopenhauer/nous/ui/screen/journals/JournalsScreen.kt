@@ -1,5 +1,6 @@
 package com.schopenhauer.nous.ui.screen.journals
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Journal
 import com.schopenhauer.nous.ui.base.SingleEventEffect
+import com.schopenhauer.nous.ui.component.LoadingBar
 import com.schopenhauer.nous.ui.theme.NousTheme
 import com.schopenhauer.nous.util.getTodayTimeMillis
 import com.schopenhauer.nous.util.millisToDate
@@ -52,15 +55,22 @@ fun JournalsScreen(
 			is JournalsUiEffect.ShowToast -> {
 				Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
 			}
+
 			is JournalsUiEffect.NavigateToJournal -> {
 				onNavigateToJournal(effect.journalId)
 			}
+
 			is JournalsUiEffect.NavigateToWriteJournal -> {
 				onNavigateToWriteJournal()
 			}
 		}
 	}
 
+	LaunchedEffect(Unit) {
+		viewModel.getJournals()
+	}
+
+	// FIXME 화면 타이틀은 바로 볼 수 있게끔 수정
 	when (val state = uiState) {
 		is JournalsUiState.Idle -> {}
 		is JournalsUiState.Loaded -> {
@@ -71,7 +81,9 @@ fun JournalsScreen(
 			)
 		}
 
-		is JournalsUiState.Loading -> {}
+		is JournalsUiState.Loading -> {
+			LoadingBar()
+		}
 	}
 }
 

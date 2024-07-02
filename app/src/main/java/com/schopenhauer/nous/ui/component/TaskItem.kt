@@ -1,5 +1,6 @@
-package com.schopenhauer.nous.ui.screen.journal
+package com.schopenhauer.nous.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,27 +28,26 @@ fun TaskItem(
 	onClick: () -> Unit,
 	onClickIcon: (() -> Unit)? = null,
 ) {
-	Surface(onClick = onClick) {
-		Row(
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.SpaceBetween,
-			modifier = modifier
-				.fillMaxWidth()
-				.heightIn(dimensionResource(id = R.dimen.list_item_height_medium)),
-		) {
-			Text(
-				text = content,
-				style = MaterialTheme.typography.bodyLarge
-			)
-			if (onClickIcon != null) {
-				IconButton(onClick = onClickIcon) {
-					Icon(
-						painter = painterResource(id = R.drawable.ic_trash),
-						contentDescription = stringResource(id = R.string.content_description_delete_task),
-						tint = MaterialTheme.colorScheme.error,
-						modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size_medium))
-					)
-				}
+	Row(
+		verticalAlignment = Alignment.CenterVertically,
+		horizontalArrangement = Arrangement.SpaceBetween,
+		modifier = modifier
+			.fillMaxWidth()
+			.heightIn(dimensionResource(id = R.dimen.list_item_height_medium))
+			.clickable { onClick() },
+	) {
+		Text(
+			text = content,
+			style = MaterialTheme.typography.bodyLarge
+		)
+		if (onClickIcon != null) {
+			IconButton(onClick = onClickIcon) {
+				Icon(
+					painter = painterResource(id = R.drawable.ic_trash),
+					contentDescription = stringResource(id = R.string.content_description_delete_task),
+					tint = MaterialTheme.colorScheme.error,
+					modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size_medium))
+				)
 			}
 		}
 	}

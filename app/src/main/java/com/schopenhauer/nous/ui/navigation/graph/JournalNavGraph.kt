@@ -37,7 +37,7 @@ fun NavGraphBuilder.journalGraph(navController: NavHostController) {
 			}
 		)
 		journalScreen(
-			onBackClick = {
+			onNavigateBack = {
 				navController.popBackStack()
 			}
 		)

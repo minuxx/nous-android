@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.screen.journal
+package com.schopenhauer.nous.ui.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth

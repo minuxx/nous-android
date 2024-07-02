@@ -13,7 +13,7 @@ const val JOURNAL_ID_ARG = "journalId"
 fun NavController.navigateToJournal(journalId: Long, navOptions: NavOptions? = null) =
 	navigate("$JOURNAL_SCREEN/$journalId", navOptions)
 
-fun NavGraphBuilder.journalScreen(onBackClick: () -> Unit) {
+fun NavGraphBuilder.journalScreen(onNavigateBack: () -> Unit) {
 	composable(
 		route = "$JOURNAL_SCREEN/{$JOURNAL_ID_ARG}",
 		arguments = listOf(
@@ -23,7 +23,7 @@ fun NavGraphBuilder.journalScreen(onBackClick: () -> Unit) {
 		)
 	) {
 		JournalScreen(
-			onBackClick = onBackClick
+			onNavigateBack = onNavigateBack
 		)
 	}
 }
