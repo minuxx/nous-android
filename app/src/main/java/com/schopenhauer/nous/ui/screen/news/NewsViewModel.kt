@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.news
+package com.schopenhauer.nous.ui.screen.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,6 +26,10 @@ class NewsViewModel @Inject constructor(
 
 	private val _uiEvent = MutableSharedFlow<UiEvent>()
 	val uiEvent = _uiEvent.asSharedFlow()
+
+	init {
+		getNews()
+	}
 
 	fun getNews() = viewModelScope.launch {
 		_uiState.update { it.copy(isPageLoading = true) }

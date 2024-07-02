@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal_write
+package com.schopenhauer.nous.ui.screen.journal_write
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +47,7 @@ import com.schopenhauer.nous.util.millisToDate
 fun WriteJournalScreen(
 	modifier: Modifier = Modifier,
 	viewModel: WriteJournalViewModel = hiltViewModel(),
-	onClickBack: () -> Unit
+	onBackClick: () -> Unit
 ) {
 	val uiState by viewModel.uiState.collectAsState()
 
@@ -58,7 +58,7 @@ fun WriteJournalScreen(
 		tasks = uiState.tasks,
 		onWriteTask = viewModel::writeTask,
 		onRemoveTask = viewModel::removeTask,
-		onClickBack = onClickBack,
+		onBackClick = onBackClick,
 		onSaveJournal = viewModel::saveJournal
 	)
 }
@@ -68,7 +68,7 @@ fun WriteJournalScreen(
 	modifier: Modifier = Modifier,
 	selectedDateMillis: Long?,
 	tasks: List<Task>,
-	onClickBack: () -> Unit,
+	onBackClick: () -> Unit,
 	onSaveJournal: () -> Unit,
 	onRemoveTask: (Long) -> Unit,
 	onWriteTask: (String) -> Unit,
@@ -81,7 +81,7 @@ fun WriteJournalScreen(
 	) {
 		NousAppBar(
 			title = stringResource(id = R.string.write_journal),
-			onLeftIconClick = onClickBack,
+			onLeftIconClick = onBackClick,
 			onRightClickIcon = onSaveJournal,
 			rightText = stringResource(id = R.string.save)
 		)
@@ -128,7 +128,7 @@ fun WriteJournalScreenPreview() {
 						content = "컴포즈 마이그레이션",
 					)
 				),
-				onClickBack = {},
+				onBackClick = {},
 				onSaveJournal = {},
 				onRemoveTask = {},
 				onWriteTask = {},
@@ -151,7 +151,7 @@ fun WriteJournalScreenDarkPreview() {
 						content = "컴포즈 마이그레이션",
 					)
 				),
-				onClickBack = {},
+				onBackClick = {},
 				onSaveJournal = {},
 				onRemoveTask = {},
 				onWriteTask = {},

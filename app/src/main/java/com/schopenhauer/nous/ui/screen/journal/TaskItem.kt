@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal_detail
+package com.schopenhauer.nous.ui.screen.journal
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

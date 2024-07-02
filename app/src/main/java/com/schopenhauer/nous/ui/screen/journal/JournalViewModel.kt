@@ -1,5 +1,6 @@
-package com.schopenhauer.nous.ui.journal_detail
+package com.schopenhauer.nous.ui.screen.journal
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schopenhauer.nous.data.Result
@@ -17,10 +18,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class JournalDetailViewModel @Inject constructor(
+class JournalViewModel @Inject constructor(
+	savedStateHandle: SavedStateHandle,
 	private val getJournalUseCase: GetJournalUseCase,
 	private val removeJournalUseCase: RemoveJournalUseCase
 ) : ViewModel() {
+	private val journalId: Long = savedStateHandle[JOURNAL_ID_ARG] ?: 0
+
 	private val _uiState = MutableStateFlow(UiState())
 	val uiState = _uiState.asStateFlow()
 

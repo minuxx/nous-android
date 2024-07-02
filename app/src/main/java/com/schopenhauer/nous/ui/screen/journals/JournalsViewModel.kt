@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journals
+package com.schopenhauer.nous.ui.screen.journals
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +23,10 @@ class JournalsViewModel @Inject constructor(
 
 	private val _uiEvent = MutableSharedFlow<UiEvent>()
 	val uiEvent = _uiEvent.asSharedFlow()
+
+	init {
+		getJournals()
+	}
 
 	fun getJournals() = viewModelScope.launch {
 		when (val res = getJournalsUseCase()) {

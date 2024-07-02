@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journals
+package com.schopenhauer.nous.ui.screen.journals
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

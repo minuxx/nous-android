@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
-import com.schopenhauer.nous.ui.setting.SETTING_SCREEN
-import com.schopenhauer.nous.ui.setting.settingScreen
+import com.schopenhauer.nous.ui.screen.setting.SETTING_SCREEN
+import com.schopenhauer.nous.ui.screen.setting.settingScreen
 
 const val SETTING_GRAPH = "setting_graph"
 

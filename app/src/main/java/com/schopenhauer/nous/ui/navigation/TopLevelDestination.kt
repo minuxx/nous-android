@@ -2,9 +2,9 @@ package com.schopenhauer.nous.ui.navigation
 
 import androidx.annotation.DrawableRes
 import com.schopenhauer.nous.R
-import com.schopenhauer.nous.ui.journals.JOURNALS_SCREEN
-import com.schopenhauer.nous.ui.news.NEWS_SCREEN
-import com.schopenhauer.nous.ui.setting.SETTING_SCREEN
+import com.schopenhauer.nous.ui.screen.journals.JOURNALS_SCREEN
+import com.schopenhauer.nous.ui.screen.news.NEWS_SCREEN
+import com.schopenhauer.nous.ui.screen.setting.SETTING_SCREEN
 
 enum class TopLevelDestination(
 	val route: String,

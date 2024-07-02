@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.setting
+package com.schopenhauer.nous.ui.screen.setting
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

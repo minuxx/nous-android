@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
-import com.schopenhauer.nous.ui.news.NEWS_SCREEN
-import com.schopenhauer.nous.ui.news.newsScreen
+import com.schopenhauer.nous.ui.screen.news.NEWS_SCREEN
+import com.schopenhauer.nous.ui.screen.news.newsScreen
 
 
 const val NEWS_GRAPH = "news_graph"

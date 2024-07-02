@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.news
+package com.schopenhauer.nous.ui.screen.news
 
 import android.text.Html
 import androidx.compose.foundation.clickable
@@ -42,7 +42,7 @@ fun NewsScreen(
 		modifier = modifier,
 		newses = uiState.newses,
 		onNewsClick = {},
-		loadMoreNews = {},
+		loadMoreNews = viewModel::getNews,
 		isPageLoading = uiState.isPageLoading,
 		isLastPage = uiState.isLastPage
 	)

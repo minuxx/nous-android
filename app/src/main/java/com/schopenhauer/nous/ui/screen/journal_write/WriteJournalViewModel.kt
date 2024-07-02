@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal_write
+package com.schopenhauer.nous.ui.screen.journal_write
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
