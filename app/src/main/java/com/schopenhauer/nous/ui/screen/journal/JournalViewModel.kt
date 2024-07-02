@@ -31,18 +31,15 @@ class JournalViewModel @Inject constructor(
 	private val _uiEvent = MutableSharedFlow<UiEvent>()
 	val uiEvent = _uiEvent.asSharedFlow()
 
-	fun setJournalId(journalId: Long) {
-		_uiState.update { it.copy(journalId = journalId) }
+	init {
 		getJournal()
 	}
 
 	private fun getJournal() = viewModelScope.launch {
-		val journalId = _uiState.value.journalId ?: return@launch
-
 		when (val res = getJournalUseCase(journalId)) {
 			is Result.Success -> {
-				val (id, timeMillis, tasks) = res.data
-				_uiState.update { it.copy(journalId = id, timeMillis = timeMillis, tasks = tasks) }
+				val (_, timeMillis, tasks) = res.data
+				_uiState.update { it.copy(timeMillis = timeMillis, tasks = tasks) }
 			}
 			is Result.Failure -> {
 				when (res.error.code) {
@@ -53,8 +50,6 @@ class JournalViewModel @Inject constructor(
 	}
 
 	fun removeJournal() = viewModelScope.launch {
-		val journalId = _uiState.value.journalId ?: return@launch
-
 		when (val res = removeJournalUseCase(journalId)) {
 			is Result.Success -> updateUiEvent(UiEvent.OnSuccessRemoveJournal)
 			is Result.Failure -> {
@@ -71,7 +66,6 @@ class JournalViewModel @Inject constructor(
 
 	data class UiState(
 		val isLoading: Boolean = false,
-		val journalId: Long? = null,
 		val timeMillis: Long? = null,
 		val tasks: List<Task> = listOf(),
 	)

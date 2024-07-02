@@ -6,13 +6,13 @@ import androidx.navigation.compose.composable
 const val JOURNALS_SCREEN = "journals"
 
 fun NavGraphBuilder.journalsScreen(
-	onJournalClick: (Long) -> Unit,
-	onWriteButtonClick: () -> Unit
+	onNavigateToJournal: (journalId: Long) -> Unit,
+	onNavigateToWriteJournal: () -> Unit
 	) {
 	composable(route = JOURNALS_SCREEN) {
 		JournalsScreen(
-			onJournalClick = onJournalClick,
-			onWriteButtonClick = onWriteButtonClick
+			onNavigateToJournal = onNavigateToJournal,
+			onNavigateToWriteJournal = onNavigateToWriteJournal
 		)
 	}
 }

@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.schopenhauer.nous.ui.navigation.graph.JOURNAL_GRAPH
 import com.schopenhauer.nous.ui.navigation.graph.journalGraph
-import com.schopenhauer.nous.ui.navigation.graph.navigateToJournal
+import com.schopenhauer.nous.ui.navigation.graph.navigateToJournalTopLevel
 import com.schopenhauer.nous.ui.navigation.graph.navigateToNews
 import com.schopenhauer.nous.ui.navigation.graph.navigateToSetting
 import com.schopenhauer.nous.ui.navigation.graph.newsGraph
@@ -43,7 +43,7 @@ fun NavController.navigateTopLevelDestination(topLevelDestination: TopLevelDesti
 
 	when(topLevelDestination) {
 		TopLevelDestination.NEWS -> navigateToNews(topLevelNavOptions)
-		TopLevelDestination.JOURNAL -> navigateToJournal(topLevelNavOptions)
+		TopLevelDestination.JOURNAL -> navigateToJournalTopLevel(topLevelNavOptions)
 		TopLevelDestination.SETTING -> navigateToSetting(topLevelNavOptions)
 	}
 }

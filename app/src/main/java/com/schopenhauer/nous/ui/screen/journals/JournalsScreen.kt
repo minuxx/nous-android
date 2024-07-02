@@ -1,5 +1,6 @@
 package com.schopenhauer.nous.ui.screen.journals
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Journal
+import com.schopenhauer.nous.ui.base.SingleEventEffect
 import com.schopenhauer.nous.ui.theme.NousTheme
 import com.schopenhauer.nous.util.getTodayTimeMillis
 import com.schopenhauer.nous.util.millisToDate
@@ -38,33 +41,50 @@ import com.schopenhauer.nous.util.millisToDate
 fun JournalsScreen(
 	modifier: Modifier = Modifier,
 	viewModel: JournalsViewModel = hiltViewModel(),
-	onJournalClick: (journalId: Long) -> Unit,
-	onWriteButtonClick: () -> Unit,
+	onNavigateToJournal: (journalId: Long) -> Unit,
+	onNavigateToWriteJournal: () -> Unit,
 ) {
 	val uiState by viewModel.uiState.collectAsState()
+	val context = LocalContext.current
 
-	JournalsScreen(
-		modifier = modifier,
-		journals = uiState.journals,
-		onJournalClick = onJournalClick,
-		onWriteButtonClick = onWriteButtonClick
-	)
+	SingleEventEffect(sideEffectFlow = viewModel.uiEffect) { effect ->
+		when (effect) {
+			is JournalsUiEffect.ShowToast -> {
+				Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+			}
+			is JournalsUiEffect.NavigateToJournal -> {
+				onNavigateToJournal(effect.journalId)
+			}
+			is JournalsUiEffect.NavigateToWriteJournal -> {
+				onNavigateToWriteJournal()
+			}
+		}
+	}
+
+	when (val state = uiState) {
+		is JournalsUiState.Idle -> {}
+		is JournalsUiState.Loaded -> {
+			JournalsScreen(
+				modifier = modifier,
+				journals = state.journals,
+				onEvent = viewModel::setUiEvent
+			)
+		}
+
+		is JournalsUiState.Loading -> {}
+	}
 }
-
 
 @Composable
 fun JournalsScreen(
 	modifier: Modifier = Modifier,
 	journals: List<Journal>,
-	onJournalClick: (journalId: Long) -> Unit,
-	onWriteButtonClick: () -> Unit
+	onEvent: (JournalsUiEvent) -> Unit,
 ) {
 	Box(
-		modifier = modifier.fillMaxSize()
+		modifier = modifier
 	) {
-		Column(
-			modifier = modifier.fillMaxSize()
-		) {
+		Column {
 			Text(
 				modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
 				text = stringResource(id = R.string.journals),
@@ -73,11 +93,15 @@ fun JournalsScreen(
 			JournalItemColumn(
 				modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium)),
 				journals = journals,
-				onJournalClick = onJournalClick
+				onJournalClick = { journalId ->
+					onEvent(JournalsUiEvent.OnJournalClicked(journalId))
+				}
 			)
 		}
 		FloatingActionButton(
-			onClick = onWriteButtonClick,
+			onClick = {
+				onEvent(JournalsUiEvent.OnWriteButtonClicked)
+			},
 			modifier = Modifier
 				.align(Alignment.BottomEnd)
 				.padding(dimensionResource(id = R.dimen.padding_medium))
@@ -106,8 +130,7 @@ fun JournalsScreenLightPreview() {
 				Journal(8, getTodayTimeMillis(), listOf()),
 				Journal(9, getTodayTimeMillis(), listOf()),
 			),
-			onJournalClick = {},
-			onWriteButtonClick = {}
+			onEvent = {},
 		)
 	}
 }
@@ -128,8 +151,7 @@ fun JournalsScreenDarkPreview() {
 				Journal(8, getTodayTimeMillis(), listOf()),
 				Journal(9, getTodayTimeMillis(), listOf()),
 			),
-			onJournalClick = {},
-			onWriteButtonClick = {}
+			onEvent = {},
 		)
 	}
 }

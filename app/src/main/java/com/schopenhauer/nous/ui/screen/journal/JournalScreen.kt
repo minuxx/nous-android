@@ -21,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Task
 import com.schopenhauer.nous.ui.component.NousAppBar
-import com.schopenhauer.nous.ui.component.TaskItemColumn
 import com.schopenhauer.nous.ui.theme.NousTheme
 import com.schopenhauer.nous.util.getTodayTimeMillis
 import com.schopenhauer.nous.util.millisToDate
@@ -79,7 +78,7 @@ fun JournalScreen(
 		}
 		TaskItemColumn(
 			tasks = tasks,
-			onClick = { }
+			onClick = {}
 		)
 	}
 }
