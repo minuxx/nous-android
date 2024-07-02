@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal.detail
+package com.schopenhauer.nous.ui.journal_detail
 
 import android.content.Context
 import android.os.Bundle
@@ -15,9 +15,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.schopenhauer.nous.databinding.FragmentJournalDetailBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
-import com.schopenhauer.nous.ui.journal.detail.JournalDetailViewModel.UiEvent
-import com.schopenhauer.nous.ui.journal.list.JournalsFragment.Companion.JOURNAL_ID_KEY
-import com.schopenhauer.nous.ui.main.MainActivity
+import com.schopenhauer.nous.ui.journal_detail.JournalDetailViewModel.UiEvent
+import com.schopenhauer.nous.ui.journals.JournalsFragment.Companion.JOURNAL_ID_KEY
+import com.schopenhauer.nous.MainActivity
 import com.schopenhauer.nous.ui.theme.NousTheme
 import com.schopenhauer.nous.util.getTodayTimeMillis
 import com.schopenhauer.nous.util.millisToDate

@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal.detail
+package com.schopenhauer.nous.ui.journal_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

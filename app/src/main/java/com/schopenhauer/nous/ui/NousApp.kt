@@ -13,12 +13,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.schopenhauer.nous.ui.navigation.JOURNAL_GRAPH
+import com.schopenhauer.nous.ui.navigation.graph.JOURNAL_GRAPH
 import com.schopenhauer.nous.ui.navigation.NousNavHost
 import com.schopenhauer.nous.ui.navigation.TopLevelDestination
 import com.schopenhauer.nous.ui.navigation.navigateTopLevelDestination
+import com.schopenhauer.nous.ui.theme.NousTheme
 
 @Composable
 fun NousApp() {
@@ -66,5 +68,21 @@ fun BottomNavBar(
 				onClick = { onNavigateToTopLevelDestination(destination) }
 			)
 		}
+	}
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BottomNavBarLightPreview() {
+	NousTheme {
+		BottomNavBar(currentDestination = TopLevelDestination.JOURNAL.route) {}
+	}
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BottomNavBarDarkPreview() {
+	NousTheme(darkTheme = true) {
+		BottomNavBar(currentDestination = TopLevelDestination.JOURNAL.route) {}
 	}
 }

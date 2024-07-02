@@ -7,6 +7,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.schopenhauer.nous.ui.navigation.graph.JOURNAL_GRAPH
+import com.schopenhauer.nous.ui.navigation.graph.journalGraph
+import com.schopenhauer.nous.ui.navigation.graph.navigateToJournal
+import com.schopenhauer.nous.ui.navigation.graph.navigateToNews
+import com.schopenhauer.nous.ui.navigation.graph.navigateToSetting
+import com.schopenhauer.nous.ui.navigation.graph.newsGraph
+import com.schopenhauer.nous.ui.navigation.graph.settingGraph
 
 @Composable
 fun NousNavHost(

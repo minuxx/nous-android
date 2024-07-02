@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 fun JournalDatePickerDialog(
 	title: String,
 	selectedDateMillis: Long?,
-	onTimeMillisChanged: (Long?) -> Unit,
+	onTimeMillisChanged: (Long) -> Unit,
 	onDismiss: () -> Unit
 ) {
 	val datePickerState = rememberDatePickerState(
@@ -60,7 +60,8 @@ fun JournalDatePickerDialog(
 		confirmButton = {
 			TextButton(
 				onClick = {
-					onTimeMillisChanged(datePickerState.selectedDateMillis)
+					val dateMillis = datePickerState.selectedDateMillis ?: getTodayTimeMillis()
+					onTimeMillisChanged(dateMillis)
 					onDismiss()
 				}) {
 				Text(

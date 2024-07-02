@@ -1,10 +1,11 @@
-package com.schopenhauer.nous.ui.navigation
+package com.schopenhauer.nous.ui.navigation.graph
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
+import com.schopenhauer.nous.ui.journal_write.writeJournalScreen
 import com.schopenhauer.nous.ui.journals.JOURNALS_SCREEN
 import com.schopenhauer.nous.ui.journals.journalsScreen
 
@@ -19,5 +20,6 @@ fun NavGraphBuilder.journalGraph(navController: NavHostController) {
 		startDestination = JOURNALS_SCREEN
 	) {
 		journalsScreen()
+		writeJournalScreen(onClickBack = { navController.popBackStack() })
 	}
 }

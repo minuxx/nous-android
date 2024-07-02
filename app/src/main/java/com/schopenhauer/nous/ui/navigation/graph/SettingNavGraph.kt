@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.navigation
+package com.schopenhauer.nous.ui.navigation.graph
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

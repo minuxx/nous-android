@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal.list
+package com.schopenhauer.nous.ui.journals
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,9 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
-import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEvent
-import com.schopenhauer.nous.ui.journals.JournalsScreen
-import com.schopenhauer.nous.ui.main.MainActivity
+import com.schopenhauer.nous.ui.journals.JournalsViewModel.UiEvent
+import com.schopenhauer.nous.MainActivity
 import com.schopenhauer.nous.ui.theme.NousTheme
 import dagger.hilt.android.AndroidEntryPoint
 

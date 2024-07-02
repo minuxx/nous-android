@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.news.list
+package com.schopenhauer.nous.ui.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

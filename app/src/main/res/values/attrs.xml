@@ -1,6 +1,0 @@
-<resources>
-    <attr name="colorComplementary" format="color" />
-    <attr name="colorOnComplementary" format="color" />
-    <attr name="colorComplementaryContainer" format="color" />
-    <attr name="colorOnComplementaryContainer" format="color" />
-</resources>
