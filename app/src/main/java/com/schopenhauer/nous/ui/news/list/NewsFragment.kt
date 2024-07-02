@@ -12,20 +12,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentNewsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
-import com.schopenhauer.nous.ui.base.PaginationScrollListener
-import com.schopenhauer.nous.ui.journal.list.JournalsFragment
-import com.schopenhauer.nous.ui.journal.list.JournalsScreen
-import com.schopenhauer.nous.ui.main.MainActivity
 import com.schopenhauer.nous.ui.news.list.NewsViewModel.UiEvent
 import com.schopenhauer.nous.ui.theme.NousTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class NewsFragment : BaseFragment<FragmentNewsBinding>() {

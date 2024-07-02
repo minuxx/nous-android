@@ -15,6 +15,7 @@ import com.schopenhauer.nous.R
 import com.schopenhauer.nous.databinding.FragmentJournalsBinding
 import com.schopenhauer.nous.ui.base.BaseFragment
 import com.schopenhauer.nous.ui.journal.list.JournalsViewModel.UiEvent
+import com.schopenhauer.nous.ui.journals.JournalsScreen
 import com.schopenhauer.nous.ui.main.MainActivity
 import com.schopenhauer.nous.ui.theme.NousTheme
 import dagger.hilt.android.AndroidEntryPoint

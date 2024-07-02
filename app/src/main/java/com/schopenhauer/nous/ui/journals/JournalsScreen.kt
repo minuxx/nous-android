@@ -1,4 +1,4 @@
-package com.schopenhauer.nous.ui.journal.list
+package com.schopenhauer.nous.ui.journals
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -24,18 +26,39 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.schopenhauer.nous.R
 import com.schopenhauer.nous.domain.model.Journal
+import com.schopenhauer.nous.ui.journal.list.JournalsViewModel
 import com.schopenhauer.nous.ui.theme.NousTheme
 import com.schopenhauer.nous.util.getTodayTimeMillis
 import com.schopenhauer.nous.util.millisToDate
+
+
+@Composable
+fun JournalsScreen(
+	modifier: Modifier = Modifier,
+	viewModel: JournalsViewModel = hiltViewModel(),
+	onJournalClick: (journalId: Long) -> Unit,
+	onWriteButtonClick: () -> Unit,
+) {
+	val uiState by viewModel.uiState.collectAsState()
+
+	JournalsScreen(
+		modifier = modifier,
+		journals = uiState.journals,
+		onJournalClick = onJournalClick,
+		onWriteButtonClick = onWriteButtonClick
+	)
+}
+
 
 @Composable
 fun JournalsScreen(
 	modifier: Modifier = Modifier,
 	journals: List<Journal>,
 	onJournalClick: (journalId: Long) -> Unit,
-	onWriteJournalButtonClick: () -> Unit
+	onWriteButtonClick: () -> Unit
 ) {
 	Box(
 		modifier = modifier.fillMaxSize()
@@ -55,10 +78,10 @@ fun JournalsScreen(
 			)
 		}
 		FloatingActionButton(
-			onClick = onWriteJournalButtonClick,
+			onClick = onWriteButtonClick,
 			modifier = Modifier
 				.align(Alignment.BottomEnd)
-				.padding(dimensionResource(id =  R.dimen.padding_medium))
+				.padding(dimensionResource(id = R.dimen.padding_medium))
 		) {
 			Icon(
 				painter = painterResource(id = R.drawable.ic_pencil),
@@ -85,7 +108,7 @@ fun JournalsScreenLightPreview() {
 				Journal(9, getTodayTimeMillis(), listOf()),
 			),
 			onJournalClick = {},
-			onWriteJournalButtonClick = {}
+			onWriteButtonClick = {}
 		)
 	}
 }
@@ -107,7 +130,7 @@ fun JournalsScreenDarkPreview() {
 				Journal(9, getTodayTimeMillis(), listOf()),
 			),
 			onJournalClick = {},
-			onWriteJournalButtonClick = {}
+			onWriteButtonClick = {}
 		)
 	}
 }
